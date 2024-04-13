@@ -1,47 +1,56 @@
 package com.webspringmvc.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 
 @Entity
 @Table(name = "CT_PHIEUDAT")
 public class CT_PhieuDat {
 	@Id
-	@ManyToOne
-	@javax.persistence.JoinColumn(name = "MaPD")
-	private String maPD;
-	@Id
-	@ManyToOne
-	@javax.persistence.JoinColumn(name = "IdHP")
-	private String idHP;
+	@Column(name = "ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 	
+	@ManyToOne
+	@JoinColumn(name = "MAPD")
+	private PhieuDat phieuDat;
+
+	@ManyToOne
+	@JoinColumn(name = "IDHP")
+	private HangPhong hangPhong;
+
 	private int sLPhong;
 
 	public CT_PhieuDat() {
 	}
 
-	public CT_PhieuDat(String maPD, String idHP, int sLPhong) {
-		this.maPD = maPD;
-		this.idHP = idHP;
+	public CT_PhieuDat(PhieuDat phieuDat, HangPhong hangPhong, int sLPhong) {
+		this.phieuDat = phieuDat;
+		this.hangPhong = hangPhong;
 		this.sLPhong = sLPhong;
 	}
 
-	public String getmaPD() {
-		return maPD;
+	public PhieuDat getPhieuDat() {
+		return phieuDat;
 	}
 
-	public void setmaPD(String maPD) {
-		this.maPD = maPD;
+	public void setPhieuDat(PhieuDat phieuDat) {
+		this.phieuDat = phieuDat;
 	}
 
-	public String getidHP() {
-		return idHP;
+	public HangPhong getHangPhong() {
+		return hangPhong;
 	}
 
-	public void setidHP(String idHP) {
-		this.idHP = idHP;
+	public void setHangPhong(HangPhong hangPhong) {
+		this.hangPhong = hangPhong;
 	}
 
 	public int getsLPhong() {

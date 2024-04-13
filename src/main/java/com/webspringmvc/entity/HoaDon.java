@@ -2,7 +2,9 @@ package com.webspringmvc.entity;
 
 import java.sql.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -10,11 +12,18 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "HOADON")
 public class HoaDon {
+	@Id
+	@Column(name = "MAHD")
 	private String maHD;
+	
+	@Column(name = "NGAYLAP")
 	private Date ngayLap;
+	
+	@Column(name = "TONGTIEN")
 	private float tongTien;
+	
 	@OneToOne
-	@JoinColumn(name = "maPD")
+	@JoinColumn(name = "MAPD")
 	private PhieuDat maPD;
 	
 	public HoaDon() {

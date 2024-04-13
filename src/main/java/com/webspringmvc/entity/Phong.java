@@ -1,5 +1,6 @@
 package com.webspringmvc.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -10,25 +11,32 @@ import javax.persistence.Table;
 @Table(name = "Phong")
 public class Phong {
 	@Id
+	@Column(name = "MAPHONG")
 	private String maPhong;
+
+	@Column(name = "TENPHONG", nullable = false)
 	private String tenPhong;
-	private String tang;
+
+	@Column(name = "TANG")
+	private int tang;
+
 	@ManyToOne
-	@JoinColumn(name = "maTTP")
-	private String maTTP;
+	@JoinColumn(name = "MATTP")
+	private TrangThaiPhong trangThaiPhong;
+
 	@ManyToOne
-	@JoinColumn(name = "idHP")
-	private String idHP;
-	
+	@JoinColumn(name = "IDHP")
+	private HangPhong hangPhong;
+
 	public Phong() {
 	}
 
-	public Phong(String maPhong, String tenPhong, String tang, String maTTP, String idHP) {
+	public Phong(String maPhong, String tenPhong, int tang, TrangThaiPhong trangThaiPhong, HangPhong hangPhong) {
 		this.maPhong = maPhong;
 		this.tenPhong = tenPhong;
 		this.tang = tang;
-		this.maTTP = maTTP;
-		this.idHP = idHP;
+		this.trangThaiPhong = trangThaiPhong;
+		this.hangPhong = hangPhong;
 	}
 
 	public String getMaPhong() {
@@ -47,28 +55,28 @@ public class Phong {
 		this.tenPhong = tenPhong;
 	}
 
-	public String getTang() {
+	public int getTang() {
 		return tang;
 	}
 
-	public void setTang(String tang) {
+	public void setTang(int tang) {
 		this.tang = tang;
 	}
 
-	public String getMaTTP() {
-		return maTTP;
+	public TrangThaiPhong getTrangThaiPhong() {
+		return trangThaiPhong;
 	}
 
-	public void setMaTTP(String maTTP) {
-		this.maTTP = maTTP;
+	public void setTrangThaiPhong(TrangThaiPhong trangThaiPhong) {
+		this.trangThaiPhong = trangThaiPhong;
 	}
 
-	public String getIdHP() {
-		return idHP;
+	public HangPhong getHangPhong() {
+		return hangPhong;
 	}
 
-	public void setIdHP(String idHP) {
-		this.idHP = idHP;
+	public void setHangPhong(HangPhong hangPhong) {
+		this.hangPhong = hangPhong;
 	}
-	
+
 }

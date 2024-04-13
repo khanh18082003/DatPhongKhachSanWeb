@@ -1,33 +1,42 @@
 package com.webspringmvc.entity;
 
-import java.util.Collection;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "KHACHHANG")
 public class KhachHang {
-	@javax.persistence.Id
+	@Id
+	@Column(name = "MAKH")
 	private String maKH;
-	private String cMND;
+	
+	@Column(name = "CMND", nullable = false, unique = true)
+	private String cmnd;
+	
+	@Column(name = "HO", nullable = false, length = 50)
 	private String ho;
+	
+	@Column(name = "TEN", nullable = false, length = 10)
 	private String ten;
-	private String sDT;
+	
+	@Column(name = "SDT", nullable = false, length = 11)
+	private String sdt;
+	
+	@Column(name = "EMAIL", nullable = false)
 	private String email;
-	@OneToMany(mappedBy = "KhachHang", fetch = javax.persistence.FetchType.EAGER)
-	private Collection<PhieuDat> phieuDat;
 
 	public KhachHang() {
 	}
 
-	public KhachHang(String maKH, String cMND, String ho, String ten, String sDT, String email) {
+	public KhachHang(String maKH, String cmnd, String ho, String ten, String sdt, String email) {
 		this.maKH = maKH;
-		this.cMND = cMND;
+		this.cmnd = cmnd;
 		this.ho = ho;
 		this.ten = ten;
-		this.sDT = sDT;
+		this.sdt = sdt;
 		this.email = email;
 	}
 
@@ -39,12 +48,12 @@ public class KhachHang {
 		this.maKH = maKH;
 	}
 
-	public String getcMND() {
-		return cMND;
+	public String getCmnd() {
+		return cmnd;
 	}
 
-	public void setcMND(String cMND) {
-		this.cMND = cMND;
+	public void setCmnd(String cmnd) {
+		this.cmnd = cmnd;
 	}
 
 	public String getho() {
@@ -63,12 +72,12 @@ public class KhachHang {
 		this.ten = ten;
 	}
 
-	public String getsDT() {
-		return sDT;
+	public String getSdt() {
+		return sdt;
 	}
 
-	public void setsDT(String sDT) {
-		this.sDT = sDT;
+	public void setSdt(String sdt) {
+		this.sdt = sdt;
 	}
 
 	public String getemail() {

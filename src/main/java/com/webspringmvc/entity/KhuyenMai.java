@@ -1,24 +1,38 @@
 package com.webspringmvc.entity;
 
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.Collection;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "KHUYENMAI")
 public class KhuyenMai {
 	@Id
+	@Column(name = "MAKM")
 	private String maKM;
+	
+	@Column(name = "TENKM", nullable = false)
 	private String tenKM;
-	private Date ngayBD;
-	private Date ngayKT;
+	
+	@Column(name = "NGAYBD")
+	private Timestamp ngayBD;
+	
+	@Column(name = "NGAYKT")
+	private Timestamp ngayKT;
+	
+	@OneToMany(mappedBy = "khuyenMai", fetch = FetchType.EAGER)
+	private Collection<CT_KhuyenMai> ctKM;
 	
 	public KhuyenMai() {
 	}
 
-	public KhuyenMai(String maKM, String tenKM, Date ngayBD, Date ngayKT) {
+	public KhuyenMai(String maKM, String tenKM, Timestamp ngayBD, Timestamp ngayKT) {
 		this.maKM = maKM;
 		this.tenKM = tenKM;
 		this.ngayBD = ngayBD;
@@ -41,19 +55,19 @@ public class KhuyenMai {
 		this.tenKM = tenKM;
 	}
 
-	public Date getngayBD() {
+	public Timestamp getngayBD() {
 		return ngayBD;
 	}
 
-	public void setngayBD(Date ngayBD) {
+	public void setngayBD(Timestamp ngayBD) {
 		this.ngayBD = ngayBD;
 	}
 
-	public Date getngayKT() {
+	public Timestamp getngayKT() {
 		return ngayKT;
 	}
 
-	public void setngayKT(Date ngayKT) {
+	public void setngayKT(Timestamp ngayKT) {
 		this.ngayKT = ngayKT;
 	}
 	
