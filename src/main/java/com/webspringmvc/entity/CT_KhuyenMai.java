@@ -1,48 +1,55 @@
 package com.webspringmvc.entity;
 
-import javax.persistence.Column;
+
+import java.util.Collection;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "CT_KHUYENMAI")
 public class CT_KhuyenMai {
 	@Id
-	private String MaKM;
+	private String maKH;
 	@Id
-	private String IdHP;
-	private int PhanTramGiam;
+	private String idHP;
+	private int phanTramGiam;
+	@OneToMany(mappedBy = "CT_KhuyenMai", fetch = javax.persistence.FetchType.EAGER)
+	private Collection<KhuyenMai> khuyenMai;
+	@OneToMany(mappedBy = "CT_KhuyenMai", fetch = javax.persistence.FetchType.EAGER)
+	private Collection<HangPhong> hangPhong;
 	
 	public CT_KhuyenMai() {
 	}
 
-	public CT_KhuyenMai(String maKM, String idHP, int phanTramGiam) {
-		MaKM = maKM;
-		IdHP = idHP;
-		PhanTramGiam = phanTramGiam;
+	public CT_KhuyenMai(String maKH, String idHP, int phanTramGiam) {
+		this.maKH = maKH;
+		this.idHP = idHP;
+		this.phanTramGiam = phanTramGiam;
 	}
-	public String getMaKM() {
-		return MaKM;
-	}
-
-	public void setMaKM(String maKM) {
-		MaKM = maKM;
+	public String getmaKH() {
+		return maKH;
 	}
 
-	public String getIdHP() {
-		return IdHP;
+	public void setmaKH(String maKH) {
+		this.maKH = maKH;
 	}
 
-	public void setIdHP(String idHP) {
-		IdHP = idHP;
+	public String getidHP() {
+		return idHP;
 	}
 
-	public int getPhanTramGiam() {
-		return PhanTramGiam;
+	public void setidHP(String idHP) {
+		this.idHP = idHP;
 	}
 
-	public void setPhanTramGiam(int phanTramGiam) {
-		PhanTramGiam = phanTramGiam;
+	public int getphanTramGiam() {
+		return phanTramGiam;
+	}
+
+	public void setphanTramGiam(int phanTramGiam) {
+		this.phanTramGiam = phanTramGiam;
 	}
 }

@@ -10,73 +10,73 @@ import javax.persistence.Table;
 @Table(name = "KHACHHANG")
 public class KhachHang {
 	@javax.persistence.Id
-	private String MaKH;
-	private String CMND;
-	private String Ho;
-	private String Ten;
-	private String SDT;
-	private String Email;
+	private String maKH;
+	private String cMND;
+	private String ho;
+	private String ten;
+	private String sDT;
+	private String email;
 	@OneToMany(mappedBy = "KhachHang", fetch = javax.persistence.FetchType.EAGER)
-	private Collection<PhieuDat> PhieuDat;
+	private Collection<PhieuDat> phieuDat;
 
 	public KhachHang() {
 	}
 
 	public KhachHang(String maKH, String cMND, String ho, String ten, String sDT, String email) {
-		MaKH = maKH;
-		CMND = cMND;
-		Ho = ho;
-		Ten = ten;
-		SDT = sDT;
-		Email = email;
+		this.maKH = maKH;
+		this.cMND = cMND;
+		this.ho = ho;
+		this.ten = ten;
+		this.sDT = sDT;
+		this.email = email;
 	}
 
-	public String getMaKH() {
-		return MaKH;
+	public String getmaKH() {
+		return maKH;
 	}
 
-	public void setMaKH(String maKH) {
-		MaKH = maKH;
+	public void setmaKH(String maKH) {
+		this.maKH = maKH;
 	}
 
-	public String getCMND() {
-		return CMND;
+	public String getcMND() {
+		return cMND;
 	}
 
-	public void setCMND(String cMND) {
-		CMND = cMND;
+	public void setcMND(String cMND) {
+		this.cMND = cMND;
 	}
 
-	public String getHo() {
-		return Ho;
+	public String getho() {
+		return ho;
 	}
 
-	public void setHo(String ho) {
-		Ho = ho;
+	public void setho(String ho) {
+		this.ho = ho;
 	}
 
-	public String getTen() {
-		return Ten;
+	public String getten() {
+		return ten;
 	}
 
-	public void setTen(String ten) {
-		Ten = ten;
+	public void setten(String ten) {
+		this.ten = ten;
 	}
 
-	public String getSDT() {
-		return SDT;
+	public String getsDT() {
+		return sDT;
 	}
 
-	public void setSDT(String sDT) {
-		SDT = sDT;
+	public void setsDT(String sDT) {
+		this.sDT = sDT;
 	}
 
-	public String getEmail() {
-		return Email;
+	public String getemail() {
+		return email;
 	}
 
-	public void setEmail(String email) {
-		Email = email;
+	public void setemail(String email) {
+		this.email = email;
 	}
 	
 }
