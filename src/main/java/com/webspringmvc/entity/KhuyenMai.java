@@ -10,51 +10,51 @@ import javax.persistence.Table;
 @Table(name = "KHUYENMAI")
 public class KhuyenMai {
 	@Id
-	private String MaKM;
-	private String TenKM;
-	private Date NgayBD;
-	private Date NgayKT;
+	private String maKM;
+	private String tenKM;
+	private Date ngayBD;
+	private Date ngayKT;
 	
 	public KhuyenMai() {
 	}
 
 	public KhuyenMai(String maKM, String tenKM, Date ngayBD, Date ngayKT) {
-		MaKM = maKM;
-		TenKM = tenKM;
-		NgayBD = ngayBD;
-		NgayKT = ngayKT;
+		this.maKM = maKM;
+		this.tenKM = tenKM;
+		this.ngayBD = ngayBD;
+		this.ngayKT = ngayKT;
 	}
 
-	public String getMaKM() {
-		return MaKM;
+	public String getmaKM() {
+		return maKM;
 	}
 
-	public void setMaKM(String maKM) {
-		MaKM = maKM;
+	public void setmaKM(String maKM) {
+		this.maKM = maKM;
 	}
 
-	public String getTenKM() {
-		return TenKM;
+	public String gettenKM() {
+		return tenKM;
 	}
 
-	public void setTenKM(String tenKM) {
-		TenKM = tenKM;
+	public void settenKM(String tenKM) {
+		this.tenKM = tenKM;
 	}
 
-	public Date getNgayBD() {
-		return NgayBD;
+	public Date getngayBD() {
+		return ngayBD;
 	}
 
-	public void setNgayBD(Date ngayBD) {
-		NgayBD = ngayBD;
+	public void setngayBD(Date ngayBD) {
+		this.ngayBD = ngayBD;
 	}
 
-	public Date getNgayKT() {
-		return NgayKT;
+	public Date getngayKT() {
+		return ngayKT;
 	}
 
-	public void setNgayKT(Date ngayKT) {
-		NgayKT = ngayKT;
+	public void setngayKT(Date ngayKT) {
+		this.ngayKT = ngayKT;
 	}
 	
 }

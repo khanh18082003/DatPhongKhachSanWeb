@@ -7,32 +7,32 @@ import javax.persistence.Table;
 @Table(name = "KIEUPHONG")
 public class KieuPhong {
 	@javax.persistence.Id
-	private String MaKP;
-	private String TenKP;
+	private String maKP;
+	private String tenKP;
 	@javax.persistence.OneToMany(mappedBy = "KieuPhong", fetch = javax.persistence.FetchType.EAGER)
-	private java.util.Collection<HangPhong> HangPhong;
+	private java.util.Collection<HangPhong> hangPhong;
 	
 	public KieuPhong() {
 	}
 
 	public KieuPhong(String maKP, String tenKP) {
-		MaKP = maKP;
-		TenKP = tenKP;
+		this.maKP = maKP;
+		this.tenKP = tenKP;
 	}
 
-	public String getMaKP() {
-		return MaKP;
+	public String getmaKP() {
+		return maKP;
 	}
 
-	public void setMaKP(String maKP) {
-		MaKP = maKP;
+	public void setmaKP(String maKP) {
+		this.maKP = maKP;
 	}
 
-	public String getTenKP() {
-		return TenKP;
+	public String gettenKP() {
+		return tenKP;
 	}
 
-	public void setTenKP(String tenKP) {
-		TenKP = tenKP;
+	public void settenKP(String tenKP) {
+		this.tenKP = tenKP;
 	}
 }

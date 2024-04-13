@@ -10,53 +10,53 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "HOADON")
 public class HoaDon {
-	private String MaHD;
-	private Date NgayLap;
-	private float TongTien;
+	private String maHD;
+	private Date ngayLap;
+	private float tongTien;
 	@OneToOne
-	@JoinColumn(name = "MaPD")
-	private PhieuDat MaPD;
+	@JoinColumn(name = "maPD")
+	private PhieuDat maPD;
 	
 	public HoaDon() {
 	}
 
 	public HoaDon(String maHD, Date ngayLap, float tongTien, PhieuDat maPD) {
-		MaHD = maHD;
-		NgayLap = ngayLap;
-		TongTien = tongTien;
-		MaPD = maPD;
+		this.maHD = maHD;
+		this.ngayLap = ngayLap;
+		this.tongTien = tongTien;
+		this.maPD = maPD;
 	}
 
-	public String getMaHD() {
-		return MaHD;
+	public String getmaHD() {
+		return maHD;
 	}
 
-	public void setMaHD(String maHD) {
-		MaHD = maHD;
+	public void setmaHD(String maHD) {
+		this.maHD = maHD;
 	}
 
-	public Date getNgayLap() {
-		return NgayLap;
+	public Date getngayLap() {
+		return ngayLap;
 	}
 
-	public void setNgayLap(Date ngayLap) {
-		NgayLap = ngayLap;
+	public void setngayLap(Date ngayLap) {
+		this.ngayLap = ngayLap;
 	}
 
-	public float getTongTien() {
-		return TongTien;
+	public float gettongTien() {
+		return tongTien;
 	}
 
-	public void setTongTien(float tongTien) {
-		TongTien = tongTien;
+	public void settongTien(float tongTien) {
+		this.tongTien = tongTien;
 	}
 
-	public PhieuDat getMaPD() {
-		return MaPD;
+	public PhieuDat getmaPD() {
+		return maPD;
 	}
 
-	public void setMaPD(PhieuDat maPD) {
-		MaPD = maPD;
+	public void setmaPD(PhieuDat maPD) {
+		this.maPD = maPD;
 	}
 	
 }

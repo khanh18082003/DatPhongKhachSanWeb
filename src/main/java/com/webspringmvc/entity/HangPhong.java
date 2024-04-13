@@ -7,57 +7,57 @@ import javax.persistence.Table;
 @Table(name = "HANGPHONG")
 public class HangPhong {
 	@javax.persistence.Id
-	private String IdHP; 
-	private String TenHP;
+	private String idHP; 
+	private String tenHP;
 	@javax.persistence.ManyToOne
-	@javax.persistence.JoinColumn(name = "MaLP")
-	private LoaiPhong MaLP;
+	@javax.persistence.JoinColumn(name = "maLP")
+	private LoaiPhong maLP;
 	@javax.persistence.ManyToOne
-	@javax.persistence.JoinColumn(name = "MaKP")
-	private KieuPhong MaKP;
+	@javax.persistence.JoinColumn(name = "maKP")
+	private KieuPhong maKP;
 	@javax.persistence.OneToMany(mappedBy = "HangPhong", fetch = javax.persistence.FetchType.EAGER)
-	private java.util.Collection<Phong> Phong;
+	private java.util.Collection<Phong> phong;
 	
 	public HangPhong() {
 	}
 
 	public HangPhong(String idHP, String tenHP, LoaiPhong maLP, KieuPhong maKP) {
-		IdHP = idHP;
-		TenHP = tenHP;
-		MaLP = maLP;
-		MaKP = maKP;
+		this.idHP = idHP;
+		this.tenHP = tenHP;
+		this.maLP = maLP;
+		this.maKP = maKP;
 	}
 
-	public String getIdHP() {
-		return IdHP;
+	public String getidHP() {
+		return idHP;
 	}
 
-	public void setIdHP(String idHP) {
-		IdHP = idHP;
+	public void setidHP(String idHP) {
+		this.idHP = idHP;
 	}
 
-	public String getTenHP() {
-		return TenHP;
+	public String gettenHP() {
+		return tenHP;
 	}
 
-	public void setTenHP(String tenHP) {
-		TenHP = tenHP;
+	public void settenHP(String tenHP) {
+		this.tenHP = tenHP;
 	}
 
-	public LoaiPhong getMaLP() {
-		return MaLP;
+	public LoaiPhong getmaLP() {
+		return maLP;
 	}
 
-	public void setMaLP(LoaiPhong maLP) {
-		MaLP = maLP;
+	public void setmaLP(LoaiPhong maLP) {
+		this.maLP = maLP;
 	}
 
-	public KieuPhong getMaKP() {
-		return MaKP;
+	public KieuPhong getmaKP() {
+		return maKP;
 	}
 
-	public void setMaKP(KieuPhong maKP) {
-		MaKP = maKP;
+	public void setmaKP(KieuPhong maKP) {
+		this.maKP = maKP;
 	}
 	
 }

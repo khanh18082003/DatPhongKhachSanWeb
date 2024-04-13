@@ -2,48 +2,53 @@ package com.webspringmvc.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "CT_PHIEUDAT")
 public class CT_PhieuDat {
 	@Id
-	private String MaPD;
+	@ManyToOne
+	@javax.persistence.JoinColumn(name = "MaPD")
+	private String maPD;
 	@Id
-	private String IdHP;
+	@ManyToOne
+	@javax.persistence.JoinColumn(name = "IdHP")
+	private String idHP;
 	
-	private int SLPhong;
+	private int sLPhong;
 
 	public CT_PhieuDat() {
 	}
 
-	public CT_PhieuDat(String maPD, String idHP, int slPhong) {
-		MaPD = maPD;
-		IdHP = idHP;
-		SLPhong = slPhong;
+	public CT_PhieuDat(String maPD, String idHP, int sLPhong) {
+		this.maPD = maPD;
+		this.idHP = idHP;
+		this.sLPhong = sLPhong;
 	}
 
-	public String getMaPD() {
-		return MaPD;
+	public String getmaPD() {
+		return maPD;
 	}
 
-	public void setMaPD(String maPD) {
-		MaPD = maPD;
+	public void setmaPD(String maPD) {
+		this.maPD = maPD;
 	}
 
-	public String getIdHP() {
-		return IdHP;
+	public String getidHP() {
+		return idHP;
 	}
 
-	public void setIdHP(String idHP) {
-		IdHP = idHP;
+	public void setidHP(String idHP) {
+		this.idHP = idHP;
 	}
 
-	public int getSLPhong() {
-		return SLPhong;
+	public int getsLPhong() {
+		return sLPhong;
 	}
 
-	public void setSLPhong(int slPhong) {
-		SLPhong = slPhong;
+	public void setsLPhong(int sLPhong) {
+		this.sLPhong = sLPhong;
 	}
 }
