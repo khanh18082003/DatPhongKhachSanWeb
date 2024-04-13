@@ -1,63 +1,90 @@
 package com.webspringmvc.entity;
 
+import java.util.Collection;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "HANGPHONG")
 public class HangPhong {
-	@javax.persistence.Id
-	private String idHP; 
+	@Id
+	@Column(name = "IDHP")
+	private String idHP;
+	
+	@Column(name ="TENHP")
 	private String tenHP;
-	@javax.persistence.ManyToOne
-	@javax.persistence.JoinColumn(name = "maLP")
-	private LoaiPhong maLP;
-	@javax.persistence.ManyToOne
-	@javax.persistence.JoinColumn(name = "maKP")
-	private KieuPhong maKP;
-	@javax.persistence.OneToMany(mappedBy = "HangPhong", fetch = javax.persistence.FetchType.EAGER)
-	private java.util.Collection<Phong> phong;
+	
+	@ManyToOne
+	@JoinColumn(name = "MALP")
+	private LoaiPhong loaiPhong;
+	
+	@ManyToOne
+	@JoinColumn(name = "MAKP")
+	private KieuPhong kieuPhong;
+	
+	@OneToMany(mappedBy = "hangPhong", fetch = FetchType.EAGER)
+	private Collection<Phong> phong;
+	
+	@OneToMany(mappedBy = "hangPhong", fetch = FetchType.EAGER)
+	private Collection<CT_KhuyenMai> ctKM;
+	
+	@OneToMany(mappedBy = "hangPhong", fetch = FetchType.EAGER)
+	private Collection<CT_PhieuDat> ctPD;
 	
 	public HangPhong() {
 	}
 
-	public HangPhong(String idHP, String tenHP, LoaiPhong maLP, KieuPhong maKP) {
+	public HangPhong(String idHP, String tenHP, LoaiPhong loaiPhong, KieuPhong kieuPhong) {
 		this.idHP = idHP;
 		this.tenHP = tenHP;
-		this.maLP = maLP;
-		this.maKP = maKP;
+		this.loaiPhong = loaiPhong;
+		this.kieuPhong = kieuPhong;
 	}
 
-	public String getidHP() {
+	public String getIdHP() {
 		return idHP;
 	}
 
-	public void setidHP(String idHP) {
+	public void setIdHP(String idHP) {
 		this.idHP = idHP;
 	}
 
-	public String gettenHP() {
+	public String getTenHP() {
 		return tenHP;
 	}
 
-	public void settenHP(String tenHP) {
+	public void setTenHP(String tenHP) {
 		this.tenHP = tenHP;
 	}
 
-	public LoaiPhong getmaLP() {
-		return maLP;
+	public LoaiPhong getLoaiPhong() {
+		return loaiPhong;
 	}
 
-	public void setmaLP(LoaiPhong maLP) {
-		this.maLP = maLP;
+	public void setLoaiPhong(LoaiPhong loaiPhong) {
+		this.loaiPhong = loaiPhong;
 	}
 
-	public KieuPhong getmaKP() {
-		return maKP;
+	public KieuPhong getKieuPhong() {
+		return kieuPhong;
 	}
 
-	public void setmaKP(KieuPhong maKP) {
-		this.maKP = maKP;
+	public void setKieuPhong(KieuPhong kieuPhong) {
+		this.kieuPhong = kieuPhong;
 	}
-	
+
+	public java.util.Collection<Phong> getPhong() {
+		return phong;
+	}
+
+	public void setPhong(java.util.Collection<Phong> phong) {
+		this.phong = phong;
+	}
 }

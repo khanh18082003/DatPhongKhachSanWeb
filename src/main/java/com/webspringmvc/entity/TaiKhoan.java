@@ -13,28 +13,33 @@ import javax.persistence.OneToMany;
 public class TaiKhoan {
 	@Id
 	private String username;
+
 	private String password;
+
 	@ManyToOne
-	@JoinColumn(name = "maQuyen")
-	private String maQuyen;
+	@JoinColumn(name = "MaQuyen", nullable = false)
+	private Quyen quyen;
+
 	@ManyToOne
-	@JoinColumn(name = "maNV")
-	private String maNV;
+	@JoinColumn(name = "MaNV")
+	private NhanVien nhanVien;
+
 	@ManyToOne
-	@JoinColumn(name = "maKH")
-	private String maKH;
-	@OneToMany(mappedBy = "TaiKhoan",fetch = FetchType.EAGER)
+	@JoinColumn(name = "MaKH")
+	private KhachHang khachHang;
+
+	@OneToMany(mappedBy = "taiKhoan", fetch = FetchType.EAGER)
 	private Collection<PhieuDat> phieuDat;
 
 	public TaiKhoan() {
 	}
 
-	public TaiKhoan(String username, String password, String maQuyen, String maNV, String maKH) {
+	public TaiKhoan(String username, String password, Quyen quyen, NhanVien nhanVien, KhachHang khachHang) {
 		this.username = username;
 		this.password = password;
-		this.maQuyen = maQuyen;
-		this.maNV = maNV;
-		this.maKH = maKH;
+		this.quyen = quyen;
+		this.nhanVien = nhanVien;
+		this.khachHang = khachHang;
 	}
 
 	public String getUsername() {
@@ -53,28 +58,36 @@ public class TaiKhoan {
 		this.password = password;
 	}
 
-	public String getMaQuyen() {
-		return maQuyen;
+	public Quyen getQuyen() {
+		return quyen;
 	}
 
-	public void setMaQuyen(String maQuyen) {
-		this.maQuyen = maQuyen;
+	public void setQuyen(Quyen quyen) {
+		this.quyen = quyen;
 	}
 
-	public String getMaNV() {
-		return maNV;
+	public NhanVien getNhanVien() {
+		return nhanVien;
 	}
 
-	public void setMaNV(String maNV) {
-		this.maNV = maNV;
+	public void setNhanVien(NhanVien nhanVien) {
+		this.nhanVien = nhanVien;
 	}
 
-	public String getMaKH() {
-		return maKH;
+	public KhachHang getKhachHang() {
+		return khachHang;
 	}
 
-	public void setMaKH(String maKH) {
-		this.maKH = maKH;
+	public void setKhachHang(KhachHang khachHang) {
+		this.khachHang = khachHang;
 	}
-	
+
+	public Collection<PhieuDat> getPhieuDat() {
+		return phieuDat;
+	}
+
+	public void setPhieuDat(Collection<PhieuDat> phieuDat) {
+		this.phieuDat = phieuDat;
+	}
+
 }

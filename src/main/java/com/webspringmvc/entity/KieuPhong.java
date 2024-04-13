@@ -1,16 +1,25 @@
 package com.webspringmvc.entity;
 
+import java.util.Collection;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "KIEUPHONG")
 public class KieuPhong {
-	@javax.persistence.Id
+	@Id
+	@Column(name = "MAKP")
 	private String maKP;
+	
+	@Column(name = "TENKP")
 	private String tenKP;
-	@javax.persistence.OneToMany(mappedBy = "KieuPhong", fetch = javax.persistence.FetchType.EAGER)
-	private java.util.Collection<HangPhong> hangPhong;
+	
+	@OneToMany(mappedBy = "kieuPhong", fetch = javax.persistence.FetchType.EAGER)
+	private Collection<HangPhong> hangPhong;
 	
 	public KieuPhong() {
 	}

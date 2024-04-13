@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xml>
 <decorators defaultdir="/decorators">
-
+	<decorator name="login" page="login.jsp">
+		<pattern>/sign-up</pattern>
+		<pattern>/sign-in</pattern>
+	</decorator>
+	
 	<decorator name="admin" page="admin.jsp">
 		<pattern>/admin/*</pattern>
 	</decorator>

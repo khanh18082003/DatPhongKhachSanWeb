@@ -1,7 +1,9 @@
 package com.webspringmvc.entity;
 
+import java.sql.Date;
 import java.util.Collection;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -12,20 +14,37 @@ import javax.persistence.Table;
 @Table(name = "NhanVien")
 public class NhanVien {
 	@Id
+	@Column(name = "MANV")
 	private String maNV;
+
+	@Column(name = "HO", nullable = false, length = 50)
 	private String ho;
+
+	@Column(name = "TEN", nullable = false, length = 10)
 	private String ten;
+
+	@Column(name = "PHAI", nullable = false)
 	private String phai;
-	private String ngaySinh;
+
+	@Column(name = "NGAYSINH")
+	private Date ngaySinh;
+
+	@Column(name = "DIACHI")
 	private String diaChi;
-	private String sDT;
+
+	@Column(name = "SDT")
+	private String sdt;
+
+	@Column(name = "EMAIL")
 	private String email;
-	@OneToMany(mappedBy = "NhanVien",fetch = FetchType.EAGER)
+
+	@OneToMany(mappedBy = "nhanVien", fetch = FetchType.EAGER)
 	private Collection<TaiKhoan> taiKhoan;
+
 	public NhanVien() {
 	}
 
-	public NhanVien(String maNV, String ho, String ten, String phai, String ngaySinh, String diaChi, String sDT,
+	public NhanVien(String maNV, String ho, String ten, String phai, Date ngaySinh, String diaChi, String sdt,
 			String email) {
 		this.maNV = maNV;
 		this.ho = ho;
@@ -33,7 +52,7 @@ public class NhanVien {
 		this.phai = phai;
 		this.ngaySinh = ngaySinh;
 		this.diaChi = diaChi;
-		this.sDT = sDT;
+		this.sdt = sdt;
 		this.email = email;
 	}
 
@@ -69,11 +88,11 @@ public class NhanVien {
 		this.phai = phai;
 	}
 
-	public String getNgaySinh() {
+	public Date getNgaySinh() {
 		return ngaySinh;
 	}
 
-	public void setNgaySinh(String ngaySinh) {
+	public void setNgaySinh(Date  ngaySinh) {
 		this.ngaySinh = ngaySinh;
 	}
 
@@ -85,12 +104,20 @@ public class NhanVien {
 		this.diaChi = diaChi;
 	}
 
-	public String getsDT() {
-		return sDT;
+	public String getSdt() {
+		return sdt;
 	}
 
-	public void setsDT(String sDT) {
-		this.sDT = sDT;
+	public void setSdt(String sdt) {
+		this.sdt = sdt;
+	}
+
+	public Collection<TaiKhoan> getTaiKhoan() {
+		return taiKhoan;
+	}
+
+	public void setTaiKhoan(Collection<TaiKhoan> taiKhoan) {
+		this.taiKhoan = taiKhoan;
 	}
 
 	public String getEmail() {
@@ -100,5 +127,5 @@ public class NhanVien {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 }
