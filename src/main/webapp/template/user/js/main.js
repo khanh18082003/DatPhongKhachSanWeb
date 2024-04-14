@@ -72,6 +72,10 @@
     $('.bt-option a').click(function() {
     	sessionStorage.removeItem('activeTab');
     })
+    
+    $('.logo').click(function() {
+    	sessionStorage.removeItem('activeTab');
+    })
 
 	// Search model
 	$('.search-switch').on('click', function() {
