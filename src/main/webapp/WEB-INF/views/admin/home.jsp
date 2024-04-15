@@ -6,6 +6,8 @@
 <meta charset="UTF-8">
 <title>Admin | Home</title>
 </head>
+
+
 <body>
 	<div id="layoutSidenav_content">
 		<main>
@@ -578,7 +580,11 @@
 					</div>
 				</div>
 			</div>
+
+
 		</main>
+
+
 		<footer class="py-4 bg-light mt-auto">
 			<div class="container-fluid px-4">
 				<div class="d-flex align-items-center justify-content-between small">
