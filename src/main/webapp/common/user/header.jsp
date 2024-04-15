@@ -5,7 +5,9 @@
 <div id="preloder">
 	<div class="loader"></div>
 </div>
-
+<div class="mobile-login">
+	<a href='<c:url value="/sign-up"/>' title="Đăng nhập hoặc đăng ký"><i class="fa fa-user-circle"></i></a>
+</div>
 <!-- Offcanvas Menu Section Begin -->
 <div class="offcanvas-menu-overlay"></div>
 <div class="canvas-open">
@@ -17,19 +19,6 @@
 	</div>
 	<div class="search-icon  search-switch">
 		<i class="icon_search"></i>
-	</div>
-	<div class="header-configure-area">
-		<div class="language-option">
-			<img src="<c:url value='/template/user/img/flag.jpg'/>" alt="">
-			<span>EN <i class="fa fa-angle-down"></i></span>
-			<div class="flag-dropdown">
-				<ul>
-					<li><a href="#">Zi</a></li>
-					<li><a href="#">Fr</a></li>
-				</ul>
-			</div>
-		</div>
-		<a href="#" class="bk-btn">Booking Now</a>
 	</div>
 	<nav class="mainmenu mobile-menu">
 		<ul>
@@ -49,10 +38,10 @@
 	</nav>
 	<div id="mobile-menu-wrap"></div>
 	<div class="top-social">
-		<a href="#"><i class="fa fa-facebook"></i></a> <a href="#"><i
-			class="fa fa-twitter"></i></a> <a href="#"><i
-			class="fa fa-tripadvisor"></i></a> <a href="#"><i
-			class="fa fa-instagram"></i></a>
+		<a href="#"><i class="fa fa-facebook"></i></a> 
+		<a href="#"><i class="fa fa-twitter"></i></a> 
+		<a href="#"><i class="fa fa-tripadvisor"></i></a>
+		<a href="#"><i class="fa fa-instagram"></i></a>
 	</div>
 	<ul class="top-widget">
 		<li><i class="fa fa-phone"></i> (12) 345 67890</li>
@@ -80,17 +69,8 @@
 								class="fa fa-tripadvisor"></i></a> <a href="#"><i
 								class="fa fa-instagram"></i></a>
 						</div>
-						<a href="#" class="bk-btn">Booking Now</a>
-						<div class="language-option">
-							<img src="<c:url value='/template/user/img/flag.jpg'/>" alt="">
-							<span>EN <i class="fa fa-angle-down"></i></span>
-							<div class="flag-dropdown">
-								<ul>
-									<li><a href="#">Zi</a></li>
-									<li><a href="#">Fr</a></li>
-								</ul>
-							</div>
-						</div>
+						<a class="login-btn" href='<c:url value="/sign-up"/>'>Đăng ký</a> 
+						<a class="login-btn" href='<c:url value="/sign-in"/>'>Đăng nhập</a>
 					</div>
 				</div>
 			</div>

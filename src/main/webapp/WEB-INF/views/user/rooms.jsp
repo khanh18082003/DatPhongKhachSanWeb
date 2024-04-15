@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
-<base href="${pageContext.servletContext.contextPath}/"/>
+<base href="${pageContext.servletContext.contextPath}/" />
 <meta charset="UTF-8">
 <title>Sona | Rooms</title>
 </head>
@@ -23,12 +23,28 @@
 			</div>
 		</div>
 	</div>
+	<div class="lookfor-room">
+		<form action="#">
+			<input class="inputroom date-input" type="text"
+				placeholder="Check in" id="date-in"> <input
+				class="inputroom date-input" type="text" placeholder="Check out"
+				id="date-out"> <select class="inputroom select-option">
+				<option value="">2 Adults</option>
+				<option value="">3 Adults</option>
+			</select> <select class="inputroom select-option">
+				<option value="">1 Room</option>
+				<option value="">2 Room</option>
+			</select>
+			<button class="inputroom" type ="submit">Look For Room</button>
+		</form>
+	</div>
 	<section class="rooms-section spad">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-4 col-md-6">
 					<div class="room-item">
-						<img src="<c:url value="/template/user/img/room/room-1.jpg"/>" alt="">
+						<img src="<c:url value="/template/user/img/room/room-1.jpg"/>"
+							alt="">
 						<div class="ri-text">
 							<h4>Premium King Room</h4>
 							<h3>
@@ -60,7 +76,8 @@
 				</div>
 				<div class="col-lg-4 col-md-6">
 					<div class="room-item">
-						<img src="<c:url value="/template/user/img/room/room-2.jpg"/>" alt="">
+						<img src="<c:url value="/template/user/img/room/room-2.jpg"/>"
+							alt="">
 						<div class="ri-text">
 							<h4>Deluxe Room</h4>
 							<h3>
@@ -86,13 +103,15 @@
 									</tr>
 								</tbody>
 							</table>
-							<a href="<c:url value="/rooms/room-detail"/>" class="primary-btn">More Details</a>
+							<a href="<c:url value="/rooms/room-detail"/>" class="primary-btn">More
+								Details</a>
 						</div>
 					</div>
 				</div>
 				<div class="col-lg-4 col-md-6">
 					<div class="room-item">
-						<img src="<c:url value="/template/user/img/room/room-3.jpg"/>" alt="">
+						<img src="<c:url value="/template/user/img/room/room-3.jpg"/>"
+							alt="">
 						<div class="ri-text">
 							<h4>Double Room</h4>
 							<h3>
@@ -124,7 +143,8 @@
 				</div>
 				<div class="col-lg-4 col-md-6">
 					<div class="room-item">
-						<img src="<c:url value="/template/user/img/room/room-4.jpg"/>" alt="">
+						<img src="<c:url value="/template/user/img/room/room-4.jpg"/>"
+							alt="">
 						<div class="ri-text">
 							<h4>Luxury Room</h4>
 							<h3>
@@ -156,7 +176,8 @@
 				</div>
 				<div class="col-lg-4 col-md-6">
 					<div class="room-item">
-						<img src="<c:url value="/template/user/img/room/room-5.jpg"/>" alt="">
+						<img src="<c:url value="/template/user/img/room/room-5.jpg"/>"
+							alt="">
 						<div class="ri-text">
 							<h4>Room With View</h4>
 							<h3>
@@ -188,7 +209,8 @@
 				</div>
 				<div class="col-lg-4 col-md-6">
 					<div class="room-item">
-						<img src="<c:url value="/template/user/img/room/room-6.jpg"/>" alt="">
+						<img src="<c:url value="/template/user/img/room/room-6.jpg"/>"
+							alt="">
 						<div class="ri-text">
 							<h4>Small View</h4>
 							<h3>

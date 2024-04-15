@@ -10,7 +10,7 @@
 'use strict';
 
 (function($) {
-
+	 $(".date-input").datepicker(); // Kích hoạt Datepicker trên các ô nhập liệu có class là "check-date"
 	/*------------------
 	    Preloader
 	--------------------*/
@@ -70,6 +70,10 @@
     }
     
     $('.bt-option a').click(function() {
+    	sessionStorage.removeItem('activeTab');
+    })
+    
+    $('.logo').click(function() {
     	sessionStorage.removeItem('activeTab');
     })
 

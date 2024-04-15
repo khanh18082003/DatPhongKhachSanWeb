@@ -27,12 +27,12 @@
 						<form action="#">
 							<div class="check-date">
 								<label for="date-in">Check In:</label> <input type="text"
-									class="date-input hasDatepicker" id="date-in"> <i
+									class="date-input" id="date-in"> <i
 									class="icon_calendar"></i>
 							</div>
 							<div class="check-date">
 								<label for="date-out">Check Out:</label> <input type="text"
-									class="date-input hasDatepicker" id="date-out"> <i
+									class="date-input" id="date-out"> <i
 									class="icon_calendar"></i>
 							</div>
 							<div class="select-option">
