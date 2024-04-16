@@ -13,13 +13,14 @@
 			http://www.springframework.org/schema/tx/spring-tx.xsd
 			http://www.springframework.org/schema/mvc 
 			http://www.springframework.org/schema/mvc/spring-mvc.xsd">
-<!-- Connect CSDL -->
+	<!-- Connect CSDL -->
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
 		p:driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
 		p:url="jdbc:sqlserver://localhost;databaseName=QLKS;encrypt=true;trustServerCertificate=true"
 		p:username="sa" p:password="123456">
 	</bean>
+
 	<!-- Cấu hình Hibernate -->
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
@@ -30,7 +31,8 @@
 				<prop key="hibernate.show_sql">true</prop>
 			</props>
 		</property>
-		<property name="packagesToScan" value="com.webspringmvc.entity" />
+		<property name="packagesToScan"
+			value="com.webspringmvc.entity" />
 	</bean>
 	<!-- Cấu hình Transaction -->
 	<bean id="transactionManager"
