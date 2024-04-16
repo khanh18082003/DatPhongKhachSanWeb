@@ -18,11 +18,11 @@ public class CT_KhuyenMai {
 	private int id;
 	
 	@ManyToOne
-	@JoinColumn(name = "maKM")
+	@JoinColumn(name = "MAKM")
 	private KhuyenMai khuyenMai;
 
 	@ManyToOne
-	@JoinColumn(name = "idHP")
+	@JoinColumn(name = "IDHP")
 	private HangPhong hangPhong;
 
 	@Column(name = "PHANTRAMGIAM")
