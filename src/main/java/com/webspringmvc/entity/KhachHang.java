@@ -28,7 +28,7 @@ public class KhachHang {
 	public KhachHang() {
 	}
 
-	public KhachHang(String maKH, String cmnd, String ho, String ten, String sdt, String email) {
+	public KhachHang(String maKH, String ho, String ten, String sdt, String email) {
 		this.maKH = maKH;
 		this.ho = ho;
 		this.ten = ten;
