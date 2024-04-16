@@ -13,9 +13,6 @@ public class KhachHang {
 	@Column(name = "MAKH")
 	private String maKH;
 	
-	@Column(name = "CMND", nullable = false, unique = true)
-	private String cmnd;
-	
 	@Column(name = "HO", nullable = false, length = 50)
 	private String ho;
 	
@@ -31,9 +28,8 @@ public class KhachHang {
 	public KhachHang() {
 	}
 
-	public KhachHang(String maKH, String cmnd, String ho, String ten, String sdt, String email) {
+	public KhachHang(String maKH, String ho, String ten, String sdt, String email) {
 		this.maKH = maKH;
-		this.cmnd = cmnd;
 		this.ho = ho;
 		this.ten = ten;
 		this.sdt = sdt;
@@ -46,14 +42,6 @@ public class KhachHang {
 
 	public void setmaKH(String maKH) {
 		this.maKH = maKH;
-	}
-
-	public String getCmnd() {
-		return cmnd;
-	}
-
-	public void setCmnd(String cmnd) {
-		this.cmnd = cmnd;
 	}
 
 	public String getho() {
