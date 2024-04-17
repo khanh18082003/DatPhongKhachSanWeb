@@ -21,6 +21,18 @@ public class HangPhong {
 	@Column(name ="TENHP")
 	private String tenHP;
 	
+	@Column(name = "ANH")
+	private String anh;
+	
+	@Column(name = "GIA") 
+	private float gia;
+	
+	@Column(name = "SOLUONGNGUOI")
+	private int soLuongNguoi;
+	
+	@Column(name = "MOTA")
+	private String moTa;
+	
 	@ManyToOne
 	@JoinColumn(name = "MALP")
 	private LoaiPhong loaiPhong;
@@ -41,11 +53,10 @@ public class HangPhong {
 	public HangPhong() {
 	}
 
-	public HangPhong(String idHP, String tenHP, LoaiPhong loaiPhong, KieuPhong kieuPhong) {
+	public HangPhong(String idHP, String tenHP, String anh) {
 		this.idHP = idHP;
 		this.tenHP = tenHP;
-		this.loaiPhong = loaiPhong;
-		this.kieuPhong = kieuPhong;
+		this.anh = anh;
 	}
 
 	public String getIdHP() {
@@ -87,4 +98,30 @@ public class HangPhong {
 	public void setPhong(java.util.Collection<Phong> phong) {
 		this.phong = phong;
 	}
+
+	public String getAnh() {
+		return anh;
+	}
+
+	public void setAnh(String anh) {
+		this.anh = anh;
+	}
+
+	public float getGia() {
+		return gia;
+	}
+
+	public void setGia(float gia) {
+		this.gia = gia;
+	}
+
+	public int getSoLuongNguoi() {
+		return soLuongNguoi;
+	}
+
+	public void setSoLuongNguoi(int soLuongNguoi) {
+		this.soLuongNguoi = soLuongNguoi;
+	}
+	
+	
 }

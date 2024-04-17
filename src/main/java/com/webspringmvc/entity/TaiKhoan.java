@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class TaiKhoan {
@@ -24,22 +25,17 @@ public class TaiKhoan {
 	@JoinColumn(name = "MaNV")
 	private NhanVien nhanVien;
 
-	@ManyToOne
-	@JoinColumn(name = "MaKH")
-	private KhachHang khachHang;
-
 	@OneToMany(mappedBy = "taiKhoan", fetch = FetchType.EAGER)
 	private Collection<PhieuDat> phieuDat;
 
 	public TaiKhoan() {
 	}
 
-	public TaiKhoan(String username, String password, Quyen quyen, NhanVien nhanVien, KhachHang khachHang) {
+	public TaiKhoan(String username, String password, Quyen quyen, NhanVien nhanVien) {
 		this.username = username;
 		this.password = password;
 		this.quyen = quyen;
 		this.nhanVien = nhanVien;
-		this.khachHang = khachHang;
 	}
 
 	public String getUsername() {
@@ -72,14 +68,6 @@ public class TaiKhoan {
 
 	public void setNhanVien(NhanVien nhanVien) {
 		this.nhanVien = nhanVien;
-	}
-
-	public KhachHang getKhachHang() {
-		return khachHang;
-	}
-
-	public void setKhachHang(KhachHang khachHang) {
-		this.khachHang = khachHang;
 	}
 
 	public Collection<PhieuDat> getPhieuDat() {
