@@ -5,7 +5,7 @@
 		<div class="sb-sidenav-menu">
 			<div class="nav">
 <!-- 				<div class="sb-sidenav-menu-heading">Core</div> -->
-				<a class="nav-link" href="/DatPhongKhachSanWeb/admin/home.html">
+				<a class="nav-link" href="trang-chu.html">
 					<div class="sb-nav-link-icon">
 						<i class="fas fa-tachometer-alt"></i>
 					</div> Dashboard
@@ -24,8 +24,8 @@
 				<div class="collapse" id="collapseLayouts"
 					aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 					<nav class="sb-sidenav-menu-nested nav">
-						<a class="nav-link" href="/DatPhongKhachSanWeb/admin/room.html">Hạng phòng</a> 
-						<a class="nav-link" href="layout-sidenav-light.html">Phòng</a>
+						<a class="nav-link" href="hang-phong.html">Hạng phòng</a> 
+						<a class="nav-link" href="phong.html">Phòng</a>
 					</nav>
 				</div>
 				
