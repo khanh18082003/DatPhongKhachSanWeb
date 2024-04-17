@@ -30,6 +30,9 @@ public class HangPhong {
 	@Column(name = "SOLUONGNGUOI")
 	private int soLuongNguoi;
 	
+	@Column(name = "MOTA")
+	private String moTa;
+	
 	@ManyToOne
 	@JoinColumn(name = "MALP")
 	private LoaiPhong loaiPhong;

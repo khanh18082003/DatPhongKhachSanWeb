@@ -1,6 +1,4 @@
 package com.webspringmvc.controller.web;
-
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,23 +12,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import com.webspringmvc.entity.HangPhong;
-
-@Transactional
-=======
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.webspringmvc.service.IPhongService;
-
->>>>>>> 5101db8d04ea500d7b10e256c293bd0942d0aa56
+@Transactional
 @Controller
 @RequestMapping("/rooms")
 public class RoomsController {
 	@Autowired
 	private IPhongService phongService;
+	@Autowired
 	SessionFactory factory;
 	@RequestMapping(params = "page")
 	public String index(@RequestParam("page") int page,ModelMap model) {

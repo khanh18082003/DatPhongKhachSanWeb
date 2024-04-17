@@ -4,6 +4,8 @@ package com.webspringmvc.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -22,13 +24,14 @@ public class KhachHang {
 	@Column(name = "SDT", nullable = false, length = 11)
 	private String sdt;
 	
-	@Column(name = "EMAIL", nullable = false)
-	private String email;
+	@OneToOne
+	@JoinColumn(name = "EMAIL")
+	private TaiKhoan email;
 
 	public KhachHang() {
 	}
 
-	public KhachHang(String maKH, String ho, String ten, String sdt, String email) {
+	public KhachHang(String maKH, String ho, String ten, String sdt, TaiKhoan email) {
 		this.maKH = maKH;
 		this.ho = ho;
 		this.ten = ten;
@@ -68,11 +71,11 @@ public class KhachHang {
 		this.sdt = sdt;
 	}
 
-	public String getemail() {
+	public TaiKhoan getemail() {
 		return email;
 	}
 
-	public void setemail(String email) {
+	public void setemail(TaiKhoan email) {
 		this.email = email;
 	}
 	
