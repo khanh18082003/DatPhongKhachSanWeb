@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,9 +14,12 @@
 			<div class="signin-content">
 				<div class="signin-image">
 					<figure>
-						<img src='<c:url value="/template/login/images/signin-image.jpg"/>' alt="sing up image">
+						<img
+							src='<c:url value="/template/login/images/signin-image.jpg"/>'
+							alt="sing up image">
 					</figure>
-					<a href='<c:url value="/sign-up"/>' class="signup-image-link">Create an account</a>
+					<a href='<c:url value="/sign-up"/>' class="signup-image-link">Create
+						an account</a>
 				</div>
 
 				<div class="signin-form">
@@ -39,6 +42,9 @@
 								class="label-agree-term"><span><span></span></span>Remember
 								me</label>
 						</div>
+						<div class="g-recaptcha"
+							data-sitekey="6LetK70pAAAAAKnkS5WngZAgvIjKupwwZNYn7HMs"></div>
+
 						<div class="form-group form-button">
 							<input type="submit" name="signin" id="signin"
 								class="form-submit" value="Log in" />
