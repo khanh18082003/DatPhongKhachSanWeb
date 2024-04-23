@@ -24,7 +24,7 @@
 	<nav class="mainmenu mobile-menu">
 		<ul>
 			<li class="active"><a href='<c:url value="/trang-chu"/>'>Home</a></li>
-			<li><a href='<c:url value="/rooms?page=1" />'>Rooms</a></li>
+			 <li><a href='<c:url value="/rooms/index" />'>Rooms</a></li>
 			<li><a href='<c:url value="/about-us"/>'>About Us</a></li>
 			<li><a href="./pages.html">Pages</a>
 				<ul class="dropdown">
@@ -117,7 +117,7 @@
 						<nav class="mainmenu">
 							<ul>
 								<li class="active"><a href='<c:url value="/trang-chu"/>'>Home</a></li>
-								<li><a href='<c:url value="/rooms?page=1"/>'>Rooms</a></li>
+								<li><a href='<c:url value="/rooms/index"/>'>Rooms</a></li>
 								<li><a href='<c:url value="/about-us"/>'>About Us</a></li>
 								<li><a href="./pages.html">Pages</a>
 									<ul class="dropdown">

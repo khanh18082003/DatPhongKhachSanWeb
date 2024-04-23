@@ -1,19 +1,17 @@
 /*  ---------------------------------------------------
-    Template Name: Sona
-    Description: Sona Hotel Html Template
-    Author: Colorlib
-    Author URI: https://colorlib.com
-    Version: 1.0
-    Created: Colorlib
+	Template Name: Sona
+	Description: Sona Hotel Html Template
+	Author: Colorlib
+	Author URI: https://colorlib.com
+	Version: 1.0
+	Created: Colorlib
 ---------------------------------------------------------  */
 
 'use strict';
 
 (function($) {
-	$(".date-input").datepicker(); // Kích hoạt Datepicker trên các ô nhập liệu
-									// có class là "check-date"
 	/*------------------
-	    Preloader
+		Preloader
 	--------------------*/
 	$(window).on('load', function() {
 		$(".loader").fadeOut();
@@ -21,7 +19,7 @@
 	});
 
 	/*------------------
-	    Background Set
+		Background Set
 	--------------------*/
 	$('.set-bg').each(function() {
 		var bg = $(this).data('setbg');
@@ -35,12 +33,12 @@
 	});
 
 	$(".canvas-close, .offcanvas-menu-overlay").on(
-			'click',
-			function() {
-				$(".offcanvas-menu-wrapper").removeClass(
-						"show-offcanvas-menu-wrapper");
-				$(".offcanvas-menu-overlay").removeClass("active");
-			});
+		'click',
+		function() {
+			$(".offcanvas-menu-wrapper").removeClass(
+				"show-offcanvas-menu-wrapper");
+			$(".offcanvas-menu-overlay").removeClass("active");
+		});
 
 	// / Khi click vào một thẻ li trong menu
 	$('.menu-item .nav-menu .mainmenu li').click(function() {
@@ -93,56 +91,72 @@
 		Navigation
 	--------------------*/
 	$(".mobile-menu").slicknav({
-		prependTo : '#mobile-menu-wrap',
-		allowParentLinks : true
+		prependTo: '#mobile-menu-wrap',
+		allowParentLinks: true
 	});
 
 	/*------------------
-	    Hero Slider
+		Hero Slider
 	--------------------*/
 	$(".hero-slider").owlCarousel({
-		loop : true,
-		margin : 0,
-		items : 1,
-		dots : true,
-		animateOut : 'fadeOut',
-		animateIn : 'fadeIn',
-		smartSpeed : 1200,
-		autoHeight : false,
-		autoplay : true,
-		mouseDrag : false
+		loop: true,
+		margin: 0,
+		items: 1,
+		dots: true,
+		animateOut: 'fadeOut',
+		animateIn: 'fadeIn',
+		smartSpeed: 1200,
+		autoHeight: false,
+		autoplay: true,
+		mouseDrag: false
 	});
 
 	/*------------------------
 		Testimonial Slider
 	----------------------- */
 	$(".testimonial-slider").owlCarousel(
-			{
-				items : 1,
-				dots : false,
-				autoplay : true,
-				loop : true,
-				smartSpeed : 1200,
-				nav : true,
-				navText : [ "<i class='arrow_left'></i>",
-						"<i class='arrow_right'></i>" ]
-			});
+		{
+			items: 1,
+			dots: false,
+			autoplay: true,
+			loop: true,
+			smartSpeed: 1200,
+			nav: true,
+			navText: ["<i class='arrow_left'></i>",
+				"<i class='arrow_right'></i>"]
+		});
 
 	/*------------------
-	    Magnific Popup
+		Magnific Popup
 	--------------------*/
 	$('.video-popup').magnificPopup({
-		type : 'iframe'
+		type: 'iframe'
 	});
 
 	/*------------------
 		Date Picker
 	--------------------*/
+	/*$(".date-input").datepicker({
+		minDate: 1,
+		dateFormat: 'dd MM, yy'
+	}).attr("readonly", "readonly").on("focus", function() {
+		$(this).blur();
+	});*/
 	$(".date-input").datepicker({
-		minDate : 0,
-		dateFormat : 'dd MM, yy'
-	});
+		minDate: 1,
+		dateFormat: 'dd MM, yy',
+		onSelect: function() {
+			var dateIn = $("#date-in").datepicker("getDate");
+			var dateOut = $("#date-out").datepicker("getDate");
 
+			// Kiểm tra nếu ngày ra nhỏ hơn ngày đến, cập nhật ngày ra thành ngày đến
+			if (dateOut < dateIn) {
+				$(this).datepicker("setDate", dateIn);
+			}
+		}
+	}).attr("readonly", "readonly").on("focus", function() {
+		$(this).blur();
+	});
 	/*------------------
 		Nice Select
 	--------------------*/
