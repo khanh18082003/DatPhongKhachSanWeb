@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <html>
 <head>
 <base href="${pageContext.servletContext.contextPath}/">
@@ -59,7 +60,7 @@
 							<div class="ri-text">
 								<h4>${room.tenHP}</h4>
 								<h3>
-									${room.gia}$<span>/Pernight</span>
+									<fmt:formatNumber value="${room.gia}" type="currency" currencySymbol="$" pattern="$#,##0.00" /> <span>/Pernight</span>
 								</h3>
 								<table>
 									<tbody>
