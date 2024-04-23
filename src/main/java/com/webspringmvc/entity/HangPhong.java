@@ -122,6 +122,27 @@ public class HangPhong {
 	public void setSoLuongNguoi(int soLuongNguoi) {
 		this.soLuongNguoi = soLuongNguoi;
 	}
-	
+	public String getMoTa() {
+		return moTa;
+	}
+
+	public void setMoTa(String moTa) {
+		this.moTa = moTa;
+	}
+	public Collection<CT_KhuyenMai> getCtKM() {
+		return ctKM;
+	}
+
+	public void setCtKM(Collection<CT_KhuyenMai> ctKM) {
+		this.ctKM = ctKM;
+	}
+
+	public Collection<CT_PhieuDat> getCtPD() {
+		return ctPD;
+	}
+
+	public void setCtPD(Collection<CT_PhieuDat> ctPD) {
+		this.ctPD = ctPD;
+	}
 	
 }
