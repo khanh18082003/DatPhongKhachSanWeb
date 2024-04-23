@@ -22,7 +22,7 @@
 					<div class="modal-content">
 						<span class="close">&times;</span>
 						<h2>Sửa thông tin phòng</h2>
-						<form:form action="hang-phong.html" id="edit-form"
+						<form:form action="update.html" id="edit-form"
 							modelAttribute="HangPhong">
 							<form:input type="hidden" class="room-id" path="idHP"/>
 
