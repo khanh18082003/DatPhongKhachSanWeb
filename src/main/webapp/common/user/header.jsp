@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!-- Page Preloder -->
 <div id="preloder">
 	<div class="loader"></div>
 </div>
 <div class="mobile-login">
-	<a href='<c:url value="/sign-up"/>' title="Đăng nhập hoặc đăng ký"><i class="fa fa-user-circle"></i></a>
+	<a href='<c:url value="/sign-up"/>' title="Đăng nhập hoặc đăng ký"><i
+		class="fa fa-user-circle"></i></a>
 </div>
 <!-- Offcanvas Menu Section Begin -->
 <div class="offcanvas-menu-overlay"></div>
@@ -23,7 +24,7 @@
 	<nav class="mainmenu mobile-menu">
 		<ul>
 			<li class="active"><a href='<c:url value="/trang-chu"/>'>Home</a></li>
-			 <li><a href='<c:url value="/rooms?page=1" />'>Rooms</a></li>
+			<li><a href='<c:url value="/rooms?page=1" />'>Rooms</a></li>
 			<li><a href='<c:url value="/about-us"/>'>About Us</a></li>
 			<li><a href="./pages.html">Pages</a>
 				<ul class="dropdown">
@@ -38,10 +39,10 @@
 	</nav>
 	<div id="mobile-menu-wrap"></div>
 	<div class="top-social">
-		<a href="#"><i class="fa fa-facebook"></i></a> 
-		<a href="#"><i class="fa fa-twitter"></i></a> 
-		<a href="#"><i class="fa fa-tripadvisor"></i></a>
-		<a href="#"><i class="fa fa-instagram"></i></a>
+		<a href="#"><i class="fa fa-facebook"></i></a> <a href="#"><i
+			class="fa fa-twitter"></i></a> <a href="#"><i
+			class="fa fa-tripadvisor"></i></a> <a href="#"><i
+			class="fa fa-instagram"></i></a>
 	</div>
 	<ul class="top-widget">
 		<li><i class="fa fa-phone"></i> (12) 345 67890</li>
@@ -69,8 +70,33 @@
 								class="fa fa-tripadvisor"></i></a> <a href="#"><i
 								class="fa fa-instagram"></i></a>
 						</div>
-						<a class="login-btn" href='<c:url value="/sign-up"/>'>Đăng ký</a> 
-						<a class="login-btn" href='<c:url value="/sign-in"/>'>Đăng nhập</a>
+
+						<c:choose>
+							<c:when test="${sessionScope.author eq null}">
+								<a class="login-btn" href='<c:url value="/sign-up"/>'>Đăng
+									ký</a>
+								<a class="login-btn" href='<c:url value="/sign-in"/>'>Đăng
+									nhập</a>
+							</c:when>
+							<c:otherwise>
+								<div class="info-account">
+									<span> 
+										<c:choose>
+											<c:when test="${sessionScope.name eq null}">Your Account</c:when>
+											<c:otherwise>${sessionScope.name}</c:otherwise>
+										</c:choose>
+									</span>
+									<ul class="setting-account-list">
+										<li class="setting-account-item"><a
+											href='<c:url value="/update"/>'>Update Account</a></li>
+										<li class="setting-account-item"><a
+											href='<c:url value="/logout"/>'>Logout</a></li>
+									</ul>
+									<!-- <div class="block-connect"></div> -->
+								</div>
+
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 			</div>
