@@ -2,27 +2,31 @@ package com.webspringmvc.entity;
 
 import java.util.Collection;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 @Entity
 public class TaiKhoan {
 	@Id
 	private String username;
 
+	@Column(name = "PASSWORD", nullable = false)
 	private String password;
 
+	@Column(name = "AUTH", nullable = false, unique = true)
+	private String auth;
+
 	@ManyToOne
-	@JoinColumn(name = "MaQuyen", nullable = false)
+	@JoinColumn(name = "MAQUYEN", nullable = false)
 	private Quyen quyen;
 
 	@ManyToOne
-	@JoinColumn(name = "MaNV")
+	@JoinColumn(name = "MANV")
 	private NhanVien nhanVien;
 
 	@OneToMany(mappedBy = "taiKhoan", fetch = FetchType.EAGER)
@@ -31,11 +35,12 @@ public class TaiKhoan {
 	public TaiKhoan() {
 	}
 
-	public TaiKhoan(String username, String password, Quyen quyen, NhanVien nhanVien) {
+	public TaiKhoan(String username, String password, Quyen quyen, NhanVien nhanVien, String auth) {
 		this.username = username;
 		this.password = password;
 		this.quyen = quyen;
 		this.nhanVien = nhanVien;
+		this.auth = auth;
 	}
 
 	public String getUsername() {
@@ -60,6 +65,14 @@ public class TaiKhoan {
 
 	public void setQuyen(Quyen quyen) {
 		this.quyen = quyen;
+	}
+
+	public String getAuth() {
+		return auth;
+	}
+
+	public void setAuth(String auth) {
+		this.auth = auth;
 	}
 
 	public NhanVien getNhanVien() {

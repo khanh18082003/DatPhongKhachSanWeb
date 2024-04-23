@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
-<base href="${pageContext.servletContext.contextPath}/" />
+<base href="${pageContext.servletContext.contextPath}/">
 <meta charset="UTF-8">
 <title>Sona | Rooms</title>
 </head>
@@ -24,66 +24,142 @@
 		</div>
 	</div>
 	<div class="lookfor-room">
-		<form action="#">
-			<input class="inputroom date-input" type="text"
-				placeholder="Check in" id="date-in"> <input
-				class="inputroom date-input" type="text" placeholder="Check out"
-				id="date-out"> <select class="inputroom select-option">
-				<option value="">2 Adults</option>
-				<option value="">3 Adults</option>
-			</select> <select class="inputroom select-option">
-				<option value="">1 Room</option>
-				<option value="">2 Room</option>
+		<form action='<c:url value="/rooms/index"/>'>
+			<input id="date-in" class="inputroom date-input" name="dateIn"
+				type="text" placeholder="Check in"
+				value="${dateIn!=null ? dateIn : '' }"> <input id="date-out"
+				class="inputroom date-input" name="dateOut" type="text"
+				placeholder="Check out" value="${dateOut!=null ? dateOut : '' }">
+			<select name="sLN" class="inputroom select-option">
+				<c:forEach items="${listSLN}" var="sl">
+					<option value="${sl}" ${sl == param.sLN ? 'selected' : ''}>${sl}
+						${sl == 1 ? 'Person' : 'Persons'}</option>
+				</c:forEach>
+			</select> <select name="lP" class="inputroom select-option">
+				<c:forEach items="${listLP}" var="lp">
+					<option value="${lp.tenLP}"
+						${lp.tenLP == param.lP ? 'selected' : ''}>${lp.tenLP}</option>
+				</c:forEach>
 			</select>
-			<button class="inputroom" type="submit">Look For Room</button>
+
+			<button class="inputroom" onclick="return showConfirmation()});"
+				type="submit">Look For Room</button>
 		</form>
 	</div>
 	<section class="rooms-section spad">
 		<div class="container">
 			<div class="row">
+				<c:set var="pagecurrent" value="${pagecur}" />
+				<c:set var="pageMax" value="${pageMax}" />
+				<c:set var="roomAvailable" value="${roomAvai}" />
 				<c:forEach items="${roomList}" var="room">
 					<div class="col-lg-4 col-md-6">
 						<div class="room-item">
-							<img src="<c:url value="${room.anh}"/>"
-								alt="">
+							<img src="<c:url value="${room.anh}"/>" alt="" width="330" height="220">
 							<div class="ri-text">
 								<h4>${room.tenHP}</h4>
 								<h3>
-									${room.gia}<span>/Pernight</span>
+									${room.gia}$<span>/Pernight</span>
 								</h3>
 								<table>
 									<tbody>
 										<tr>
-											<td class="r-o">Size:</td>
-											<td>${room.soLuongNguoi} Adults</td>
-										</tr>
-										<tr>
-											<td class="r-o">Size:</td>
-											<td>30 ft</td>
-										</tr>
-										<tr>
 											<td class="r-o">Capacity:</td>
-											<td>Max persion 3</td>
+											<td><c:choose>
+													<c:when test="${room.soLuongNguoi ==1}">${room.soLuongNguoi} Person</c:when>
+													<c:otherwise>${room.soLuongNguoi} Persons</c:otherwise>
+												</c:choose></td>
+										</tr>
+										<tr>
+											<td class="r-o">Room Type:</td>
+											<td>${room.loaiPhong.tenLP}</td>
 										</tr>
 										<tr>
 											<td class="r-o">Bed:</td>
-											<td>King Beds</td>
+											<td>${room.kieuPhong.tenKP}</td>
 										</tr>
 										<tr>
 											<td class="r-o">Services:</td>
-											<td>Wifi, Television, Bathroom,...</td>
+											<td>${room.moTa}</td>
+										</tr>
+										<tr>
+											<td class="r-o">Available Room:</td>
+											<td>${roomAvailable[room.idHP]}</td>
 										</tr>
 									</tbody>
 								</table>
-								<a href="#" class="primary-btn">More Details</a>
+								<c:choose>
+									<c:when
+										test="${sLN == null || lP == null || dateOut == null || dateIn == null}">
+										<a href='<c:url value="/rooms/index" />'
+											onclick="return showConfirmation();" class="primary-btn">More
+											Details</a>
+									</c:when>
+									<c:otherwise>
+										<a onclick="return dontClick(${roomAvailable[room.idHP]})" href='<c:url value="/rooms/room-detail" />'
+											class="primary-btn">More Details</a>
+									</c:otherwise>
+								</c:choose>
+								<script>
+									function showConfirmation() {		
+										var element = document
+												.querySelector('[name="sLN"]');
+										var sLN = element.value;
+										element = document
+												.querySelector('[name="lP"]');
+										var lP = element.value;
+										element = document
+												.querySelector('[name="dateIn"]');
+										var dateIn = element.value;
+										element = document
+												.querySelector('[name="dateOut"]');
+										var dateOut = element.value;
+										if (sLN == '' || lP == '' || dateIn == '' || dateOut == '') {
+											alert('To see availability and prices please enter your check-in and check-out dates.');
+											return false;
+										} else
+                                            return true;
+									}
+									function dontClick(numberOfRoom){
+										console.log(numberOfRoom);
+									    if (numberOfRoom == 0) {
+									        alert('This room is not available');
+									        return false;
+									    } else {
+									        return true;
+									    }
+									}
+								</script>
 							</div>
 						</div>
 					</div>
 				</c:forEach>
 				<div class="col-lg-12">
 					<div class="room-pagination">
-						<a href="#">1</a> <a href="#">2</a> <a href="#">Next <i
-							class="fa fa-long-arrow-right"></i></a>
+						<c:set var="textParam" value="" />
+						<c:if
+							test="${dateIn!=null && dateOut!=null && sLN!=null && lP!=null}">
+							<c:set var="textParam"
+								value="&dateIn=${dateIn}&dateOut=${dateOut}&sLN=${sLN}&lP=${lP}" />
+						</c:if>
+						<c:if test="${pagecurrent>1}">
+							<a
+								href='<c:url value="/rooms/index?page=${pagecurrent-1}${textParam}" />'>Previous
+								<i class="fa fa-long-arrow-left"></i>
+							</a>
+							<a
+								href='<c:url value="/rooms/index?page=${pagecurrent-1}${textParam}" />'>${pagecurrent-1}</a>
+						</c:if>
+						<a
+							href='<c:url value="/rooms/index?page=${pagecurrent}${textParam}" />'>${pagecurrent}</a>
+						<c:if test="${pagecurrent<pageMax}">
+							<a
+								href='<c:url value="/rooms/index?page=${pagecurrent+1}${textParam}" />'>${pagecurrent+1}</a>
+							<a
+								href='<c:url value="/rooms/index?page=${pagecurrent+1}${textParam}" />'>Next
+								<i class="fa fa-long-arrow-right"></i>
+							</a>
+						</c:if>
 					</div>
 				</div>
 			</div>
