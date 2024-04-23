@@ -61,13 +61,13 @@
 		$('.menu-item .nav-menu .mainmenu li').removeClass('active');
 		$('.menu-item .nav-menu .mainmenu li').eq(activeTab).addClass('active');
 
-		if ($('.menu-item .nav-menu .mainmenu li').eq(activeTab).find('a').text().trim() !== 'Home') {
+		if ($('.menu-item .nav-menu .mainmenu li').eq(activeTab).find('a')
+				.text().trim() !== 'Home') {
 			// Thêm hoặc xóa lớp 'header-normal' từ phần header tùy thuộc vào
 			// việc có sẵn lớp này hay không
 			$('.header-section').toggleClass('header-normal');
 		}
 	}
-
 	$('.bt-option a').click(function() {
 		sessionStorage.removeItem('activeTab');
 	})

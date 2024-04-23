@@ -7,10 +7,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.webspringmvc.dao.IPhongDao;
 import com.webspringmvc.entity.Phong;
 
+@Transactional
 @Repository
 public class PhongDaoImpl extends AbstractDaoImpl<Phong, String> implements IPhongDao {
 	@Autowired
