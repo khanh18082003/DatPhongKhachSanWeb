@@ -13178,63 +13178,90 @@ body {
 
 
 /*table css */
-/*#roomTable th {
-	border-collapse: collapse;
-	width: 100%;
-	color: #333;
-	font-family: Arial, sans-serif;
-	font-size: 14px;
-	text-align: left;
-	border-radius: 10px;
-	overflow: hidden;
-	box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-	margin: auto;
-	margin-top: 50px;
-	margin-bottom: 50px;
+.datatablesSimple th {
+	text-align: center;
 }
 
-#roomTable th {
-	background-color: rgba(var(--bs-black-rgb), var(--bs-bg-opacity));
-	color: #fff;
-	font-weight: bold;
-	padding: 10px;
-	text-transform: uppercase;
-	letter-spacing: 1px;
-	border-top: 1px solid #fff;
-	border-bottom: 1px solid #ccc;
+/* Cấu trúc modal */
+.modal {
+  display: none;
+  position: relative;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
-#roomTable tr:nth-child(even) td {
-	background-color: #f2f2f2;
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
 }
 
-#roomTable tr:hover td {
-	background-color: #ffedcc;
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
 }
 
-#roomTable td {
-	background-color: #fff;
-	padding: 10px;
-	border-bottom: 1px solid #ccc;
-	font-weight: bold;
-}
-*/
-
-/* Áp dụng border cho bảng */
-#roomTable {
-	border-collapse: collapse;
-	width: 100%;
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-/* Áp dụng border cho các ô */
-#roomTable th,
-#roomTable td {
-	border: 1px solid #dddddd;
-	padding: 8px;
-	text-align: left;
+/* Cấu trúc form */
+#edit-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 20px;
 }
 
-/* Áp dụng border cho các thẻ th */
-#roomTable th {
-	background-color: #f2f2f2;
+#edit-form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+#edit-form input[type="text"],
+#edit-form select,
+#edit-form input[type="number"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+}
+
+#edit-form button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+#edit-form button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+/* nút sủa xóa */
+.btn-action {
+  background-color: #4CAF50; /* Xanh lá */
+  color: white;
+  padding: 5px 10px; /* Điều chỉnh padding */
+  border: none;
+  border-radius: 5px; /* Bó tròn góc nút */
+  cursor: pointer; /* Con trỏ chuột thành dạng tay khi hover */
+  margin: 0 5px; /* Thêm khoảng cách giữa các nút */
+}
+
+.btn-action:hover {
+  background-color: #45a049; /* Xanh lá đậm hơn khi hover */
 }
