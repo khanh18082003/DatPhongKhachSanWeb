@@ -106,7 +106,7 @@ public class LoginController {
 			Cookie cookie = new Cookie("auth", salt);
 			cookie.setMaxAge(60 * 60 * 24 * 2); 
 			response.addCookie(cookie);
-			return "redirect:/trang-chu";
+			return "redirect:/trang-chu"; 
 		}
 		return "user/login/sign-in";
 	}
