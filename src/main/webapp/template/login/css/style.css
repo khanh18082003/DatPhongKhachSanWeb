@@ -572,7 +572,9 @@ label.error {
   display: block;
   margin-top: 20px;
 }
-
+.error {
+	color: red;
+}
 label.valid {
   display: block;
   position: absolute;

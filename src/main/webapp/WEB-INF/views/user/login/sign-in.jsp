@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <!DOCTYPE html>
 <html>
 <head>
+<base href="${pageContext.servletContext.contextPath}/" />
 <meta charset="UTF-8">
 <title>Sona | Sign-in</title>
 </head>
@@ -24,32 +26,33 @@
 
 				<div class="signin-form">
 					<h2 class="form-title">Sign up</h2>
-					<form method="POST" class="register-form" id="login-form">
+					<form:form method="POST" action="${pageContext.servletContext.contextPath}/sign-in"
+						modelAttribute="signInForm" class="register-form" id="login-form">
 						<div class="form-group">
-							<label for="your_name"><i
-								class="zmdi zmdi-account material-icons-name"></i></label> <input
-								type="text" name="your_name" id="your_name"
-								placeholder="Your Name" />
+							<form:label path="username" cssErrorClass="label-has-error">
+								<i class="zmdi zmdi-account material-icons-name"></i>
+							</form:label>
+							<form:input path="username" placeholder="Your email" />
+							<form:errors path="username" cssClass="error"></form:errors>
 						</div>
 						<div class="form-group">
-							<label for="your_pass"><i class="zmdi zmdi-lock"></i></label> <input
-								type="password" name="your_pass" id="your_pass"
-								placeholder="Password" />
+							<form:label path="password" cssErrorClass="label-has-error">
+								<i class="zmdi zmdi-lock"></i>
+							</form:label>
+							<form:password path="password" placeholder="Password" autocomplete="off" />
+							<form:errors path="password" cssClass="error"></form:errors>
 						</div>
-						<div class="form-group">
-							<input type="checkbox" name="remember-me" id="remember-me"
-								class="agree-term" /> <label for="remember-me"
-								class="label-agree-term"><span><span></span></span>Remember
-								me</label>
-						</div>
+
 						<div class="g-recaptcha"
 							data-sitekey="6LetK70pAAAAAKnkS5WngZAgvIjKupwwZNYn7HMs"></div>
-
+						
+							<span class="error">${reCapchaError}</span>
+						
 						<div class="form-group form-button">
 							<input type="submit" name="signin" id="signin"
 								class="form-submit" value="Log in" />
 						</div>
-					</form>
+					</form:form>
 					<div class="social-login">
 						<span class="social-label">Or login with</span>
 						<ul class="socials">

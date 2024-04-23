@@ -10,7 +10,8 @@
 'use strict';
 
 (function($) {
-	 $(".date-input").datepicker(); // Kích hoạt Datepicker trên các ô nhập liệu có class là "check-date"
+	$(".date-input").datepicker(); // Kích hoạt Datepicker trên các ô nhập liệu
+									// có class là "check-date"
 	/*------------------
 	    Preloader
 	--------------------*/
@@ -47,35 +48,35 @@
 		$('.menu-item .nav-menu .mainmenu li').removeClass('active');
 		// Thêm lớp active vào thẻ li được click
 		$(this).addClass('active');
-		
+
 		// Lưu trạng thái của các thẻ li vào sessionStorage
-	    $('.menu-item .nav-menu .mainmenu li').each(function() {
-	        if ($(this).hasClass('active')) {
-	            sessionStorage.setItem('activeTab', $(this).index());
-	        }
-	    });
+		$('.menu-item .nav-menu .mainmenu li').each(function() {
+			if ($(this).hasClass('active')) {
+				sessionStorage.setItem('activeTab', $(this).index());
+			}
+		});
 	});
 
 	// Khôi phục trạng thái của các thẻ li từ sessionStorage
-    var activeTab = sessionStorage.getItem('activeTab');
-    if (activeTab !== null) {
-        $('.menu-item .nav-menu .mainmenu li').removeClass('active');
-        $('.menu-item .nav-menu .mainmenu li').eq(activeTab).addClass('active');
-        
-        if ($('.menu-item .nav-menu .mainmenu li').eq(activeTab).find('a').text().trim() !== 'Home') {
+	var activeTab = sessionStorage.getItem('activeTab');
+	if (activeTab !== null) {
+		$('.menu-item .nav-menu .mainmenu li').removeClass('active');
+		$('.menu-item .nav-menu .mainmenu li').eq(activeTab).addClass('active');
+
+		if ($('.menu-item .nav-menu .mainmenu li').eq(activeTab).find('a')
+				.text().trim() !== 'Home') {
 			// Thêm hoặc xóa lớp 'header-normal' từ phần header tùy thuộc vào
 			// việc có sẵn lớp này hay không
 			$('.header-section').toggleClass('header-normal');
 		}
-    }
-    
-    $('.bt-option a').click(function() {
-    	sessionStorage.removeItem('activeTab');
-    })
-    
-    $('.logo').click(function() {
-    	sessionStorage.removeItem('activeTab');
-    })
+	}
+	$('.bt-option a').click(function() {
+		sessionStorage.removeItem('activeTab');
+	})
+
+	$('.logo').click(function() {
+		sessionStorage.removeItem('activeTab');
+	})
 
 	// Search model
 	$('.search-switch').on('click', function() {
