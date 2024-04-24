@@ -12,15 +12,18 @@ public class HomeController {
 	@RequestMapping("/trang-chu")
 	public String homePage(HttpServletRequest request, HttpSession session) {
 		Cookie[] cookies = request.getCookies();
-		String infos = "";
-		for (Cookie c : cookies) {
-			if (c.getName().equals("auth")) {
-				infos = c.getValue();
-				session.setAttribute("author", infos);
-				break;
+		if (cookies == null) {
+			return "user/home";
+		} else {
+			String infos = "";
+			for (Cookie c : cookies) {
+				if (c.getName().equals("auth")) {
+					infos = c.getValue();
+					session.setAttribute("author", infos);
+					break;
+				}
 			}
+			return "user/home";
 		}
-		
-		return "user/home";
 	}
 }
