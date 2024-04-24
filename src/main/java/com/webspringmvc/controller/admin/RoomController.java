@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.transaction.Transactional;
 
 import org.hibernate.Query;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.webspringmvc.entity.HangPhong;
 import com.webspringmvc.entity.KieuPhong;
@@ -69,6 +72,22 @@ public class RoomController {
 		
 		return kp;
 	}
+	
+	@Autowired
+	ServletContext context;
+	
+	@RequestMapping("/update")
+	public String updateHP(ModelMap model, @RequestParam("photo") MultipartFile photo) {
+		if (photo.isEmpty() ) {
+			model.addAttribute("msg", "Vui lòng chọn file!");
+		}
+		else {
+			String photoPath = context.getRealPath("");
+		}
+		return "admin/hang-phong";
+		
+	}
+	
 	
 	@RequestMapping("/phong")
 	public String phongPage() {
