@@ -25,7 +25,7 @@
 				</div>
 
 				<div class="signin-form">
-					<h2 class="form-title">Sign up</h2>
+					<h2 class="form-title">Sign in</h2>
 					<form:form method="POST" action="${pageContext.servletContext.contextPath}/sign-in"
 						modelAttribute="signInForm" class="register-form" id="login-form">
 						<div class="form-group">
@@ -39,7 +39,7 @@
 							<form:label path="password" cssErrorClass="label-has-error">
 								<i class="zmdi zmdi-lock"></i>
 							</form:label>
-							<form:password path="password" placeholder="Password" autocomplete="off" />
+							<form:password path="password" placeholder="Password"/>
 							<form:errors path="password" cssClass="error"></form:errors>
 						</div>
 
@@ -47,6 +47,9 @@
 							data-sitekey="6LetK70pAAAAAKnkS5WngZAgvIjKupwwZNYn7HMs"></div>
 						
 							<span class="error">${reCapchaError}</span>
+						<div class="forgot-password">
+							<a href='<c:url value="/forgot-password"/>'>Forgot password</a>
+						</div>
 						
 						<div class="form-group form-button">
 							<input type="submit" name="signin" id="signin"

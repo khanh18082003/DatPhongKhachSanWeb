@@ -6,7 +6,7 @@
 	<div class="loader"></div>
 </div>
 <div class="mobile-login">
-	<a href='<c:url value="/sign-up"/>' title="Đăng nhập hoặc đăng ký"><i
+	<a href='<c:url value="/sign-up"/>' title="Sign up or sign in"><i
 		class="fa fa-user-circle"></i></a>
 </div>
 <!-- Offcanvas Menu Section Begin -->
@@ -24,7 +24,7 @@
 	<nav class="mainmenu mobile-menu">
 		<ul>
 			<li class="active"><a href='<c:url value="/trang-chu"/>'>Home</a></li>
-			 <li><a href='<c:url value="/rooms/index" />'>Rooms</a></li>
+			<li><a href='<c:url value="/rooms/index" />'>Rooms</a></li>
 			<li><a href='<c:url value="/about-us"/>'>About Us</a></li>
 			<li><a href="./pages.html">Pages</a>
 				<ul class="dropdown">
@@ -73,15 +73,16 @@
 
 						<c:choose>
 							<c:when test="${sessionScope.author eq null}">
-								<a class="login-btn" href='<c:url value="/sign-up"/>'>Đăng
-									ký</a>
-								<a class="login-btn" href='<c:url value="/sign-in"/>'>Đăng
-									nhập</a>
+								<a class="login-btn" href='<c:url value="/sign-up"/>'>Sign
+									up</a>
+								<a class="login-btn" href='<c:url value="/sign-in"/>'>Sign
+									in</a>
 							</c:when>
 							<c:otherwise>
 								<div class="info-account">
-									<span> 
-										<c:choose>
+									<span class="icon-circle-user"> <i
+										class="fa fa-user-circle"></i>
+									</span> <span> <c:choose>
 											<c:when test="${sessionScope.name eq null}">Your Account</c:when>
 											<c:otherwise>${sessionScope.name}</c:otherwise>
 										</c:choose>
@@ -92,7 +93,6 @@
 										<li class="setting-account-item"><a
 											href='<c:url value="/logout"/>'>Logout</a></li>
 									</ul>
-									<!-- <div class="block-connect"></div> -->
 								</div>
 
 							</c:otherwise>
