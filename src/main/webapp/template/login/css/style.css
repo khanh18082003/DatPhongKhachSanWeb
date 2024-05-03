@@ -443,6 +443,17 @@ figure {
   width: 100%;
 }
 
+.forgot-password {
+	text-align: center;
+	padding: 8px 0;
+}
+.forgot-password a {
+	display: block;	
+}
+.forgot-password:hover {
+	cursor: pointer;
+	background-color: rgba(221 137 41 / 46%);	
+}
 .form-group {
   position: relative;
   margin-bottom: 25px;

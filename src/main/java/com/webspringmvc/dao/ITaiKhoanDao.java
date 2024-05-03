@@ -6,5 +6,6 @@ import com.webspringmvc.entity.TaiKhoan;
 
 public interface ITaiKhoanDao extends GenericDao<TaiKhoan, String> {
 	TaiKhoan getTaiKhoan(String id);
+	TaiKhoan getTaiKhoanByToken(String token);
 	List<TaiKhoan> getList();
 }

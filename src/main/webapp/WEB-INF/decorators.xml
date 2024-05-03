@@ -4,6 +4,8 @@
 	<decorator name="login" page="login.jsp">
 		<pattern>/sign-up</pattern>
 		<pattern>/sign-in</pattern>
+		<pattern>/forgot-password</pattern>
+		<pattern>/reset-password</pattern>
 	</decorator>
 	
 	<decorator name="admin" page="admin.jsp">

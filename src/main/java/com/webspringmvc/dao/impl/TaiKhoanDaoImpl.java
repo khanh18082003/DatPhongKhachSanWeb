@@ -2,6 +2,7 @@ package com.webspringmvc.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -17,7 +18,7 @@ import com.webspringmvc.entity.TaiKhoan;
 public class TaiKhoanDaoImpl implements ITaiKhoanDao {
 	@Autowired
 	SessionFactory factory;
-	
+
 	@Override
 	public int insert(TaiKhoan t) {
 		Session session = factory.openSession();
@@ -27,7 +28,7 @@ public class TaiKhoanDaoImpl implements ITaiKhoanDao {
 			transaction.commit();
 			System.out.println(t.getUsername());
 			return 1;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return 0;
@@ -41,7 +42,7 @@ public class TaiKhoanDaoImpl implements ITaiKhoanDao {
 			session.update(t);
 			transaction.commit();
 			return 1;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return 0;
@@ -65,5 +66,14 @@ public class TaiKhoanDaoImpl implements ITaiKhoanDao {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
+	@Override
+	public TaiKhoan getTaiKhoanByToken(String token) {
+		Session session = factory.getCurrentSession();
+		Query q = session.createQuery("FROM TaiKhoan WHERE resetPasswordToken = :token");
+		q.setParameter("token", token);
+		TaiKhoan t = (TaiKhoan) q.uniqueResult();
+		return t;
+	}
+
 }
