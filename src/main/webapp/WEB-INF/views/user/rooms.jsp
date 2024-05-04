@@ -84,7 +84,7 @@
 											<td>${room.moTa}</td>
 										</tr>
 										<tr>
-											<td class="r-o">Available Room:</td>
+											<td id="roomAvailable" class="r-o">Available Room:</td>
 											<td>${roomAvailable[room.idHP]}</td>
 										</tr>
 									</tbody>
@@ -97,7 +97,7 @@
 											Details</a>
 									</c:when>
 									<c:otherwise>
-										<a onclick="return dontClick(${roomAvailable[room.idHP]})" href='<c:url value="/rooms/room-detail" />'
+										<a onclick="return dontClick(${roomAvailable[room.idHP]})" href='<c:url value="/rooms/room-detail?id=${room.idHP}&dateIn=${dateIn}&dateOut=${dateOut}" />'
 											class="primary-btn">More Details</a>
 									</c:otherwise>
 								</c:choose>

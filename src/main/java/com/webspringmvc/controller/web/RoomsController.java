@@ -67,19 +67,24 @@ public class RoomsController {
 			request.setAttribute("lP", lP);
 			request.setAttribute("dateOut", dateOut);
 			request.setAttribute("dateIn", dateIn);
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM, yyyy", Locale.ENGLISH);
+//			SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM, yyyy", Locale.ENGLISH);
 
 			for (HangPhong hp : listHPTemp) {
 				if (hp.getSoLuongNguoi() == Integer.parseInt(sLN) && hp.getLoaiPhong().gettenLP().equals(lP)) {
 					listHPTemp1.add(hp);
 					java.util.Date dateOutTemp = null;
 					java.util.Date dateInTemp = null;
-					try {
-						dateOutTemp = dateFormat.parse(dateOut);
-						dateInTemp = dateFormat.parse(dateIn);
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
+//					try {
+//						dateOutTemp = dateFormat.parse(dateOut);
+//						dateInTemp = dateFormat.parse(dateIn);
+//					} catch (ParseException e) {
+//						e.printStackTrace();
+//					}
+					dateOutTemp = ChangePage.formatDate(dateOut);
+					dateInTemp = ChangePage.formatDate(dateIn);
+					System.out.println(dateOut);
+					System.out.println(dateOutTemp);
+					// số lượng phòng đã đặt
 					hql = "SELECT CTPD.hangPhong.idHP, SUM(CTPD.sLPhong) as sl " + "FROM CT_PhieuDat CTPD "
 							+ "WHERE (( :dateOut >= CTPD.phieuDat.ngayBD AND :dateOut < CTPD.phieuDat.ngayKT) "
 							+ "   OR ( :dateIn > CTPD.phieuDat.ngayBD AND :dateIn <= CTPD.phieuDat.ngayKT) "
@@ -91,6 +96,7 @@ public class RoomsController {
 					query.setParameter("dateOut", dateOutTemp);
 					query.setParameter("dateIn", dateInTemp);
 					List<Object[]> list = query.list();
+					// số lượng phòng còn trống
 					int sl = 0;
 					for (Object[] objects : list) {
 						sl += Integer.parseInt(objects[1].toString());
@@ -105,7 +111,31 @@ public class RoomsController {
 		return "user/rooms";
 	}
 	@RequestMapping("/room-detail")
-	public String roomDetail() {
+	public String roomDetail(@RequestParam("id") String idHP,
+			@RequestParam("dateOut") String dateOut,
+			@RequestParam("dateIn") String dateIn,
+			HttpServletRequest request) {
+		System.out.println(idHP);
+		String hql = "From HangPhong where idHP = :idHP";
+		Session session = factory.getCurrentSession();
+		Query query = session.createQuery(hql);
+		query.setParameter("idHP", idHP);
+		HangPhong hp = (HangPhong) query.uniqueResult();
+		request.setAttribute("hp", hp);
+		hql = "SELECT SUM(CTPD.sLPhong) as sl " + "FROM CT_PhieuDat CTPD "
+				+ "WHERE (( :dateOut >= CTPD.phieuDat.ngayBD AND :dateOut < CTPD.phieuDat.ngayKT) "
+				+ "   OR ( :dateIn > CTPD.phieuDat.ngayBD AND :dateIn <= CTPD.phieuDat.ngayKT) "
+				+ "   OR :dateOut = CTPD.phieuDat.ngayBD " + "   OR :dateIn = CTPD.phieuDat.ngayKT "
+				+ "   OR ( :dateOut < CTPD.phieuDat.ngayBD AND :dateIn > CTPD.phieuDat.ngayKT)) "
+				+ " and CTPD.hangPhong.idHP = :idHP ";
+		java.util.Date dateOutTemp = ChangePage.formatDate(dateOut);
+		java.util.Date dateInTemp = ChangePage.formatDate(dateIn);
+		query = session.createQuery(hql);
+		query.setParameter("idHP", idHP);
+		query.setParameter("dateOut", dateOutTemp);
+		query.setParameter("dateIn", dateInTemp);
+		int sl = query.uniqueResult() == null ? hp.getPhong().size() : (hp.getPhong().size() - (int)(query.uniqueResult())) ;
+		request.setAttribute("slPhong", sl);
 		return "user/room-detail";
 	}
 }

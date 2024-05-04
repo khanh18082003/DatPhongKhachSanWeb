@@ -1268,7 +1268,7 @@ ul, ol {
 	margin-bottom: 40px;
 }
 .room-details-item .rd-text .rd-title {
-	overflow: hidden;
+	overflow: hidden; 
 	margin-bottom: 8px;
 }
 .room-details-item .rd-text .rd-title h3 {
