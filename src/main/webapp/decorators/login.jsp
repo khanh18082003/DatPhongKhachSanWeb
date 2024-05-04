@@ -14,13 +14,27 @@
 <!-- Font Icon -->
 <link rel="stylesheet"
 	href='<c:url value="/template/login/fonts/material-icon/css/material-design-iconic-font.min.css"/>'>
-
+<link rel="stylesheet"
+	href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 <!-- Main css -->
 <link rel="stylesheet"
 	href='<c:url value="/template/login/css/style.css"/>'>
 <title><dec:title default="Sona | Login" /></title>
 </head>
 <body>
+	<div class="menu-item">
+		<div class="container" style="margin-top: 20px; width: 100%;">
+			<div class="row" style="padding: 10px;">
+				<div class="col-lg-2">
+					<div class="logo">
+						<a href="<c:url value="/trang-chu"/>"> <img
+							src="<c:url value="/template/user/img/logo.png"/>" alt="">
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="main">
 		<dec:body />
 	</div>

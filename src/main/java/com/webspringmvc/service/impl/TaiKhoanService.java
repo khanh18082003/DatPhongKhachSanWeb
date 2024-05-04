@@ -1,9 +1,11 @@
 package com.webspringmvc.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 
 import com.webspringmvc.dao.ITaiKhoanDao;
 import com.webspringmvc.entity.TaiKhoan;
@@ -52,5 +54,30 @@ public class TaiKhoanService implements ITaiKhoanService {
 		}
 		return false;
 	}
-
+	
+	@Override
+	public void updateResetPasswordToken(String token, String email, ModelMap model) {
+		TaiKhoan t = taiKhoanDao.getTaiKhoan(email);
+		if (t != null) {
+			System.out.println(t.getUsername());
+			t.setResetPasswordToken(token);
+			taiKhoanDao.update(t);
+		}else {
+			model.addAttribute("error", "Could not find user with this email");
+		}
+	}
+	
+	@Override
+	public TaiKhoan get(String token) {
+		return taiKhoanDao.getTaiKhoanByToken(token);
+	}
+	
+	@Override
+	public void updateNewPassword(TaiKhoan taiKhoan, String newPassword) {
+		String salt = UUID.randomUUID().toString();
+		taiKhoan.setPassword(Bcrypt.toSHA1(newPassword, salt));
+		taiKhoan.setAuth(salt);
+		taiKhoan.setResetPasswordToken(null);
+		taiKhoanDao.update(taiKhoan);
+	}
 }

@@ -14,12 +14,15 @@ import javax.persistence.OneToMany;
 public class TaiKhoan {
 	@Id
 	private String username;
-
+	
 	@Column(name = "PASSWORD", nullable = false)
 	private String password;
 
 	@Column(name = "AUTH", nullable = false, unique = true)
 	private String auth;
+
+	@Column(name = "RESET_PASSWORD_TOKEN")
+	private String resetPasswordToken;
 
 	@ManyToOne
 	@JoinColumn(name = "MAQUYEN", nullable = false)
@@ -35,12 +38,14 @@ public class TaiKhoan {
 	public TaiKhoan() {
 	}
 
-	public TaiKhoan(String username, String password, Quyen quyen, NhanVien nhanVien, String auth) {
+	public TaiKhoan(String username, String password, Quyen quyen, NhanVien nhanVien, String auth,
+			String resetPasswordToken) {
 		this.username = username;
 		this.password = password;
 		this.quyen = quyen;
 		this.nhanVien = nhanVien;
 		this.auth = auth;
+		this.resetPasswordToken = resetPasswordToken;
 	}
 
 	public String getUsername() {
@@ -89,6 +94,14 @@ public class TaiKhoan {
 
 	public void setPhieuDat(Collection<PhieuDat> phieuDat) {
 		this.phieuDat = phieuDat;
+	}
+
+	public String getResetPasswordToken() {
+		return resetPasswordToken;
+	}
+
+	public void setResetPasswordToken(String resetPasswordToken) {
+		this.resetPasswordToken = resetPasswordToken;
 	}
 
 }
