@@ -148,8 +148,7 @@
 
 	  // Lưu ảnh và thông tin vào database hoặc thực hiện hành động khác
 
-	  // Ẩn form nổi
-	  formNoi.style.display = 'none';
+	
 	});
 
 	  </script>

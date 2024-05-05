@@ -22,6 +22,8 @@
 						<label for="room-id">ID Hạng Phòng:</label>
 						<form:input type="text" class="room-id" path="idHP"
 							readonly="true" />
+							
+<%-- 						<p>${hangPhong.anh }</p> --%>
 
 						<label for="room-name">Hạng Phòng:</label>
 						<form:input type="text" class="room-name" path="tenHP"

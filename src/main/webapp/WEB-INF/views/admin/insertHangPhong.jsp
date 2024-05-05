@@ -7,6 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<base href="${pageContext.servletContext.contextPath}/">
 <meta charset="UTF-8">
 <title>Admin | Room</title>
 </head>
@@ -18,7 +19,8 @@
 					<!-- 					<span class="close">&times;</span> -->
 					<h2>Insert New Room</h2>
 					<form:form action="insertHangPhong.html" method="POST"
-						id="edit-form" modelAttribute="hangPhong" enctype="multipart/form-data">
+						id="edit-form" modelAttribute="hangPhong"
+						enctype="multipart/form-data">
 						<label for="room-id">ID Hạng Phòng:</label>
 						<form:input type="text" class="room-id" path="idHP"
 							required="required" />

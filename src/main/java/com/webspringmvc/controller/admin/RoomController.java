@@ -103,7 +103,8 @@ public class RoomController {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		try {
-			hangPhong.setAnh(hangPhong.getAnh());
+//			System.out.println(hangPhong.getAnh());
+//			hangPhong.setAnh(hangPhong.getAnh());
 			session.update(hangPhong);
 			t.commit();
 			model.addAttribute("message", "Update successful");

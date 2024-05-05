@@ -7,6 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<base href="${pageContext.servletContext.contextPath}/">
 <meta charset="UTF-8">
 <title>Admin | Room</title>
 </head>
@@ -21,8 +22,9 @@
 					<form:form action="editHangPhong.html" method="POST"
 						modelAttribute="hangPhong" enctype="multipart/form-data">
 						<div class="form-group">
-							<label for="tieu_de_anh">${hangPhong.idHP }:</label> <input type="text"
-								id="tieu_de_anh" name="tieu_de_anh" required>
+							<label for="tieu_de_anh">${hangPhong.idHP }:</label>
+							<form:input type="text" class="room-id" path="idHP"
+								required="required" />
 						</div>
 						<!-- <div class="form-group">
 							<label for="mo_ta_anh">Mô tả ảnh:</label>
@@ -36,8 +38,8 @@
 								type="file" id="chon_file_anh" name="chon_file_anh" required>
 						</div>
 						<div class="form-group">
-							<button type="button" class="btn btn-secondary" id="huy">Cancel</button>
-							<button type="submit" class="btn btn-primary">Save</button>
+							<button type="button" class="btn btn-cancel" id="huy">Cancel</button>
+							<button type="submit" class="btn btn-save">Save</button>
 						</div>
 					</form:form>
 				</div>
@@ -60,6 +62,12 @@
 	</div>
 
 
-
+	<script>
+		const btnHuy = document.getElementById('huy');
+		btnHuy.addEventListener('click', function() {
+			// Sử dụng history.back() để quay lại trang trước
+			history.back();
+		});
+	</script>
 </body>
 </html>
