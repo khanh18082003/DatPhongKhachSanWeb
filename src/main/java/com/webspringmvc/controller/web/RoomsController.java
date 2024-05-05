@@ -67,19 +67,12 @@ public class RoomsController {
 			request.setAttribute("lP", lP);
 			request.setAttribute("dateOut", dateOut);
 			request.setAttribute("dateIn", dateIn);
-//			SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM, yyyy", Locale.ENGLISH);
 
 			for (HangPhong hp : listHPTemp) {
 				if (hp.getSoLuongNguoi() == Integer.parseInt(sLN) && hp.getLoaiPhong().gettenLP().equals(lP)) {
 					listHPTemp1.add(hp);
 					java.util.Date dateOutTemp = null;
 					java.util.Date dateInTemp = null;
-//					try {
-//						dateOutTemp = dateFormat.parse(dateOut);
-//						dateInTemp = dateFormat.parse(dateIn);
-//					} catch (ParseException e) {
-//						e.printStackTrace();
-//					}
 					dateOutTemp = ChangePage.formatDate(dateOut);
 					dateInTemp = ChangePage.formatDate(dateIn);
 					System.out.println(dateOut);
@@ -136,6 +129,9 @@ public class RoomsController {
 		query.setParameter("dateIn", dateInTemp);
 		int sl = query.uniqueResult() == null ? hp.getPhong().size() : (hp.getPhong().size() - (int)(query.uniqueResult())) ;
 		request.setAttribute("slPhong", sl);
+		request.setAttribute("dateIn", dateInTemp);
+		request.setAttribute("dateOut", dateOutTemp);
+		
 		return "user/room-detail";
 	}
 }
