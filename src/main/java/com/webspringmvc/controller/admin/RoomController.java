@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -82,7 +83,7 @@ public class RoomController {
 	@RequestMapping(value = "/editHangPhong", method = RequestMethod.GET)
 	public String editHangPhong(@RequestParam("id") String id, ModelMap model, HttpServletRequest request) {
 		Session session = factory.getCurrentSession();
-		HangPhong hangPhong = (HangPhong) session.get(HangPhong.class, id);
+		HangPhong hangPhong = (HangPhong) session.get(HangPhong.class, id);;
 		if (hangPhong == null) {
 			// Xử lý trường hợp không tìm thấy hàng phòng với ID đã cho
 			// Ví dụ: thông báo lỗi, redirect, hoặc hiển thị trang 404
@@ -99,13 +100,12 @@ public class RoomController {
 	@RequestMapping(value = "/editHangPhong", method = RequestMethod.POST)
 	public String editHangPhong(@ModelAttribute("hangPhong") HangPhong hangPhong, ModelMap model,
 			HttpServletRequest request) {
-
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		try {
-//			System.out.println(hangPhong.getAnh());
+//			
 //			hangPhong.setAnh(hangPhong.getAnh());
-			session.update(hangPhong);
+//			session.update(hangPhong);
 			t.commit();
 			model.addAttribute("message", "Update successful");
 		} catch (Exception e) {
@@ -160,7 +160,6 @@ public class RoomController {
 				
 			}
 		}
-
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		try {

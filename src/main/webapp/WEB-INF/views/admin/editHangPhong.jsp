@@ -48,7 +48,7 @@
 
 						<label for="room-price">Giá Phòng:</label>
 						<form:input type="number" class="room-price" path="gia" />
-
+						<form:input type="hidden" path="anh" />
 						<form:button type="submit">Lưu</form:button>
 					</form:form>
 
