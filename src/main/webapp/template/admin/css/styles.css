@@ -13184,84 +13184,188 @@ body {
 
 /* Cấu trúc modal */
 .modal {
-  display: none;
-  position: relative;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4);
+	/*display: none;*/
+	display: block;
+	position: relative;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+#edit-modal {
+	display: block;
 }
 
 .modal-content {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
+	background-color: #fefefe;
+	margin: 15% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 80%;
 }
 
 .close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
 }
 
 .close:hover,
 .close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
 }
 
 /* Cấu trúc form */
 #edit-form {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	margin-top: 20px;
 }
 
 #edit-form label {
-  display: block;
-  margin-bottom: 5px;
+	display: block;
+	margin-bottom: 5px;
 }
 
 #edit-form input[type="text"],
 #edit-form select,
 #edit-form input[type="number"] {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  margin-bottom: 15px;
+	width: 100%;
+	padding: 8px;
+	border: 1px solid #ccc;
+	margin-bottom: 15px;
 }
 
 #edit-form button[type="submit"] {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
+	background-color: #4CAF50;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	cursor: pointer;
 }
 
 #edit-form button[type="submit"]:hover {
-  background-color: #45a049;
+	background-color: #45a049;
 }
 
 /* nút sủa xóa */
 .btn-action {
-  background-color: #4CAF50; /* Xanh lá */
-  color: white;
-  padding: 5px 10px; /* Điều chỉnh padding */
-  border: none;
-  border-radius: 5px; /* Bó tròn góc nút */
-  cursor: pointer; /* Con trỏ chuột thành dạng tay khi hover */
-  margin: 0 5px; /* Thêm khoảng cách giữa các nút */
+	background-color: #4CAF50;
+	/* Xanh lá */
+	color: white;
+	padding: 5px 10px;
+	/* Điều chỉnh padding */
+	border: none;
+	border-radius: 5px;
+	/* Bó tròn góc nút */
+	cursor: pointer;
+	/* Con trỏ chuột thành dạng tay khi hover */
+	margin: 0 5px;
+	/* Thêm khoảng cách giữa các nút */
+	text-decoration: none;
 }
 
 .btn-action:hover {
-  background-color: #45a049; /* Xanh lá đậm hơn khi hover */
+	background-color: #45a049;
+	/* Xanh lá đậm hơn khi hover */
 }
+
+/* nút add new */
+.add-new {
+	float: right;
+}
+
+/* nút thêm ảnh */
+.form-noi {
+	position: relative;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, 35%);
+	width: 500px;
+	background-color: #fff;
+	padding: 20px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+	display: block;
+}
+
+.form-noi h2 {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.form-noi form {
+	display: flex;
+	flex-direction: column;
+}
+
+.form-noi .form-group {
+	margin-bottom: 10px;
+}
+
+.form-noi label {
+	display: block;
+	margin-bottom: 5px;
+}
+
+.form-noi input[type="text"],
+.form-noi textarea {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ccc;
+}
+
+.form-noi input[type="file"] {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ccc;
+}
+
+.form-noi button {
+	padding: 10px 20px;
+	background-color: #4CAF50;
+	color: #fff;
+	border: none;
+	cursor: pointer;
+}
+
+/* Định dạng nút */
+.room-photo {
+	appearance: none;
+	background-color: #4CAF50;
+	border: none;
+	color: white;
+	padding: 10px 20px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	cursor: pointer;
+	border-radius: 8px;
+}
+
+/* Hover effect */
+.room-photo:hover {
+	background-color: #45a049;
+}
+
+/* Khi được chọn */
+.room-photo:active {
+	background-color: #367b34;
+}
+
+/* Tùy chỉnh kích thước và giao diện của nút */
+/*input[type="file"].room-photo {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}*/
