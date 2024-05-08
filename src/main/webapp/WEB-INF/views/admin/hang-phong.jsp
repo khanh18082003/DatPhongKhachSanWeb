@@ -19,13 +19,13 @@
 
 			<div class="container-fluid px-4">
 
-				<h1 class="mt-4">Hạng phòng</h1>
+				<h1 class="mt-4">Room</h1>
 				<ol class="breadcrumb mb-4">
-					<li class="breadcrumb-item active">Hạng phòng</li>
+					<li class="breadcrumb-item active">Room</li>
 				</ol>
 				<div class="card mb-4">
 					<div class="card-header">
-						<i class="fas fa-table me-1"></i> Hạng phòng
+						<i class="fas fa-table me-1"></i> Room
 					</div>
 					<div class="card-body">
 						<table id="datatablesSimple">
@@ -72,15 +72,17 @@
 										<td>${list.moTa}</td>
 										<td><fmt:formatNumber value="${list.gia}" type="currency"
 												currencySymbol="$" pattern="$#,##0.00" /></td>
-										<td><a href="editHangPhong.html?id=${list.idHP}"
-											class="btn-action" data-id="${list.idHP}"><i
-												class="fas fa-edit"></i></a><a
-											href="deleteHangPhong.html?id=${list.idHP}"
-											class="btn-action"><i class="fas fa-trash-alt"></i></a>
-											<a href="editRoomPhoto.html?id=${list.idHP}" class="btn-action"><i
-												class="fa-regular fa-image"></i></a> <%-- <img
-											src='<c:url value="/template/admin/assets/img/photo.png" />'
-											alt="Thêm ảnh" class="icon-anh"> --%></td>
+										<td>
+											<div class="icon-container">
+												<a href="editHangPhong.html?id=${list.idHP}"
+													class="btn-action" data-id="${list.idHP}"><i
+													class="fas fa-edit"></i></a><a
+													href="deleteHangPhong.html?id=${list.idHP}"
+													class="btn-action"><i class="fas fa-trash-alt"></i></a><a
+													href="editRoomPhoto.html?id=${list.idHP}"
+													class="btn-action"><i class="fa-regular fa-image"></i></a>
+											</div>
+										</td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -110,47 +112,5 @@
 		</footer>
 	</div>
 
-
-	<script type="text/javascript">
-	const iconAnhElements = document.querySelectorAll('.icon-anh');
-	const formNoi = document.querySelector('.form-noi');
-
-	iconAnhElements.forEach(iconAnhElement => {
-	    iconAnhElement.addEventListener('click', () => {
-	        const anh = iconAnhElement.getAttribute('data-anh');
-	        const photoPreview = document.getElementById('photoPreview');
-	        photoPreview.src = anh;
-	        photoPreview.style.display = 'block';
-	    });
-	});
-
-	/* document.body.addEventListener('click', (event) => {
-	  if (event.target !== formNoi && !formNoi.contains(event.target)) {
-	    formNoi.style.display = 'none';
-	  }
-	}); */
-	function closeEditModal() {
-			formNoi.addEventListener('click', () => {
-			  formNoi.style.display = 'none';
-			});
-		}
-		
-		const closeButton = document.querySelector('.close');
-		closeButton.addEventListener('click', closeEditModal);
-
-		formNoi.addEventListener('submit', (event) => {
-	 	event.preventDefault();
-
-	  // Xử lý việc thêm ảnh
-	  const tieuDeAnh = document.querySelector('#tieu_de_anh').value;
-	  const moTaAnh = document.querySelector('#mo_ta_anh').value;
-	  const fileAnh = document.querySelector('#chon_file_anh').files[0];
-
-	  // Lưu ảnh và thông tin vào database hoặc thực hiện hành động khác
-
-	
-	});
-
-	  </script>
 </body>
 </html>

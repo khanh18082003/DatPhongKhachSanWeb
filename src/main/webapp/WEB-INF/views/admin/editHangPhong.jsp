@@ -15,117 +15,51 @@
 		<main>
 			<div id="edit-modal" class="modal">
 				<div class="modal-content">
-					<!-- <span class="close">&times;</span> -->
-					<h2>Sửa thông tin phòng</h2>
+					<span class="close">&times;</span> <span class="message">${message}</span>
+					<h2>Edit Room</h2>
 					<form:form action="editHangPhong.html" method="POST" id="edit-form"
 						modelAttribute="hangPhong">
-						<label for="room-id">ID Hạng Phòng:</label>
+						<label for="room-id">ID:</label>
 						<form:input type="text" class="room-id" path="idHP"
 							readonly="true" />
-							
-<%-- 						<p>${hangPhong.anh }</p> --%>
 
-						<label for="room-name">Hạng Phòng:</label>
+						<form:input type="hidden" path="anh" />
+
+						<label for="room-name">Room:</label>
 						<form:input type="text" class="room-name" path="tenHP"
 							required="required" />
+						<form:errors path="tenHP" />
 
-						<label for="room-type">Loại Phòng:</label>
+						<label for="room-type">Type:</label>
 						<form:select class="room-type" path="loaiPhong.maLP"
 							items="${listLP}" itemValue="maLP" itemLabel="tenLP" />
-					
 
-						<label for="room-type">Kiểu Phòng:</label>
-						<form:select class="room-type" path="kieuPhong.maKP"
+
+						<label for="room-type">Category:</label>
+						<form:select class="room-cate" path="kieuPhong.maKP"
 							items="${listKP}" itemValue="maKP" itemLabel="tenKP" />
-					
 
-						<label for="room-type">Số Lượng Người:</label>
+
+						<label for="room-type">Number Of People:</label>
 						<form:input type="number" class="room-quantity"
-							path="soLuongNguoi" min="0" />
+							path="soLuongNguoi" min="1" value="1" />
 
-						<label for="room-type">Mô Tả:</label>
-						<form:input type="text" class="room-description" path="moTa" />
+						<label for="room-type">Description:</label>
+						<form:input type="text" class="room-description" path="moTa"
+							required="required" />
 
-						<label for="room-price">Giá Phòng:</label>
-						<form:input type="number" class="room-price" path="gia" />
-						<form:input type="hidden" path="anh" />
-						<form:button type="submit">Lưu</form:button>
+						<label for="room-price">Price:</label>
+						<form:input type="number" class="room-price" path="gia" value="0" />
+
+						<div class="form-group button-container">
+							<button type="button" class="btn-edit btn-cancel" id="huy">Cancel</button>
+							<button type="submit" class="btn-edit btn-save">Save</button>
+						</div>
 					</form:form>
 
 
 				</div>
 			</div>
-			<script>
-			
-									 const editButtons = document.querySelectorAll('.btn-action[data-action="edit"]');
-
-										editButtons.forEach(button => {
-										  button.addEventListener('click', (event) => {
-										    const row = event.target.closest('tr');
-										    const id = row.dataset.id;
-
-										    // Mở modal sửa với dữ liệu của phòng được chọn
-										    openEditModal(id);
-										  });
-										});
-
-										function openEditModal(id) {
-										  // Lấy dữ liệu của phòng cần sửa
-										  const roomData = getRoomDataById(id);
-
-										  // Hiển thị modal sửa với dữ liệu đã lấy
-										  const modal = document.getElementById('edit-modal');
-										  modal.style.display = 'block';
-
-										  const roomNameInput = document.getElementById('room-name');
-										  roomNameInput.value = roomData.name;
-
-										  const roomTypeSelect = document.getElementById('room-type');
-										  roomTypeSelect.value = roomData.type;
-
-										  const roomPriceInput = document.getElementById('room-price');
-										  roomPriceInput.value = roomData.price;
-
-										  const saveButton = document.getElementById('save-button');
-										  saveButton.addEventListener('click', () => {
-										    updateRoom(id, roomNameInput.value, roomTypeSelect.value, roomPriceInput.value);
-										    closeEditModal();
-										  });
-										}
-
-										function closeEditModal() {
-										  const modal = document.getElementById('edit-modal');
-										  modal.style.display = 'none';
-										}
-										
-										const closeButton = document.querySelector('.close');
-										closeButton.addEventListener('click', closeEditModal);
-
-										function getRoomDataById(id) {
-											  // Lấy danh sách phòng từ HTML, bạn có thể lấy từ model ở controller của bạn
-											  const rooms = document.querySelectorAll('.room-row');
-
-											  // Tìm phòng có ID tương ứng trong danh sách
-											  for (let room of rooms) {
-											    const roomId = room.dataset.id;
-											    if (roomId === id) {
-											      // Trả về thông tin của phòng nếu tìm thấy
-											      return {
-											        id: roomId,
-											        name: room.querySelector('.room-name').textContent,
-											        type: room.querySelector('.room-type').textContent,
-											        price: room.querySelector('.room-price').textContent
-											        // Thêm các trường khác nếu cần thiết
-											      };
-											    }
-											  }
-
-										function updateRoom(id, name, type, price) {
-										  // Cập nhật dữ liệu của phòng trong cơ sở dữ liệu (ví dụ: API hoặc localStorage)
-										  // ...
-										}
-									</script>
-
 		</main>
 
 
@@ -141,6 +75,28 @@
 			</div>
 		</footer>
 	</div>
+	<script>
+		const btnHuy = document.getElementById('huy');
+		btnHuy
+				.addEventListener(
+						'click',
+						function() {
+							/* // Sử dụng history.back() để quay lại trang trước
+								history.back(); */
+
+							window.location.href = 'http://localhost:8080/DatPhongKhachSanWeb/admin/hang-phong.html';
+						});
+
+		const closeButton = document.querySelector('.close'); // Get the close button element
+
+		closeButton
+				.addEventListener(
+						'click',
+						function() {
+							// Handle the click event here
+							window.location.href = 'http://localhost:8080/DatPhongKhachSanWeb/admin/hang-phong.html';
+						});
+	</script>
 
 </body>
 </html>
