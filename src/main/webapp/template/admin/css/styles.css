@@ -13244,7 +13244,8 @@ body {
 	margin-bottom: 15px;
 }
 
-#edit-form button[type="submit"] {
+#edit-form button[type="submit"],
+.btn-save {
 	background-color: #4CAF50;
 	color: white;
 	padding: 10px 20px;
@@ -13252,7 +13253,8 @@ body {
 	cursor: pointer;
 }
 
-#edit-form button[type="submit"]:hover {
+#edit-form button[type="submit"]:hover,
+.btn-save:hover {
 	background-color: #45a049;
 }
 
@@ -13268,7 +13270,7 @@ body {
 	/* Bó tròn góc nút */
 	cursor: pointer;
 	/* Con trỏ chuột thành dạng tay khi hover */
-	margin: 0 5px;
+	margin: 0 1px;
 	/* Thêm khoảng cách giữa các nút */
 	text-decoration: none;
 }
@@ -13276,6 +13278,14 @@ body {
 .btn-action:hover {
 	background-color: #45a049;
 	/* Xanh lá đậm hơn khi hover */
+}
+
+/*container của 3 icon action*/
+.icon-container {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	/*    justify-content: space-between;*/
 }
 
 /* nút add new */
@@ -13288,13 +13298,14 @@ body {
 	position: relative;
 	top: 50%;
 	left: 50%;
-	transform: translate(-50%, 35%);
+	transform: translate(-50%, 6%);
 	width: 500px;
 	background-color: #fff;
 	padding: 20px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 	z-index: 1;
 	display: block;
+	margin-bottom: 15%;
 }
 
 .form-noi h2 {
@@ -13329,13 +13340,6 @@ body {
 	border: 1px solid #ccc;
 }
 
-.form-noi button {
-	padding: 10px 20px;
-	background-color: #4CAF50;
-	color: #fff;
-	border: none;
-	cursor: pointer;
-}
 
 /* Định dạng nút */
 .room-photo {
@@ -13354,12 +13358,14 @@ body {
 }
 
 /* Hover effect */
-.room-photo:hover {
+.room-photo:hover,
+.btn-save:hover {
 	background-color: #45a049;
 }
 
 /* Khi được chọn */
-.room-photo:active {
+.room-photo:active,
+.btn-save:active {
 	background-color: #367b34;
 }
 
@@ -13369,3 +13375,74 @@ body {
   position: absolute;
   z-index: -1;
 }*/
+
+/*ẩn đi phần form:select trong editRoomPhoto*/
+.hidden-select {
+	display: none;
+}
+
+.button-container {
+	display: flex;
+	/* Enable flexbox layout */
+	justify-content: space-between;
+	/* Distribute buttons evenly */
+}
+
+.btn-edit {
+	padding: 10px 20px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	cursor: pointer;
+	width: 49%;
+}
+
+
+/* Khi được chọn */
+/*.btn-save:active {
+	background-color: #367b34;
+}*/
+
+/*.btn:hover {
+  background-color: #eee;
+}*/
+
+.btn-cancel {
+	background-color: var(--bs-gray-300);
+	/* Set desired color for cancel button */
+	color: var(--bs-black);
+}
+
+.btn-cancel:hover {
+	background-color: var(--bs-gray-500);
+	/* Set desired color for cancel button */
+	color: var(--bs-white);
+
+}
+
+/*báo lỗi*/
+[id$=".errors"] {
+	color: red;
+	font-style: italic;
+}
+
+/* Target the span element containing the message */
+.message {
+  /* Display properties */
+  display: block; /* Make the span take up block-level space */
+  padding: 10px 20px; /* Add padding around the message */
+  margin: 10px 0; /* Add margin above and below the message */
+  border-radius: 5px; /* Add rounded corners to the border */
+
+  /* Text properties */
+  font-family: Arial, sans-serif; /* Choose a font for the message */
+  font-size: 14px; /* Set the font size */
+  line-height: 1.5; /* Adjust line spacing for better readability */
+  color: #333; /* Set the text color */
+
+  /* Background properties */
+  background-color: #fff; /* Set the background color */
+
+  /* Additional styling options */
+  text-align: center; /* Center the text within the span */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
