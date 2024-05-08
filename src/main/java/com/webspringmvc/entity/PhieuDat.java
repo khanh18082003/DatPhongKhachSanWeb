@@ -37,7 +37,12 @@ public class PhieuDat {
 	
 	public PhieuDat() {
 	}
-
+	public PhieuDat(String maPD, Timestamp ngayDat, Timestamp ngayBD, Timestamp ngayKT) {
+		this.maPD = maPD;
+		this.ngayDat = ngayDat;
+		this.ngayBD = ngayBD;
+		this.ngayKT = ngayKT;
+	}
 	public PhieuDat(String maPD, Timestamp ngayDat, Timestamp ngayBD, Timestamp ngayKT, TaiKhoan taiKhoan) {
 		this.maPD = maPD;
 		this.ngayDat = ngayDat;

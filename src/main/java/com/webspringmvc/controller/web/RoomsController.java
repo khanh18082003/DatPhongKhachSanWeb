@@ -108,7 +108,6 @@ public class RoomsController {
 			@RequestParam("dateOut") String dateOut,
 			@RequestParam("dateIn") String dateIn,
 			HttpServletRequest request) {
-		System.out.println(idHP);
 		String hql = "From HangPhong where idHP = :idHP";
 		Session session = factory.getCurrentSession();
 		Query query = session.createQuery(hql);
