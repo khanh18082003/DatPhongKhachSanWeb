@@ -24,8 +24,8 @@
 				<div class="collapse" id="collapseLayouts"
 					aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 					<nav class="sb-sidenav-menu-nested nav">
-						<a class="nav-link" href="hang-phong.html">Hạng phòng</a> 
-						<a class="nav-link" href="phong.html">Phòng</a>
+						<a class="nav-link" href="hang-phong.html">Room</a> 
+						<a class="nav-link" href="phong.html">Room Detail</a>
 					</nav>
 				</div>
 				
