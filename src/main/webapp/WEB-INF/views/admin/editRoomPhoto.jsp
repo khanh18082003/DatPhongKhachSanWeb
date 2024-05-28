@@ -17,7 +17,8 @@
 			<div class="container-fluid px-4">
 				<div class="form-noi">
 
-					<span class="close">&times;</span> <span class="message">${message}</span>
+					<span class="close">&times;</span> 
+					<span class="message">${message}</span>
 					<h2>Photo</h2>
 					<form:form action="editRoomPhoto.html" method="POST"
 						modelAttribute="hangPhong" enctype="multipart/form-data">
@@ -87,7 +88,7 @@
 						function() {
 							/* // Sử dụng history.back() để quay lại trang trước
 							history.back(); */
-							window.location.href = 'http://localhost:8080/DatPhongKhachSanWeb/admin/hang-phong.html';
+							window.location.href = '/DatPhongKhachSanWeb/admin/hang-phong.html';
 						});
 		const closeButton = document.querySelector('.close'); // Get the close button element
 
@@ -96,7 +97,7 @@
 						'click',
 						function() {
 							// Handle the click event here
-							window.location.href = 'http://localhost:8080/DatPhongKhachSanWeb/admin/hang-phong.html';
+							window.location.href = '/DatPhongKhachSanWeb/admin/hang-phong.html';
 						});
 
 		function previewImage(event) {
