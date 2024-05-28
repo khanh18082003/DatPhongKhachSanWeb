@@ -36,6 +36,16 @@ public class CT_KhuyenMai {
 		this.hangPhong = hangPhong;
 		this.phanTramGiam = phanTramGiam;
 	}
+	
+	
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public KhuyenMai getKhuyenMai() {
 		return khuyenMai;
