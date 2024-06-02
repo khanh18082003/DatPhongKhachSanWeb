@@ -27,7 +27,7 @@ import com.webspringmvc.reCapchaValidation.ReCapchaValidation;
 import com.webspringmvc.service.ITaiKhoanService;
 import com.webspringmvc.service.impl.MailerService;
 
-@Controller
+@Controller(value = "loginUser")
 public class LoginController {
 	@Autowired
 	ITaiKhoanService taiKhoanService;
@@ -41,6 +41,8 @@ public class LoginController {
 		return "user/login/sign-up";
 	}
 
+	String quyen = "KH";
+
 	@RequestMapping(value = "/sign-up", method = RequestMethod.POST)
 	public String signUp(ModelMap model, HttpServletRequest request,
 			@Validated @ModelAttribute("signUpForm") SignUpForm signUpForm, BindingResult br, HttpSession session,
@@ -50,7 +52,7 @@ public class LoginController {
 		String gReCaptchaResponse = request.getParameter("g-recaptcha-response");
 		boolean verifyReCapcha = verify.verification(gReCaptchaResponse);
 		// check account duplicate
-		boolean checkAccount = taiKhoanService.checkAccount(signUpForm.getUsername());
+		int checkAccount = taiKhoanService.checkAccount(signUpForm.getUsername(), signUpForm.getPassword(), quyen);
 
 		// show error in view
 		if (!verifyReCapcha) {
@@ -59,29 +61,30 @@ public class LoginController {
 		if (!signUpForm.checkConfirmPassword()) {
 			br.rejectValue("confirmPassword", "signUpForm", "Passwords do not match.");
 		}
-		if (!checkAccount) {
+		if (checkAccount != 0) {
 			br.rejectValue("username", "signUpForm", "Email has signed up. Please enter other email.");
 		}
 		// if no error and verify recaptcha
 		if (!br.hasErrors() && verifyReCapcha) {
-			if (checkAccount) {
-				// random secret key and set taikhoan
-				String salt = UUID.randomUUID().toString();
-				TaiKhoan newAccount = new TaiKhoan();
-				newAccount.setUsername(signUpForm.getUsername());
-				newAccount.setPassword(Bcrypt.toSHA1(signUpForm.getPassword(), salt));
-				newAccount.setAuth(salt);
-				newAccount.setQuyen(new Quyen("KH", "USER"));
-				// insert to db
-				taiKhoanService.insert(newAccount);
-				// add session author to authenticate user
-				session.setAttribute("author", newAccount.getUsername());
-				// add cookie to when visit this web then user don't need to sign in
-				Cookie cookie = new Cookie("auth", salt);
-				cookie.setMaxAge(60 * 60 * 24 * 2);
-				response.addCookie(cookie);
-				return "redirect:/trang-chu";
-			}
+			// random secret key and set taikhoan
+			String salt = UUID.randomUUID().toString();
+			TaiKhoan newAccount = new TaiKhoan();
+			newAccount.setUsername(signUpForm.getUsername());
+			newAccount.setPassword(Bcrypt.toSHA1(signUpForm.getPassword(), salt));
+			newAccount.setAuth(salt);
+			newAccount.setQuyen(new Quyen("KH", "USER"));
+			String token = Bcrypt.toSHA1(signUpForm.getUsername() + signUpForm.getPassword(), salt);
+			newAccount.setToken(token);
+			// insert to db
+			taiKhoanService.insert(newAccount);
+			// add session author to authenticate user
+			session.setAttribute("author", newAccount.getUsername());
+			// add cookie to when visit this web then user don't need to sign in
+			Cookie cookie = new Cookie("token", token);
+			cookie.setMaxAge(60 * 60 * 24 * 2);
+			response.addCookie(cookie);
+			return "redirect:/home";
+
 		}
 		return "user/login/sign-up";
 	}
@@ -99,29 +102,33 @@ public class LoginController {
 		ReCapchaValidation verify = new ReCapchaValidation();
 		String gReCaptchaResponse = request.getParameter("g-recaptcha-response");
 		boolean verifyReCapcha = verify.verification(gReCaptchaResponse);
-		boolean checkAcount = taiKhoanService.checkAccount(signInForm.getUsername());
-		boolean checkPassword = taiKhoanService.checkPassword(signInForm.getUsername(), signInForm.getPassword());
+		int checkAccount = taiKhoanService.checkAccount(signInForm.getUsername(), signInForm.getPassword(), quyen);
 
 		if (!verifyReCapcha) {
 			model.addAttribute("reCapchaError", "Please click on ReCapcha to validate human");
 		}
-		if (checkAcount) {
+		if (checkAccount == 0) {
 			br.rejectValue("username", "signInForm", "Email is not exist.");
 		}
-		if (!checkPassword) {
-			br.rejectValue("password", "signInForm", "Password or Email is incorrect.");
+		if (checkAccount == 2) {
+			br.rejectValue("password", "signInForm", "Password is incorrect.");
 		}
 		if (!br.hasErrors() && verifyReCapcha) {
+			// set key password
 			String salt = UUID.randomUUID().toString();
-			TaiKhoan t = taiKhoanService.getTaiKhoan(signInForm.getUsername());
+			TaiKhoan t = taiKhoanService.getTaiKhoan(signInForm.getUsername(), quyen);
 			t.setPassword(Bcrypt.toSHA1(signInForm.getPassword(), salt));
 			t.setAuth(salt);
+			// create token
+			String token = Bcrypt.toSHA1(signInForm.getUsername() + signInForm.getPassword(), salt);
+			t.setToken(token);
 			taiKhoanService.update(t);
-			session.setAttribute("author", signInForm.getUsername());
-			Cookie cookie = new Cookie("auth", salt);
+			Cookie cookie = new Cookie("token", token);
 			cookie.setMaxAge(60 * 60 * 24 * 2);
 			response.addCookie(cookie);
-			return "redirect:/trang-chu";
+			// set session for tab
+			session.setAttribute("author", signInForm.getUsername());
+			return "redirect:/home";
 		}
 		return "user/login/sign-in";
 	}
@@ -138,7 +145,7 @@ public class LoginController {
 	@RequestMapping(value = "/forgot-password", method = RequestMethod.POST)
 	public String forgotPassword(ModelMap model, @RequestParam("email") String email, HttpServletRequest request) {
 		String resetPasswordToken = UUID.randomUUID().toString();
-		taiKhoanService.updateResetPasswordToken(resetPasswordToken, email, model);
+		taiKhoanService.updateResetPasswordToken(resetPasswordToken, email, quyen, model);
 		String resetPasswordUrl = request.getRequestURL().toString().replace(request.getServletPath(), "")
 				+ "/reset-password?token=" + resetPasswordToken;
 		String subject = "Here's the link to reset your password";
@@ -157,7 +164,7 @@ public class LoginController {
 	public String resetPassword(ModelMap model, @RequestParam("token") String token) {
 		String title = "Reset-Password";
 		model.addAttribute("title", title);
-		TaiKhoan t = taiKhoanService.get(token);
+		TaiKhoan t = taiKhoanService.get(token, 1);
 		if (t != null) {
 			model.addAttribute("resetPasswordForm", new ResetPasswordForm());
 			model.addAttribute("token", token);
@@ -172,7 +179,7 @@ public class LoginController {
 	public String resetPassword(HttpServletRequest request, ModelMap model,
 			@Validated @ModelAttribute("resetPasswordForm") ResetPasswordForm resetPasswordForm, BindingResult br) {
 		String token = request.getParameter("token");
-		TaiKhoan t = taiKhoanService.get(token);
+		TaiKhoan t = taiKhoanService.get(token, 1);
 
 		if (t != null) {
 			boolean checkPassword = t.getPassword().equals(Bcrypt.toSHA1(resetPasswordForm.getPassword(), t.getAuth()));
@@ -201,9 +208,9 @@ public class LoginController {
 	public String logout(HttpSession session, HttpServletResponse response) {
 		session.removeAttribute("author");
 		session.removeAttribute("name");
-		Cookie cookie = new Cookie("auth", "");
+		Cookie cookie = new Cookie("token", "");
 		cookie.setMaxAge(0);
 		response.addCookie(cookie);
-		return "redirect:/trang-chu";
+		return "redirect:/home";
 	}
 }

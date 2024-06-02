@@ -26,7 +26,6 @@ public class TaiKhoanDaoImpl implements ITaiKhoanDao {
 		try {
 			session.save(t);
 			transaction.commit();
-			System.out.println(t.getUsername());
 			return 1;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -55,9 +54,12 @@ public class TaiKhoanDaoImpl implements ITaiKhoanDao {
 	}
 
 	@Override
-	public TaiKhoan getTaiKhoan(String id) {
+	public TaiKhoan getTaiKhoan(String id, String quyen) {
 		Session session = factory.getCurrentSession();
-		TaiKhoan taiKhoanById = (TaiKhoan) session.get(TaiKhoan.class, id);
+		Query q = session.createQuery("FROM TaiKhoan tk WHERE tk.quyen.maQuyen = :quyen AND username = :username");
+		q.setParameter("quyen", quyen);
+		q.setParameter("username", id);
+		TaiKhoan taiKhoanById = (TaiKhoan) q.uniqueResult();
 		return taiKhoanById;
 	}
 
@@ -68,11 +70,20 @@ public class TaiKhoanDaoImpl implements ITaiKhoanDao {
 	}
 
 	@Override
-	public TaiKhoan getTaiKhoanByToken(String token) {
+	public TaiKhoan getTaiKhoanByToken(String token, int index) {
 		Session session = factory.getCurrentSession();
-		Query q = session.createQuery("FROM TaiKhoan WHERE resetPasswordToken = :token");
-		q.setParameter("token", token);
-		TaiKhoan t = (TaiKhoan) q.uniqueResult();
+		Query q = null;
+		TaiKhoan t = null;
+		if (index == 1) {
+			q = session.createQuery("FROM TaiKhoan WHERE resetPasswordToken = :token");
+			q.setParameter("token", token);
+			t = (TaiKhoan) q.uniqueResult();
+		}else if (index == 2) {
+			q = session.createQuery("FROM TaiKhoan WHERE token = :token");
+			q.setParameter("token", token);
+			t = (TaiKhoan) q.uniqueResult();
+		}
+		
 		return t;
 	}
 

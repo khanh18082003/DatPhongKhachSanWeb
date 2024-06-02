@@ -18,9 +18,9 @@ public class TaiKhoanService implements ITaiKhoanService {
 	ITaiKhoanDao taiKhoanDao;
 
 	@Override
-	public TaiKhoan getTaiKhoan(String id) {
+	public TaiKhoan getTaiKhoan(String id, String quyen) {
 		id = id.trim();
-		return taiKhoanDao.getTaiKhoan(id);
+		return taiKhoanDao.getTaiKhoan(id, quyen);
 	}
 
 	@Override
@@ -41,25 +41,22 @@ public class TaiKhoanService implements ITaiKhoanService {
 	}
 
 	@Override
-	public boolean checkAccount(String id) {
-		return getTaiKhoan(id) == null;
-	}
-
-	@Override
-	public boolean checkPassword(String id, String password) {
-		TaiKhoan t = getTaiKhoan(id);
+	public int checkAccount(String id, String password, String quyen) {
+		TaiKhoan t = getTaiKhoan(id, quyen);
 		if (t != null) {
 			password = Bcrypt.toSHA1(password, t.getAuth());
-			return password.equals(t.getPassword());
+			if (password.equals(t.getPassword())) {
+				return 1;
+			}
+			return 2; // password is wrong
 		}
-		return false;
+		return 0; // username not exist
 	}
 	
 	@Override
-	public void updateResetPasswordToken(String token, String email, ModelMap model) {
-		TaiKhoan t = taiKhoanDao.getTaiKhoan(email);
+	public void updateResetPasswordToken(String token, String email, String quyen, ModelMap model) {
+		TaiKhoan t = taiKhoanDao.getTaiKhoan(email, quyen);
 		if (t != null) {
-			System.out.println(t.getUsername());
 			t.setResetPasswordToken(token);
 			taiKhoanDao.update(t);
 		}else {
@@ -68,8 +65,8 @@ public class TaiKhoanService implements ITaiKhoanService {
 	}
 	
 	@Override
-	public TaiKhoan get(String token) {
-		return taiKhoanDao.getTaiKhoanByToken(token);
+	public TaiKhoan get(String token, int index) {
+		return taiKhoanDao.getTaiKhoanByToken(token, index);
 	}
 	
 	@Override

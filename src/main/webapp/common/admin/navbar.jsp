@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
 	<!-- Navbar Brand-->
 	<a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
@@ -29,7 +30,7 @@
 				<li><a class="dropdown-item" href="#!">Settings</a></li>
 				<li><a class="dropdown-item" href="#!">Activity Log</a></li>
 				<li><hr class="dropdown-divider" /></li>
-				<li><a class="dropdown-item" href="#!">Logout</a></li>
+				<li><a class="dropdown-item" href='<c:url value="/admin/logout"/>'>Logout</a></li>
 			</ul></li>
 	</ul>
 </nav>
