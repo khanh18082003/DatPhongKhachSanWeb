@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,41 +31,76 @@
 	<section class="room-details-section spad">
 		<div class="container">
 			<div class="row">
+				<c:set var="checkin" value="${dateIn}" />
+				<c:set var="checkout" value="${dateOut}" />
+				<c:set var="room" value="${hp}" />
 				<div class="col-lg-8">
 					<div class="room-details-item">
-						<img src="<c:url value="/template/user/img/room/room-details.jpg"/>" alt="">
+						<img src="<c:url value="${room.anh}"/>" alt="" width="750"
+							height="450">
 						<div class="rd-text">
 							<div class="rd-title">
-								<h3>Premium King Room</h3>
+								<h3>${room.tenHP}</h3>
 								<div class="rdt-right">
-									<div class="rating">
-										<i class="icon_star"></i> <i class="icon_star"></i> <i
-											class="icon_star"></i> <i class="icon_star"></i> <i
-											class="icon_star-half_alt"></i>
-									</div>
-									<a href="#">Booking Now</a>
+
+									<span style="margin-right: 10px"> <select
+										id="roomSelect" class="inputroom select-option">
+											<c:forEach begin="1" end="${slPhong}" varStatus="status">
+												<c:choose>
+													<c:when test="${status.index == 1}">
+														<option value="${status.index}">${status.count}
+															Room</option>
+													</c:when>
+													<c:otherwise>
+														<option value="${status.index}">${status.count}
+															Rooms</option>
+													</c:otherwise>
+												</c:choose>
+
+											</c:forEach>
+									</select>
+									</span> <a href="#" id="bookingLink">Booking Now</a>
+									<script>
+										document.addEventListener('DOMContentLoaded',function() {
+												var bookingLink = document.getElementById('bookingLink');
+												var roomSelect = document.getElementById('roomSelect');
+												roomSelect.addEventListener('change',function() {
+													var selectedRooms = roomSelect.value;
+													var href = `<c:url value='/book-room?id=${room.idHP}&checkin=${checkin}&checkout=${checkout}&sl='/>`+ selectedRooms;
+													bookingLink.href = href;});
+															// Trigger the change event initially to set the initial URL
+													roomSelect.dispatchEvent(new Event('change'));
+											});
+									</script>
+
 								</div>
 							</div>
-							<h2>
-								159$<span>/Pernight</span>
+							<br /> <br /> <br />
+							<h2> 
+								<fmt:formatNumber  value="${room.gia}" type="currency"
+									currencySymbol="$" pattern="$#,##0.00" />
+								<span>/Pernight</span>
 							</h2>
 							<table>
 								<tbody>
 									<tr>
-										<td class="r-o">Size:</td>
-										<td>30 ft</td>
+										<td class="r-o">Capacity:</td>
+										<td><c:choose>
+												<c:when test="${room.soLuongNguoi ==1}">${room.soLuongNguoi} Person</c:when>
+												<c:otherwise>${room.soLuongNguoi} Persons</c:otherwise>
+											</c:choose></td>
 									</tr>
 									<tr>
-										<td class="r-o">Capacity:</td>
-										<td>Max persion 5</td>
+										<td class="r-o">Room Type:</td>
+										<td>${room.loaiPhong.tenLP}</td>
 									</tr>
 									<tr>
 										<td class="r-o">Bed:</td>
-										<td>King Beds</td>
+										<td>${room.kieuPhong.tenKP}</td>
 									</tr>
 									<tr>
 										<td class="r-o">Services:</td>
-										<td>Wifi, Television, Bathroom,...</td>
+										<td>${room.moTa}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -90,7 +126,9 @@
 						<h4>Reviews</h4>
 						<div class="review-item">
 							<div class="ri-pic">
-								<img src="<c:url value="/template/user/img/room/avatar/avatar-1.jpg"/>" alt="">
+								<img
+									src="<c:url value="/template/user/img/room/avatar/avatar-1.jpg"/>"
+									alt="">
 							</div>
 							<div class="ri-text">
 								<span>27 Aug 2019</span>
@@ -107,7 +145,9 @@
 						</div>
 						<div class="review-item">
 							<div class="ri-pic">
-								<img src="<c:url value="/template/user/img/room/avatar/avatar-2.jpg"/>" alt="">
+								<img
+									src="<c:url value="/template/user/img/room/avatar/avatar-2.jpg"/>"
+									alt="">
 							</div>
 							<div class="ri-text">
 								<span>27 Aug 2019</span>
@@ -146,34 +186,6 @@
 									<button type="submit">Submit Now</button>
 								</div>
 							</div>
-						</form>
-					</div>
-				</div>
-				<div class="col-lg-4">
-					<div class="room-booking">
-						<h3>Your Reservation</h3>
-						<form action="#">
-							<div class="check-date">
-								<label for="date-in">Check In:</label> <input type="text"
-									class="date-input" id="date-in"> <i
-									class="icon_calendar"></i>
-							</div>
-							<div class="check-date">
-								<label for="date-out">Check Out:</label> <input type="text"
-									class="date-input" id="date-out"> <i
-									class="icon_calendar"></i>
-							</div>
-							<div class="select-option">
-								<label for="guest">Guests:</label> <select id="guest">
-									<option value="">3 Adults</option>
-								</select>
-							</div>
-							<div class="select-option">
-								<label for="room">Room:</label> <select id="room">
-									<option value="">1 Room</option>
-								</select>
-							</div>
-							<button type="submit">Check Availability</button>
 						</form>
 					</div>
 				</div>
