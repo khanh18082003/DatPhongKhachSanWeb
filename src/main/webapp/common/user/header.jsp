@@ -18,12 +18,10 @@
 	<div class="canvas-close">
 		<i class="icon_close"></i>
 	</div>
-	<div class="search-icon  search-switch">
-		<i class="icon_search"></i>
-	</div>
+	
 	<nav class="mainmenu mobile-menu">
 		<ul>
-			<li class="active"><a href='<c:url value="/trang-chu"/>'>Home</a></li>
+			<li class="active"><a href='<c:url value="/home"/>'>Home</a></li>
 			<li><a href='<c:url value="/rooms/index" />'>Rooms</a></li>
 			<li><a href='<c:url value="/about-us"/>'>About Us</a></li>
 			<li><a href="./pages.html">Pages</a>
@@ -45,7 +43,7 @@
 			class="fa fa-instagram"></i></a>
 	</div>
 	<ul class="top-widget">
-		<li><i class="fa fa-phone"></i> (12) 345 67890</li>
+		<li><i class="fa fa-phone"></i> (+84) 378 277 559</li>
 		<li><i class="fa fa-envelope"></i> nguyentrungk461@gmail.com</li>
 	</ul>
 </div>
@@ -58,16 +56,15 @@
 			<div class="row">
 				<div class="col-lg-6">
 					<ul class="tn-left">
-						<li><i class="fa fa-phone"></i> (12) 345 67890</li>
+						<li><i class="fa fa-phone"></i> (+84) 378 277 559</li>
 						<li><i class="fa fa-envelope"></i> nguyentrungk461@gmail.com</li>
 					</ul>
 				</div>
 				<div class="col-lg-6">
 					<div class="tn-right">
 						<div class="top-social">
-							<a href="#"><i class="fa fa-facebook"></i></a> <a href="#"><i
-								class="fa fa-twitter"></i></a> <a href="#"><i
-								class="fa fa-tripadvisor"></i></a> <a href="#"><i
+							<a href="https://www.facebook.com/profile.php?id=100053925275499"><i
+								class="fa fa-facebook"></i></a> <a href="#"><i
 								class="fa fa-instagram"></i></a>
 						</div>
 
@@ -116,7 +113,7 @@
 					<div class="nav-menu">
 						<nav class="mainmenu">
 							<ul>
-								<li class="active"><a href='<c:url value="/trang-chu"/>'>Home</a></li>
+								<li class="active"><a href='<c:url value="/home"/>'>Home</a></li>
 								<li><a href='<c:url value="/rooms/index"/>'>Rooms</a></li>
 								<li><a href='<c:url value="/about-us"/>'>About Us</a></li>
 								<li><a href="./pages.html">Pages</a>
@@ -130,9 +127,7 @@
 								<li><a href='<c:url value="/contact-us"/>'>Contact</a></li>
 							</ul>
 						</nav>
-						<div class="nav-right search-switch">
-							<i class="icon_search"></i>
-						</div>
+
 					</div>
 				</div>
 			</div>

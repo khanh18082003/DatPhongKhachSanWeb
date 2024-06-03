@@ -17,7 +17,7 @@
 					<div class="breadcrumb-text">
 						<h2>Our Rooms</h2>
 						<div class="bt-option">
-							<a href="<c:url value="/trang-chu"/>">Home</a> <span>Rooms</span>
+							<a href="<c:url value="/home"/>">Home</a> <span>Rooms</span>
 						</div>
 					</div>
 				</div>
