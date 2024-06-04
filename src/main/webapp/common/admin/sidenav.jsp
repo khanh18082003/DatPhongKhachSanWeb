@@ -10,24 +10,31 @@
 						<i class="fas fa-tachometer-alt"></i>
 					</div> Dashboard
 				</a>
-				<!-- ROOM -->
+				<!------------------------------ ROOM ------------------------------>
 				<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-					data-bs-target="#collapseLayouts" aria-expanded="false"
+					data-bs-target="#collapseRoom" aria-expanded="false"
 					aria-controls="collapseLayouts">
 					<div class="sb-nav-link-icon">
-						<i class="fas fa-columns"></i>
+						<i class="fa-solid fa-hotel"></i>
 					</div> Room
 					<div class="sb-sidenav-collapse-arrow">
 						<i class="fas fa-angle-down"></i>
 					</div>
 				</a>
-				<div class="collapse" id="collapseLayouts"
+				<div class="collapse" id="collapseRoom"
 					aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 					<nav class="sb-sidenav-menu-nested nav">
 						<a class="nav-link" href="hang-phong.html">Room</a> 
 						<a class="nav-link" href="phong.html">Room Detail</a>
 					</nav>
 				</div>
+				
+				<!------------------------------ PROMOTION ------------------------------>
+				<a class="nav-link" href="promotion.html">
+					<div class="sb-nav-link-icon">
+						<i class="fa-solid fa-tag"></i>
+					</div> Promotion
+				</a>
 				
 				
 <!-- 				<div class="sb-sidenav-menu-heading">Interface</div> -->

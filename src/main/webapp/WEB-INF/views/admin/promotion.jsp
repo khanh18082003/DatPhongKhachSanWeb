@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
-<title>Admin | Room</title>
+<title>Admin | Promotion</title>
 <base href="${pageContext.servletContext.contextPath}/">
 </head>
 <body>
@@ -19,13 +19,13 @@
 
 			<div class="container-fluid px-4">
 
-				<h1 class="mt-4">Room</h1>
+				<h1 class="mt-4">Promotion</h1>
 				<ol class="breadcrumb mb-4">
-					<li class="breadcrumb-item active">Room</li>
+					<li class="breadcrumb-item active">Promotion</li>
 				</ol>
 				<div class="card mb-4">
 					<div class="card-header">
-						<i class="fas fa-table me-1"></i> Room
+						<i class="fas fa-table me-1"></i> Promotion
 					</div>
 					<div class="card-body">
 						<table id="datatablesSimple">
@@ -33,59 +33,47 @@
 								<tr>
 									<th>#</th>
 									<th>ID</th>
-									<th>Room</th>
-									<th>Type</th>
-									<th>Category</th>
-									<th>Number Of Users</th>
-									<th>Description</th>
-									<th>Price</th>
+									<th>Promotion</th>
+									<th>Begin</th>
+									<th>End</th>
 									<th>Action</th>
-
 								</tr>
 							</thead>
 							<tfoot>
 								<tr>
 									<th>#</th>
 									<th>ID</th>
-									<th>Room</th>
-									<th>Type</th>
-									<th>Category</th>
-									<th>Number Of Users</th>
-									<th>Description</th>
-									<th>Price</th>
+									<th>Promotion</th>
+									<th>Begin</th>
+									<th>End</th>
 									<th>Action</th>
 								</tr>
 							</tfoot>
 							<tbody>
 
-								<c:forEach var="list" items="${listHP}" varStatus="status">
+								<c:forEach var="list" items="${listKM}" varStatus="status">
 
 									<tr class="room-row">
 										<td>${status.index + 1}</td>
-										<td>${list.idHP }</td>
-										<td>${list.tenHP }</td>
-										<td>${list.loaiPhong.tenLP }</td>
-										<td>${list.kieuPhong.tenKP }</td>
-										<td>${list.soLuongNguoi }</td>
+										<td>${list.maKM }</td>
+										<td>${list.tenKM }</td>
+										<td>${list.ngayBD }</td>
+										<td>${list.ngayKT }</td>
 
-										<%-- <td>${fn:substring(list.moTa, 0, 50 ) }</td> --%>
-										<td>${list.moTa}</td>
-										<td><fmt:formatNumber value="${list.gia}" type="currency"
-												currencySymbol="$" pattern="$#,##0.00" /></td>
 										<td>
 											<div class="icon-container">
-												<a href="editHangPhong.html?id=${list.idHP}"
+												<a href="editPromo.html?id=${list.maKM}"
 													class="btn-action"><i class="fas fa-edit"></i></a><a
-													href="deleteHangPhong.html?id=${list.idHP}"
+													href="deletePromo.html?id=${list.maKM}"
 													class="btn-action"><i class="fas fa-trash-alt"></i></a><a
-													href="editRoomPhoto.html?id=${list.idHP}"
-													class="btn-action"><i class="fa-regular fa-image"></i></a>
+													href="promotion-detail.html?id=${list.maKM}"
+													class="btn-action"><i class="fa-solid fa-tags"></i></a>
 											</div>
 										</td>
 									</tr>
 								</c:forEach>
 							</tbody>
-							<a href="insertHangPhong.html" class="btn-action add-new">Add
+							<a href="insertPromo.html" class="btn-action add-new">Add
 								New</a>
 						</table>
 					</div>

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -46,9 +47,6 @@ public class RoomController {
 		List<HangPhong> listHP = query.list();
 		model.addAttribute("listHP", listHP);
 
-		HangPhong hangPhong = new HangPhong();
-		model.addAttribute("HangPhong", hangPhong);
-
 		return "admin/hang-phong";
 	}
 
@@ -74,7 +72,7 @@ public class RoomController {
 
 	public static boolean isIdValid(String id) {
 		// Biểu thức chính quy để khớp ID hợp lệ (chỉ chứa chữ cái, số và gạch dưới)
-		String regex = "[a-zA-Z0-9_]+";
+		String regex = "[a-zA-Z0-9_ ]+";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(id);
 		return matcher.matches();
@@ -113,11 +111,18 @@ public class RoomController {
 		Query query = session.createQuery(hql);
 		List<HangPhong> listHP = query.list();
 
+//		List<HangPhong> otherHPs = listHP.stream().filter(hp -> hp.getIdHP() != hangPhong.getIdHP())
+//				.collect(Collectors.toList());
+		hql = "FROM HangPhong hp WHERE hp.idHP != :editedID";
+		query = session.createQuery(hql);
+		query.setParameter("editedID", hangPhong.getIdHP());
+		List<HangPhong> otherHPs = query.list();
+	
 		hangPhong.setTenHP(hangPhong.getTenHP().trim());
 		hangPhong.setMoTa(hangPhong.getMoTa().trim());
 
 		/*---------------- check name ----------------*/
-		if (listHP.stream().anyMatch(existingHP -> existingHP.getTenHP().equals(hangPhong.getTenHP()))) {
+		if (otherHPs.stream().anyMatch(existingHP -> existingHP.getTenHP().equals(hangPhong.getTenHP()))) {
 			errors.rejectValue("tenHP", "HangPhong", "Name \"" + hangPhong.getTenHP() + "\" Already Exists.");
 		}
 		if (!isIdValid(hangPhong.getTenHP())) {
@@ -245,7 +250,7 @@ public class RoomController {
 		}
 		if (!isIdValid(hangPhong.getIdHP())) {
 			errors.rejectValue("idHP", "HangPhong", "ID \"" + hangPhong.getIdHP()
-					+ "\" Must Not Include Special Characters. Only Letters, Numbers, and underscores are allowed in IDs.\"");
+					+ "\" Must Not Include Special Characters. Only Letters, Numbers, And Underscores Are Allowed In IDs.\"");
 		}
 		/*---------------- check name ----------------*/
 		if (listHP.stream().anyMatch(existingHP -> existingHP.getTenHP().equals(hangPhong.getTenHP()))) {

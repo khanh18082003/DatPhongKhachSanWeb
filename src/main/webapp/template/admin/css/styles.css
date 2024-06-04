@@ -13210,7 +13210,8 @@ body {
 
 .close {
 	color: #aaa;
-	float: right;
+	/*float: right;*/
+	margin-left: 97%;
 	font-size: 28px;
 	font-weight: bold;
 }
@@ -13291,6 +13292,7 @@ body {
 /* nút add new */
 .add-new {
 	float: right;
+	margin-left: 10px;
 }
 
 /* nút thêm ảnh */
@@ -13427,22 +13429,33 @@ body {
 
 /* Target the span element containing the message */
 .message {
-  /* Display properties */
-  display: block; /* Make the span take up block-level space */
-  padding: 10px 20px; /* Add padding around the message */
-  margin: 10px 0; /* Add margin above and below the message */
-  border-radius: 5px; /* Add rounded corners to the border */
+	/* Display properties */
+	display: block;
+	/* Make the span take up block-level space */
+	padding: 10px 20px;
+	/* Add padding around the message */
+	margin: 10px 0;
+	/* Add margin above and below the message */
+	border-radius: 5px;
+	/* Add rounded corners to the border */
 
-  /* Text properties */
-  font-family: Arial, sans-serif; /* Choose a font for the message */
-  font-size: 14px; /* Set the font size */
-  line-height: 1.5; /* Adjust line spacing for better readability */
-  color: #333; /* Set the text color */
+	/* Text properties */
+	font-family: Arial, sans-serif;
+	/* Choose a font for the message */
+	font-size: 16px;
+	/* Set the font size */
+	line-height: 1.5;
+	/* Adjust line spacing for better readability */
+	color: rgba(var(--bs-danger-rgb));
+	/* Set the text color */
 
-  /* Background properties */
-  background-color: #fff; /* Set the background color */
+	/* Background properties */
+	background-color: #fff;
+	/* Set the background color */
 
-  /* Additional styling options */
-  text-align: center; /* Center the text within the span */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+	/* Additional styling options */
+	text-align: center;
+	/* Center the text within the span */
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	/* Add a subtle shadow */
 }
