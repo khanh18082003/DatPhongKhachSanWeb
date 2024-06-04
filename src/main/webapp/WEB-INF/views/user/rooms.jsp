@@ -60,7 +60,15 @@
 							<div class="ri-text">
 								<h4>${room.tenHP}</h4>
 								<h3>
-									<fmt:formatNumber value="${room.gia}" type="currency" currencySymbol="$" pattern="$#,##0.00" /> <span>/Pernight</span>
+									<c:choose>
+										<c:when test="${discount[room.idHP] == null}">
+										    <fmt:formatNumber value="${room.gia}" type="currency" currencySymbol="$" pattern="$#,##0.00" />
+										</c:when>
+										<c:otherwise>
+											<fmt:formatNumber value="${room.gia * (100 - discount[room.idHP])/100}"
+												type="currency" currencySymbol="$" pattern="$#,##0.00" />
+											</c:otherwise>
+									</c:choose>
 								</h3>
 								<table>
 									<tbody>
@@ -97,7 +105,7 @@
 											Details</a>
 									</c:when>
 									<c:otherwise>
-										<a onclick="return dontClick(${roomAvailable[room.idHP]})" href='<c:url value="/rooms/room-detail?id=${room.idHP}&dateIn=${dateIn}&dateOut=${dateOut}" />'
+										<a onclick="return dontClick(${roomAvailable[room.idHP]})" href='<c:url value="/rooms/room-detail?id=${room.idHP}&dateIn=${dateIn}&dateOut=${dateOut}&roomAvai=${roomAvailable[room.idHP]}" />'
 											class="primary-btn">More Details</a>
 									</c:otherwise>
 								</c:choose>

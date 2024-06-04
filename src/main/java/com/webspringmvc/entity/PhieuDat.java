@@ -5,6 +5,8 @@ import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -17,7 +19,8 @@ import javax.persistence.Table;
 public class PhieuDat {
 	@Id
 	@Column(name = "MAPD")
-	private String maPD;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int maPD;
 
 	@Column(name = "NGAYDAT", nullable = false)
 	private Timestamp ngayDat;
@@ -37,25 +40,18 @@ public class PhieuDat {
 	
 	public PhieuDat() {
 	}
-	public PhieuDat(String maPD, Timestamp ngayDat, Timestamp ngayBD, Timestamp ngayKT) {
-		this.maPD = maPD;
-		this.ngayDat = ngayDat;
-		this.ngayBD = ngayBD;
-		this.ngayKT = ngayKT;
-	}
-	public PhieuDat(String maPD, Timestamp ngayDat, Timestamp ngayBD, Timestamp ngayKT, TaiKhoan taiKhoan) {
-		this.maPD = maPD;
+	public PhieuDat(Timestamp ngayDat, Timestamp ngayBD, Timestamp ngayKT, TaiKhoan taiKhoan) {
 		this.ngayDat = ngayDat;
 		this.ngayBD = ngayBD;
 		this.ngayKT = ngayKT;
 		this.taiKhoan = taiKhoan;
 	}
 
-	public String getMaPD() {
+	public int getMaPD() {
 		return maPD;
 	}
 
-	public void setMaPD(String maPD) {
+	public void setMaPD(int maPD) {
 		this.maPD = maPD;
 	}
 
