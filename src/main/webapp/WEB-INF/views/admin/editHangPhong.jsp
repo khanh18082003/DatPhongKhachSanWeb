@@ -49,7 +49,7 @@
 							required="required" />
 
 						<label for="room-price">Price:</label>
-						<form:input type="number" class="room-price" path="gia" value="0" />
+						<form:input type="number" class="room-price" path="gia" min="0"/>
 
 						<div class="form-group button-container">
 							<button type="button" class="btn-edit btn-cancel" id="huy">Cancel</button>
