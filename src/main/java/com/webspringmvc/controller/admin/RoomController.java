@@ -3,20 +3,15 @@ package com.webspringmvc.controller.admin;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,7 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.webspringmvc.entity.HangPhong;
 import com.webspringmvc.entity.KieuPhong;
 import com.webspringmvc.entity.LoaiPhong;
-
+import com.webspringmvc.service.IRoomService;
 @Transactional
 @Controller
 @RequestMapping("/admin")
@@ -39,51 +34,23 @@ public class RoomController {
 	@Autowired
 	ServletContext context;
 
+	@Autowired
+	IRoomService roomService;
+
 	@RequestMapping("/hang-phong")
 	public String hangPhongPage(ModelMap model) {
-		Session session = factory.getCurrentSession();
-		String hql = "FROM HangPhong";
-		Query query = session.createQuery(hql);
-		List<HangPhong> listHP = query.list();
-		model.addAttribute("listHP", listHP);
-
+		model.addAttribute("listHP", roomService.getList());
 		return "admin/hang-phong";
 	}
 
 	@ModelAttribute("listLP") // listLP
 	public List<LoaiPhong> getLP() {
-		Session session = factory.getCurrentSession();
-		String hql = "FROM LoaiPhong";
-		Query query = session.createQuery(hql);
-		List<LoaiPhong> listLP = query.list();
-
-		return listLP;
+		return roomService.getLP();
 	}
 
 	@ModelAttribute("listKP") // listKP
 	public List<KieuPhong> getKP() {
-		Session session = factory.getCurrentSession();
-		String hql = "FROM KieuPhong";
-		Query query = session.createQuery(hql);
-		List<KieuPhong> listKP = query.list();
-
-		return listKP;
-	}
-
-	public static boolean isIdValid(String id) {
-		// Biểu thức chính quy để khớp ID hợp lệ (chỉ chứa chữ cái, số và gạch dưới)
-		String regex = "[a-zA-Z0-9_ ]+";
-		Pattern pattern = Pattern.compile(regex);
-		Matcher matcher = pattern.matcher(id);
-		return matcher.matches();
-	}
-
-	public static String getFileExtension(String filePath) {
-		int lastDotIndex = filePath.lastIndexOf('.');
-		if (lastDotIndex > 0) {
-			return filePath.substring(lastDotIndex + 1);
-		}
-		return "";
+		return roomService.getKP();
 	}
 
 	/*-------------------------- EDIT/UPDATE HANGPHONG --------------------------*/
@@ -106,18 +73,14 @@ public class RoomController {
 	public String editHangPhong(@ModelAttribute("hangPhong") HangPhong hangPhong, ModelMap model,
 			BindingResult errors) {
 		/* Validate input */
-		Session session = factory.getCurrentSession();
-		String hql = "FROM HangPhong";
-		Query query = session.createQuery(hql);
-		List<HangPhong> listHP = query.list();
+//		
+		List<HangPhong> listHP = roomService.getList();
 
 //		List<HangPhong> otherHPs = listHP.stream().filter(hp -> hp.getIdHP() != hangPhong.getIdHP())
 //				.collect(Collectors.toList());
-		hql = "FROM HangPhong hp WHERE hp.idHP != :editedID";
-		query = session.createQuery(hql);
-		query.setParameter("editedID", hangPhong.getIdHP());
-		List<HangPhong> otherHPs = query.list();
-	
+
+		List<HangPhong> otherHPs = roomService.getRemainingRoom(hangPhong.getIdHP());
+
 		hangPhong.setTenHP(hangPhong.getTenHP().trim());
 		hangPhong.setMoTa(hangPhong.getMoTa().trim());
 
@@ -125,26 +88,20 @@ public class RoomController {
 		if (otherHPs.stream().anyMatch(existingHP -> existingHP.getTenHP().equals(hangPhong.getTenHP()))) {
 			errors.rejectValue("tenHP", "HangPhong", "Name \"" + hangPhong.getTenHP() + "\" Already Exists.");
 		}
-		if (!isIdValid(hangPhong.getTenHP())) {
+		if (!roomService.isNameValid(hangPhong.getTenHP())) {
 			errors.rejectValue("tenHP", "HangPhong", "Name \"" + hangPhong.getTenHP()
-					+ "\" Must Not Include Special Characters. Only Letters, Numbers, and underscores are allowed in Names.\"");
+					+ "\" Must Not Include Special Characters. Only Letters, Numbers, Spaces And Underscores Are Allowed In Names.\"");
 		}
 
 		if (errors.hasErrors()) {
 			model.addAttribute("message", "*Please Check These Errors.");
 			return "/admin/editHangPhong";
 		}
-		session = factory.openSession();
-		Transaction t = session.beginTransaction();
-		try {
-			session.update(hangPhong);
-			t.commit();
+
+		if (roomService.update(hangPhong) == 1) {
 			model.addAttribute("message", "*Update successful");
-		} catch (Exception e) {
-			t.rollback();
+		} else {
 			model.addAttribute("message", "*Update failed");
-		} finally {
-			session.close();
 		}
 
 		return "admin/editHangPhong";
@@ -170,7 +127,7 @@ public class RoomController {
 	public String editRoomPhoto(@ModelAttribute("hangPhong") HangPhong hangPhong, ModelMap model,
 			@RequestParam("photo") MultipartFile photo, BindingResult errors) {
 		/*---------------- check photo ----------------*/
-		String extension = getFileExtension(photo.getOriginalFilename());
+		String extension = roomService.getFileExtension(photo.getOriginalFilename());
 		if (!extension.equalsIgnoreCase("jpg") && !extension.equalsIgnoreCase("jpeg")
 				&& !extension.equalsIgnoreCase("png") && !extension.equalsIgnoreCase("gif")
 				&& !extension.equalsIgnoreCase("bmp")) {
@@ -192,30 +149,33 @@ public class RoomController {
 		/* get the path of old photo to delete */
 		String existingPhotoPath = hangPhong.getAnh();
 
-		try {
-			if (existingPhotoPath != null && !existingPhotoPath.isEmpty()) {
-				String existingFullPath = context.getRealPath(existingPhotoPath);
-				File existingFile = new File(existingFullPath);
-				/*
-				 * File.getAbsoluteFile() returns a File object representing the specified path,
-				 * but it doesn't guarantee that the file actually exists. It simply creates a
-				 * File object based on the provided path.
-				 */
-				if (existingFile.exists()) {
-					existingFile.delete();
-				}
+		if (existingPhotoPath != null && !existingPhotoPath.isEmpty()) {
+			String existingFullPath = context.getRealPath(existingPhotoPath);
+			File existingFile = new File(existingFullPath);
+			/*
+			 * File.getAbsoluteFile() returns a File object representing the specified path,
+			 * but it doesn't guarantee that the file actually exists. It simply creates a
+			 * File object based on the provided path.
+			 */
+			if (existingFile.exists()) {
+				existingFile.delete();
 			}
+		}
 
+		try {
 			photo.transferTo(new File(fileName));
-			hangPhong.setAnh(photoPath);
-			session.update(hangPhong);
-			t.commit();
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		hangPhong.setAnh(photoPath);
+		if (roomService.update(hangPhong) == 1) {
 			model.addAttribute("message", "*Update successful");
-		} catch (Exception e) {
-			t.rollback();
+		} else {
 			model.addAttribute("message", "*Update failed.");
-		} finally {
-			session.close();
 		}
 
 		return "admin/editRoomPhoto";
@@ -235,10 +195,7 @@ public class RoomController {
 			@RequestParam("photo") MultipartFile photo, ModelMap model, BindingResult errors) {
 
 		/* Validate input */
-		Session session = factory.getCurrentSession();
-		String hql = "FROM HangPhong";
-		Query query = session.createQuery(hql);
-		List<HangPhong> listHP = query.list();
+		List<HangPhong> listHP = roomService.getList();
 
 		hangPhong.setIdHP(hangPhong.getIdHP().trim());
 		hangPhong.setTenHP(hangPhong.getTenHP().trim());
@@ -248,7 +205,7 @@ public class RoomController {
 		if (listHP.stream().anyMatch(existingHP -> existingHP.getIdHP().equals(hangPhong.getIdHP()))) {
 			errors.rejectValue("idHP", "HangPhong", "ID \"" + hangPhong.getIdHP() + "\" Already Exists.");
 		}
-		if (!isIdValid(hangPhong.getIdHP())) {
+		if (!roomService.isIdValid(hangPhong.getIdHP())) {
 			errors.rejectValue("idHP", "HangPhong", "ID \"" + hangPhong.getIdHP()
 					+ "\" Must Not Include Special Characters. Only Letters, Numbers, And Underscores Are Allowed In IDs.\"");
 		}
@@ -256,12 +213,12 @@ public class RoomController {
 		if (listHP.stream().anyMatch(existingHP -> existingHP.getTenHP().equals(hangPhong.getTenHP()))) {
 			errors.rejectValue("tenHP", "HangPhong", "Name \"" + hangPhong.getTenHP() + "\" Already Exists.");
 		}
-		if (!isIdValid(hangPhong.getTenHP())) {
+		if (!roomService.isNameValid(hangPhong.getTenHP())) {
 			errors.rejectValue("tenHP", "HangPhong", "Name \"" + hangPhong.getTenHP()
-					+ "\" Must Not Include Special Characters. Only Letters, Numbers, and underscores are allowed in Names.\"");
+					+ "\" Must Not Include Special Characters. Only Letters, Numbers, Spaces And Underscores Are Allowed In Names.\"");
 		}
 		/*---------------- check photo ----------------*/
-		String extension = getFileExtension(photo.getOriginalFilename());
+		String extension = roomService.getFileExtension(photo.getOriginalFilename());
 		if (!extension.equalsIgnoreCase("jpg") && !extension.equalsIgnoreCase("jpeg")
 				&& !extension.equalsIgnoreCase("png") && !extension.equalsIgnoreCase("gif")
 				&& !extension.equalsIgnoreCase("bmp")) {
@@ -282,7 +239,6 @@ public class RoomController {
 			String fileName = context.getRealPath("/template/admin/assets/img/" + photo.getOriginalFilename());
 //				String fileName = context.getContextPath() + "/template/admin/assets/img/"
 //						+ photo.getOriginalFilename();
-			System.out.println(fileName);
 			photoPath = "/template/admin/assets/img/" + photo.getOriginalFilename();
 			photo.transferTo(new File(fileName));
 
@@ -291,21 +247,13 @@ public class RoomController {
 
 		}
 
-		session = factory.openSession();
-		Transaction t = session.beginTransaction();
-		try {
-			hangPhong.setAnh(photoPath);
-			session.save(hangPhong);
-			t.commit();
+		hangPhong.setAnh(photoPath);
+		if (roomService.insert(hangPhong) == 1) {
 			model.addAttribute("message", "*Insert Successful");
-		} catch (Exception e) {
-			t.rollback();
+		} else {
 			model.addAttribute("message", "*Insert Failed");
-			errors.rejectValue("idHP", "HangPhong", "ID \"" + hangPhong.getIdHP() + "\" Already Exists.");
-		} finally {
-			session.close();
+			errors.rejectValue("idHP", "HangPhong", "Please Check This ID, Maybe ID \"" + hangPhong.getIdHP() + "\" Already Exists.");
 		}
-
 		return "/admin/insertHangPhong";
 
 	}
@@ -314,23 +262,12 @@ public class RoomController {
 
 	@RequestMapping(value = "/deleteHangPhong", method = RequestMethod.GET)
 	public String deleteHangPhong(@RequestParam("id") String id, ModelMap model) {
-
-		Session session = factory.openSession();
-		Transaction t = session.beginTransaction();
-		try {
-			HangPhong hangPhong = (HangPhong) session.get(HangPhong.class, id);
-			session.delete(hangPhong);
-			t.commit();
+		if (roomService.delete(id) == 1) {
 			model.addAttribute("message", "*Delete Successful");
-		} catch (Exception e) {
-			t.rollback();
-			model.addAttribute("message", "*Delete Failed. There Is Room Detail In Room");
-		} finally {
-			session.close();
+		} else {
+			model.addAttribute("message", "*Delete Failed");
 		}
-
 		return "redirect:/admin/hang-phong";
-
 	}
 
 	@RequestMapping("/phong")
