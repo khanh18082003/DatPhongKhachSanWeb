@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -19,7 +20,7 @@ public class KhachHang {
 	@Column(name = "MAKH")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int maKH;
-	
+
 	@NotBlank(message = "First Name can not be empty.")
 	@Column(name = "HO", nullable = false, length = 50)
 	private String ho;
@@ -28,6 +29,8 @@ public class KhachHang {
 	@Column(name = "TEN", nullable = false, length = 10)
 	private String ten;
 	
+
+	@Size(min = 10, max = 11, message = "Length of phone must be equal 10 or 11")
 	@NotBlank(message = "Phone Number can not be empty.")
 	@Column(name = "SDT", nullable = false, length = 11)
 	private String sdt;

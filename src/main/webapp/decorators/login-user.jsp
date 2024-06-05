@@ -21,20 +21,30 @@
 	href='<c:url value="/template/login/css/style.css"/>'>
 <title><dec:title default="Sona | Login" /></title>
 </head>
+<style>
+	.menu {
+		background-color: #fff;
+	}
+	
+	.menu .logo {
+		padding: 25px 0;
+	}
+</style>
 <body>
-	<div class="menu-item">
-		<div class="container" style="margin-top: 20px; width: 100%;">
-			<div class="row" style="padding: 10px;">
+	<div class="menu">
+		<div class="container">
+			<div class="row">
 				<div class="col-lg-2">
 					<div class="logo">
-						<a href="<c:url value="/trang-chu"/>"> <img
-							src="<c:url value="/template/user/img/logo.png"/>" alt="">
+						<a href="<c:url value="/home"/>"> <img
+							src="<c:url value="/template/user/img/logo.png"/>" alt="Logo">
 						</a>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
 	<div class="main">
 		<dec:body />
 	</div>

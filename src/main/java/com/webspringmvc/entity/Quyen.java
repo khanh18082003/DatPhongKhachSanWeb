@@ -19,7 +19,7 @@ public class Quyen {
 	@Column(name = "TENQUYEN", nullable = false)
 	private String tenQuyen;
 
-	@OneToMany(mappedBy = "quyen", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "quyen", fetch = FetchType.LAZY)
 	private Collection<TaiKhoan> taiKhoan;
 
 	public Quyen() {

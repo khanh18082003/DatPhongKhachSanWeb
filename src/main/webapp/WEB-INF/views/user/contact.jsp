@@ -26,7 +26,7 @@
 								</tr>
 								<tr>
 									<td class="c-o">Phone:</td>
-									<td>(12) 345 67890</td>
+									<td>+(84) 378 277 559</td>
 								</tr>
 								<tr>
 									<td class="c-o">Email:</td>
@@ -34,7 +34,7 @@
 								</tr>
 								<tr>
 									<td class="c-o">Fax:</td>
-									<td>+(12) 345 67890</td>
+									<td>+(84) 378 277 559</td>
 								</tr>
 							</tbody>
 						</table>
