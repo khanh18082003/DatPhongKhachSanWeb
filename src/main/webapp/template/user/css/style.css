@@ -1494,7 +1494,7 @@ ol {
 
 .room-item .ri-text {
 	border: 1px solid #ebebeb;
-	border-top: none;
+	/* border-top: none;*/
 	padding: 24px 24px 30px 28px;
 }
 

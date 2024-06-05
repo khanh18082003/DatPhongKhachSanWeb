@@ -123,7 +123,6 @@ public class RoomsController {
 		Map<String, Integer> discount = new HashMap<String, Integer>();
 		for (Object[] objects : list) {
 			discount.put(objects[0].toString(), Integer.parseInt(objects[1].toString()));
-			System.out.println(objects[0].toString() + " " + objects[1].toString());
 		}
 		request.getSession().setAttribute("discount", discount);
 		request.getSession().setAttribute("roomAvai", roomAvai);

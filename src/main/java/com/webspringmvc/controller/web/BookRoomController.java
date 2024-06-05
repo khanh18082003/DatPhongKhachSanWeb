@@ -86,7 +86,7 @@ public class BookRoomController {
     		
     		Date dateNow = Calendar.getInstance().getTime();
             Timestamp ngayDat = new Timestamp(targetFormat.parse(targetFormat.format(dateNow)).getTime());
-    		PhieuDat pd = new PhieuDat(ngayDat, ngayBD, ngayKT, tk);
+    		PhieuDat pd = new PhieuDat(ngayDat, ngayBD, ngayKT, tk, 0);
     		
     		int soNgay = (int)TimeUnit.DAYS.convert(ngayKT.getTime() - ngayBD.getTime(), TimeUnit.MILLISECONDS);
     		

@@ -30,7 +30,9 @@ public class PhieuDat {
 
 	@Column(name = "NGAYKT", nullable = false)
 	private Timestamp ngayKT;
-
+	// 0 là đã đặt , 1 là thành công, -1 là hủy
+	@Column(name = "TRANGTHAI", nullable = false)
+	private int trangThai;
 	@ManyToOne
 	@JoinColumn(name = "username")
 	private TaiKhoan taiKhoan;
@@ -40,13 +42,14 @@ public class PhieuDat {
 	
 	public PhieuDat() {
 	}
-	public PhieuDat(Timestamp ngayDat, Timestamp ngayBD, Timestamp ngayKT, TaiKhoan taiKhoan) {
+	public PhieuDat(Timestamp ngayDat, Timestamp ngayBD, Timestamp ngayKT, TaiKhoan taiKhoan, int trangThai) {
 		this.ngayDat = ngayDat;
 		this.ngayBD = ngayBD;
 		this.ngayKT = ngayKT;
 		this.taiKhoan = taiKhoan;
+		this.trangThai = trangThai;
 	}
-
+	
 	public int getMaPD() {
 		return maPD;
 	}
@@ -94,5 +97,12 @@ public class PhieuDat {
 	public void setCtPD(Collection<CT_PhieuDat> ctPD) {
 		this.ctPD = ctPD;
 	}
+	
+	public int getTrangThai() {
+		return trangThai;
+	}
 
+	public void setTrangThai(int trangThai) {
+		this.trangThai = trangThai;
+	}
 }
