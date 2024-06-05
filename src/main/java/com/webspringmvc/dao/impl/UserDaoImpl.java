@@ -1,5 +1,6 @@
 package com.webspringmvc.dao.impl;
 
+import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -9,17 +10,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.webspringmvc.dao.ITaiKhoanDao;
-import com.webspringmvc.entity.TaiKhoan;
+import com.webspringmvc.dao.IUserDao;
+import com.webspringmvc.entity.KhachHang;
 
 @Transactional
 @Repository
-public class TaiKhoanDaoImpl implements ITaiKhoanDao {
+public class UserDaoImpl implements IUserDao {
+	
 	@Autowired
 	SessionFactory factory;
-
+	
 	@Override
-	public int insert(TaiKhoan t) {
+	public int insert(KhachHang t) {
 		Session session = factory.openSession();
 		Transaction transaction = session.beginTransaction();
 		try {
@@ -33,7 +35,7 @@ public class TaiKhoanDaoImpl implements ITaiKhoanDao {
 	}
 
 	@Override
-	public int update(TaiKhoan t) {
+	public int update(KhachHang t) {
 		Session session = factory.openSession();
 		Transaction transaction = session.beginTransaction();
 		try {
@@ -48,36 +50,44 @@ public class TaiKhoanDaoImpl implements ITaiKhoanDao {
 
 	@Override
 	public int delete(String id) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public TaiKhoan getTaiKhoan(String id, String quyen) {
+	public KhachHang getUserById(String id) {
 		Session session = factory.getCurrentSession();
-		Query q = session.createQuery("FROM TaiKhoan tk WHERE tk.quyen.maQuyen = :quyen AND username = :username");
-		q.setParameter("quyen", quyen);
-		q.setParameter("username", id);
-		TaiKhoan taiKhoanById = (TaiKhoan) q.uniqueResult();
-		return taiKhoanById;
+		Query q = session.createQuery("FROM KhachHang kh WHERE maKH = :id");
+		q.setParameter("id", id);
+		KhachHang kh = null;
+		Object obj = q.uniqueResult();
+		if (obj != null) {
+			kh = (KhachHang) obj;
+		}
+		 
+		return kh;
 	}
 
 	@Override
-	public TaiKhoan getTaiKhoanByToken(String token, int index) {
+	public KhachHang getUserByEmail(String email) {
 		Session session = factory.getCurrentSession();
-		Query q = null;
-		TaiKhoan t = null;
-		if (index == 1) {
-			q = session.createQuery("FROM TaiKhoan WHERE resetPasswordToken = :token");
-			q.setParameter("token", token);
-			t = (TaiKhoan) q.uniqueResult();
-		}else if (index == 2) {
-			q = session.createQuery("FROM TaiKhoan WHERE token = :token");
-			q.setParameter("token", token);
-			t = (TaiKhoan) q.uniqueResult();
+		Query q = session.createQuery("FROM KhachHang WHERE email.username = :email");
+		q.setParameter("email", email);
+		KhachHang kh = null;
+		Object obj = q.uniqueResult();
+		if (obj != null) {
+			kh = (KhachHang) obj;
 		}
-		
-		return t;
+		return kh;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<KhachHang> getList() {
+		Session session = factory.getCurrentSession();
+		Query q = session.createQuery("FROM KhachHang");
+		List<KhachHang> khList = q.list();
+
+		return khList;
+	}
+	
 }

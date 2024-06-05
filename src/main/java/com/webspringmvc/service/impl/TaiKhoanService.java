@@ -23,11 +23,6 @@ public class TaiKhoanService implements ITaiKhoanService {
 		return taiKhoanDao.getTaiKhoan(id, quyen);
 	}
 
-	@Override
-	public List<TaiKhoan> getList() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public int insert(TaiKhoan t) {

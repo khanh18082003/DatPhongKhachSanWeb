@@ -14,7 +14,9 @@
 		<pattern>/admin/forgot-password</pattern>
 		<pattern>/admin/reset-password</pattern>
 	</decorator>
-	
+	<decorator name="update-info" page="update-info.jsp">
+		<pattern>/update-user</pattern>
+	</decorator>
 	<decorator name="admin" page="admin.jsp">
 		<pattern>/admin/*</pattern>
 		<exclude>/admin/sign-in</exclude>

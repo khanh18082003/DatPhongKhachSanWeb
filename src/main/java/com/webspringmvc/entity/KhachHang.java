@@ -3,16 +3,20 @@ package com.webspringmvc.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "KHACHHANG")
 public class KhachHang {
 	@Id
 	@Column(name = "MAKH")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String maKH;
 	
 	@Column(name = "HO", nullable = false, length = 50)
@@ -21,6 +25,7 @@ public class KhachHang {
 	@Column(name = "TEN", nullable = false, length = 10)
 	private String ten;
 	
+	@Size(min = 10, max = 11, message = "Length of phone must be equal 10 or 11")
 	@Column(name = "SDT", nullable = false, length = 11)
 	private String sdt;
 	

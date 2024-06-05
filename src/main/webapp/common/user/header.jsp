@@ -86,7 +86,7 @@
 									</span>
 									<ul class="setting-account-list">
 										<li class="setting-account-item"><a
-											href='<c:url value="/update"/>'>Update Account</a></li>
+											href='<c:url value="/update-user"/>'>Update Account</a></li>
 										<li class="setting-account-item"><a
 											href='<c:url value="/logout"/>'>Logout</a></li>
 									</ul>
