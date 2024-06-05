@@ -1,105 +1,86 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Admin | Phong</title>
+    <meta charset="UTF-8">
+    <title>Tạo Phòng</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
-	<div id="layoutSidenav_content">
-		<main>
-			<div class="container-fluid px-4">
-				<h1 class="mt-4">Phòng</h1>
-				<ol class="breadcrumb mb-4">
-					<li class="breadcrumb-item active">Phòng</li>
-				</ol>
-
-				<div class="card mb-4">
-					<div class="card-header">
-						<i class="fas fa-table me-1"></i> Hạng phòng
-					</div>
-					<div class="card-body">
-						<table id="roomTable" class="datatable-table">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>Mã Phòng</th>
-									<th>Tên Phòng</th>
-									<th>Tầng</th>
-									<th>Trạng Thái</th>
-									<th>Hạng Phòng</th>
-								</tr>
-							</thead>
-							<tfoot>
-								<tr>
-									<th>#</th>
-									<th>Mã Phòng</th>
-									<th>Tên Phòng</th>
-									<th>Tầng</th>
-									<th>Trạng Thái</th>
-									<th>Hạng Phòng</th>
-								</tr>
-							</tfoot>
-							<tbody>
-								<tr>
-									<td>Row 1, Column 1</td>
-									<td>Row 1, Column 2</td>
-									<td>Row 1, Column 3</td>
-									<td>Row 1, Column 4</td>
-
-								</tr>
-								<tr>
-									<td>Row 2, Column 1</td>
-									<td>Row 2, Column 2</td>
-									<td>Row 2, Column 3</td>
-									<td>Row 2, Column 4</td>
-
-								</tr>
-								<tr>
-									<td>Row 3, Column 1</td>
-									<td>Row 3, Column 2</td>
-									<td>Row 3, Column 3</td>
-									<td>Row 3, Column 4</td>
-
-								</tr>
-								<tr>
-									<td>Row 4, Column 1</td>
-									<td>Row 4, Column 2</td>
-									<td>Row 4, Column 3</td>
-									<td>Row 4, Column 4</td>
-
-								</tr>
-								<tr>
-									<td>Row 5, Column 1</td>
-									<td>Row 5, Column 2</td>
-									<td>Row 5, Column 3</td>
-									<td>Row 5, Column 4</td>
-
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-
-
-			</div>
-
-
-		</main>
-
-
-		<footer class="py-4 bg-light mt-auto">
-			<div class="container-fluid px-4">
-				<div class="d-flex align-items-center justify-content-between small">
-					<div class="text-muted">Copyright &copy; Your Website 2023</div>
-					<div>
-						<a href="#">Privacy Policy</a> &middot; <a href="#">Terms
-							&amp; Conditions</a>
-					</div>
-				</div>
-			</div>
-		</footer>
-	</div>
+    <div class="container mt-5">
+        <h2 class="mb-4">Tạo Phòng</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Mã Phòng</th>
+                    <th>Tên Phòng</th>
+                    <th>Tầng</th>
+                    <th>Trạng Thái</th>
+                    <th>Loại Phòng</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td><input type="text" class="form-control" name="maPhong1"></td>
+                    <td><input type="text" class="form-control" name="tenPhong1"></td>
+                    <td><input type="text" class="form-control" name="tang1"></td>
+                    <td><input type="text" class="form-control" name="trangThai1"></td>
+                    <td>
+                        <select class="form-control" name="loaiPhong1">
+                            <option>Đơn</option>
+                            <option>Đôi</option>
+                            <option>Double</option>
+                            <option>VIP</option>
+                            <option>Standard</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><input type="text" class="form-control" name="maPhong2"></td>
+                    <td><input type="text" class="form-control" name="tenPhong2"></td>
+                    <td><input type="text" class="form-control" name="tang2"></td>
+                    <td><input type="text" class="form-control" name="trangThai2"></td>
+                    <td>
+                        <select class="form-control" name="loaiPhong2">
+                            <option>Đơn</option>
+                            <option>Đôi</option>
+                            <option>Double</option>
+                            <option>VIP</option>
+                            <option>Standard</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><input type="text" class="form-control" name="maPhong3"></td>
+                    <td><input type="text" class="form-control" name="tenPhong3"></td>
+                    <td><input type="text" class="form-control" name="tang3"></td>
+                    <td><input type="text" class="form-control" name="trangThai3"></td>
+                    <td>
+                        <select class="form-control" name="loaiPhong3">
+                            <option>Đơn</option>
+                            <option>Đôi</option>
+                            <option>Double</option>
+                            <option>VIP</option>
+                            <option>Standard</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Tạo Phòng</button>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
 </html>
