@@ -18,7 +18,16 @@
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/about-us" />
-			<bean class="com.webspringmvc.interceptors.LoginInterceptor" />
+			<bean class="com.webspringmvc.interceptors.LoginUserInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/home"/>
+			<bean class="com.webspringmvc.interceptors.HomeInterceptor"/>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/admin/"/>
+			<mvc:mapping path="/admin/home"/>
+			<bean class="com.webspringmvc.interceptors.LoginAdminInterceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>
 

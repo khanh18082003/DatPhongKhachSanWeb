@@ -38,7 +38,7 @@ public class NhanVien {
 	@Column(name = "EMAIL")
 	private String email;
 
-	@OneToMany(mappedBy = "nhanVien", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "nhanVien", fetch = FetchType.LAZY)
 	private Collection<TaiKhoan> taiKhoan;
 
 	public NhanVien() {

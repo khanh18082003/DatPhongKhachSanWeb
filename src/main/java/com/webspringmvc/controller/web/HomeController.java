@@ -1,6 +1,5 @@
 package com.webspringmvc.controller.web;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -9,21 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller(value = "homeControllerOfUser")
 public class HomeController {
-	@RequestMapping("/trang-chu")
+	@RequestMapping("/home")
 	public String homePage(HttpServletRequest request, HttpSession session) {
-		Cookie[] cookies = request.getCookies();
-		if (cookies == null) {
-			return "user/home";
-		} else {
-			String infos = "";
-			for (Cookie c : cookies) {
-				if (c.getName().equals("auth")) {
-					infos = c.getValue();
-					session.setAttribute("author", infos);
-					break;
-				}
-			}
-			return "user/home";
-		}
+		return "user/home";
 	}
 }
