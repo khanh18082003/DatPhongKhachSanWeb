@@ -4,10 +4,14 @@ import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +36,7 @@ import com.google.gson.Gson;
 import com.webspringmvc.dao.ITaiKhoanDao;
 import com.webspringmvc.entity.CT_PhieuDat;
 import com.webspringmvc.entity.HangPhong;
+import com.webspringmvc.entity.HoaDon;
 import com.webspringmvc.entity.KhachHang;
 import com.webspringmvc.entity.PhieuDat;
 import com.webspringmvc.entity.TaiKhoan;
@@ -57,7 +62,7 @@ public class BookRoomController {
             Timestamp ngayKT = new Timestamp(targetFormat.parse(ngayKTStr).getTime());
             
             int sLP = Integer.parseInt(request.getParameter("sl"));
-            
+            System.out.println(sLP);
             String idHP = request.getParameter("id");
             String hql = "From HangPhong where idHP = :idHP";
             Session session = factory.getCurrentSession();
@@ -91,6 +96,9 @@ public class BookRoomController {
     		request.getSession().setAttribute("tk", tk);
     		request.setAttribute("ctPhieuDat", ctpd);
     		request.setAttribute("soNgay", soNgay);
+    		System.out.println(request.getSession().getAttribute("discount"));
+    		int discount = Integer.parseInt(request.getSession().getAttribute("discount").toString());
+    		request.getSession().setAttribute("discount", discount);
             
 		} catch (ParseException  e) {
 		    e.printStackTrace();
@@ -117,22 +125,36 @@ public class BookRoomController {
 		}
 		Session session_insert = factory.openSession();
 		Transaction t = session_insert.beginTransaction();
+		// Kiểm tra xem có tài khoản hay chưa
+		String hql = "select kh from KhachHang kh join kh.email tk where tk.username = :username";
+		Query query = session_insert.createQuery(hql);
+		query.setParameter("username", tk.getUsername());
+		List<KhachHang> khList = query.list();
+		int discount = Integer.parseInt(request.getSession().getAttribute("discount").toString());
+        float tongTien = ctpd.getHangPhong().getGia() * ctpd.getsLPhong() * (1 - discount/100);
+        Timestamp myDateObj = new Timestamp(System.currentTimeMillis());
+        HoaDon hd = new HoaDon(myDateObj, tongTien, pd);
 		try {
-			if (kh.getEmail() == null) {
+			if (khList.isEmpty()) {
 				kh.setEmail(tk);
-		        session_insert.save(kh);
-		    }
+				session_insert.save(kh);
+			}
 			session_insert.save(pd);
 			session_insert.save(ctpd);
+			session_insert.save(hd);
 			t.commit();
 		} catch (Exception e) {
 			t.rollback();
+			e.printStackTrace();
 		} finally {
 			session_insert.close();
 		}
-		String subject = "Thank! Your booking at Sona has been confirmed.";
-		String body = "Cam on ban";
-		mailer.send("Sona Support", kh.getEmail().getUsername(), subject, body);
+		
+		
+		
+//		String subject = "Thank! Your booking at Sona has been confirmed.";
+//		String body = "Cam on ban";
+//		mailer.send("Sona Support", kh.getEmail().getUsername(), subject, body);
 		return "user/booksuccess";
 	}
 }

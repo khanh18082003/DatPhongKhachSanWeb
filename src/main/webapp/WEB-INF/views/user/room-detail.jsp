@@ -42,36 +42,26 @@
 							<div class="rd-title">
 								<h3>${room.tenHP}</h3>
 								<div class="rdt-right">
-									<span style="margin-right: 10px"> <select
-										id="roomSelect" class="inputroom select-option">
-											<c:forEach begin="1" end="${slPhong}" varStatus="status">
-													<option value="${status.count}">${status.count} ${status.count == 1 ? 'Room' : 'Rooms'}</option>
-											</c:forEach>
-									</select>
-									</span> <a href="#" id="bookingLink">Booking Now</a>
-									<script>
-										document.addEventListener('DOMContentLoaded', function() {
-										    var bookingLink = document.getElementById('bookingLink');
-										    var roomSelect = document.getElementById('roomSelect');
-										    // Sự kiện khi nhấn vào bookingLink để cập nhật URL
-										    bookingLink.addEventListener('click', function(event) {
-										        var selectedRooms = roomSelect.value;
-										        // Cập nhật URL cho bookingLink
-										        var href = `<c:url value='/book-room?id=${room.idHP}&checkin=${checkin}&checkout=${checkout}&sl='/>`+ selectedRooms;
-										        bookingLink.href = href;
-										    });
-										
-										    // Gọi sự kiện click ngay khi trang tải xong để set URL ban đầu dựa trên giá trị mặc định của roomSelect
-										    bookingLink.dispatchEvent(new Event('click'));
-										});
-										</script>
+								    <form action='<c:url value="/book-room"/>' method = "post">
+										<span style="margin-right: 10px"> <select
+											name ="sl" id="roomSelect" class="inputroom select-option">
+												<c:forEach begin="1" end="${slPhong}" varStatus="status">
+														<option value="${status.count}">${status.count} ${status.count == 1 ? 'Room' : 'Rooms'}</option>
+												</c:forEach>
+										</select>
+										</span>
+										<input type="hidden" name="checkin" value="${checkin}" />
+										<input type="hidden" name="checkout" value="${checkout}" />
+										<input type="hidden" name="id" value="${room.idHP}" />
+										<button type ="submit" id="bookingLink">Booking Now</button>
+									</form>
 
 								</div>
 							</div>
 							<br /> <br /> <br />
 							<h2> 
-								<fmt:formatNumber value="${room.gia}" type="currency"
-									currencySymbol="$" pattern="$#,##0.00" />
+											<fmt:formatNumber value="${room.gia * (100 - discount)/100}"
+												type="currency" currencySymbol="$" pattern="$#,##0.00" />
 								<span>/Pernight</span>
 							</h2>
 							<table>

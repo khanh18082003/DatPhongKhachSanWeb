@@ -69,6 +69,7 @@
 												type="currency" currencySymbol="$" pattern="$#,##0.00" />
 											</c:otherwise>
 									</c:choose>
+									<span>/Pernight</span>
 								</h3>
 								<table>
 									<tbody>
@@ -105,7 +106,7 @@
 											Details</a>
 									</c:when>
 									<c:otherwise>
-										<a onclick="return dontClick(${roomAvailable[room.idHP]})" href='<c:url value="/rooms/room-detail?id=${room.idHP}&dateIn=${dateIn}&dateOut=${dateOut}&roomAvai=${roomAvailable[room.idHP]}" />'
+										<a onclick="return dontClick(${roomAvailable[room.idHP]})" href='<c:url value="/rooms/room-detail?id=${room.idHP}&dateIn=${dateIn}&dateOut=${dateOut}" />'
 											class="primary-btn">More Details</a>
 									</c:otherwise>
 								</c:choose>

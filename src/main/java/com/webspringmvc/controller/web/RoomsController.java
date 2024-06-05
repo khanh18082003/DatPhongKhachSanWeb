@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.webspringmvc.entity.HangPhong;
 import com.webspringmvc.entity.LoaiPhong;
 import com.webspringmvc.entity.Phong;
+import com.webspringmvc.entity.TaiKhoan;
 import com.webspringmvc.page.ChangePage;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,8 +125,8 @@ public class RoomsController {
 			discount.put(objects[0].toString(), Integer.parseInt(objects[1].toString()));
 			System.out.println(objects[0].toString() + " " + objects[1].toString());
 		}
-		request.setAttribute("discount", discount);
-		request.setAttribute("roomAvai", roomAvai);
+		request.getSession().setAttribute("discount", discount);
+		request.getSession().setAttribute("roomAvai", roomAvai);
 		ChangePage.changePage(listHPTemp, page, model, 9);
 		return "user/rooms";
 	}
@@ -133,8 +134,12 @@ public class RoomsController {
 	public String roomDetail(@RequestParam("id") String idHP,
 			@RequestParam("dateOut") String dateOut,
 			@RequestParam("dateIn") String dateIn,
-			@RequestParam("roomAvai") int roomAvai,
 			HttpServletRequest request) {
+		Map<String, Integer> roomAvai = new HashMap<String, Integer>();
+		roomAvai = (Map<String, Integer>) request.getSession().getAttribute("roomAvai");
+		Map<String, Integer> discount = new HashMap<String, Integer>();
+		discount = (Map<String, Integer>) request.getSession().getAttribute("discount");
+		request.getSession().setAttribute("discount", discount.get(idHP)==null? 0: discount.get(idHP));
 		String hql = "From HangPhong where idHP = :idHP";
 		Session session = factory.getCurrentSession();
 		Query query = session.createQuery(hql);
@@ -154,7 +159,7 @@ public class RoomsController {
 		query.setParameter("dateOut", dateOutTemp);
 		query.setParameter("dateIn", dateInTemp);
 		
-		request.setAttribute("slPhong", roomAvai);
+		request.setAttribute("slPhong", roomAvai.get(idHP));
 		SimpleDateFormat originalFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
         SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH);
         try {
