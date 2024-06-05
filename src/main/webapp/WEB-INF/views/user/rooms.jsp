@@ -60,7 +60,16 @@
 							<div class="ri-text">
 								<h4>${room.tenHP}</h4>
 								<h3>
-									<fmt:formatNumber value="${room.gia}" type="currency" currencySymbol="$" pattern="$#,##0.00" /> <span>/Pernight</span>
+									<c:choose>
+										<c:when test="${discount[room.idHP] == null}">
+										    <fmt:formatNumber value="${room.gia}" type="currency" currencySymbol="$" pattern="$#,##0.00" />
+										</c:when>
+										<c:otherwise>
+											<fmt:formatNumber value="${room.gia * (100 - discount[room.idHP])/100}"
+												type="currency" currencySymbol="$" pattern="$#,##0.00" />
+											</c:otherwise>
+									</c:choose>
+									<span>/Pernight</span>
 								</h3>
 								<table>
 									<tbody>
