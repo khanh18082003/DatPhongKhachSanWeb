@@ -62,7 +62,7 @@
 		$('.menu-item .nav-menu .mainmenu li').eq(activeTab).addClass('active');
 
 		if ($('.menu-item .nav-menu .mainmenu li').eq(activeTab).find('a')
-				.text().trim() !== 'Home') {
+			.text().trim() !== 'Home') {
 			// Thêm hoặc xóa lớp 'header-normal' từ phần header tùy thuộc vào
 			// việc có sẵn lớp này hay không
 			$('.header-section').toggleClass('header-normal');
@@ -148,10 +148,15 @@
 		onSelect: function() {
 			var dateIn = $("#date-in").datepicker("getDate");
 			var dateOut = $("#date-out").datepicker("getDate");
-
-			// Kiểm tra nếu ngày ra nhỏ hơn ngày đến, cập nhật ngày ra thành ngày đến
-			if (dateOut < dateIn) {
-				$(this).datepicker("setDate", dateIn);
+			// Kiểm tra nếu ngày ra nhỏ hơn hoặc bằng ngày đến, cập nhật ngày ra thành ngày đến + 1 ngày
+			if (dateOut <= dateIn && dateOut != null) {
+				if (this.id === "date-out") {
+					dateOut.setDate(dateIn.getDate() + 1);
+					$(this).datepicker("setDate", dateOut);
+				} else {
+					dateIn.setDate(dateOut.getDate() - 1);
+					$(this).datepicker("setDate", dateIn);
+				}
 			}
 		}
 	}).attr("readonly", "readonly").on("focus", function() {

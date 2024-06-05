@@ -1,28 +1,20 @@
 package com.webspringmvc.controller.admin;
 
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,6 +23,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.webspringmvc.entity.CT_KhuyenMai;
 import com.webspringmvc.entity.HangPhong;
 import com.webspringmvc.entity.KhuyenMai;
+import com.webspringmvc.service.IPromotionDetailService;
+import com.webspringmvc.service.IPromotionService;
+import com.webspringmvc.service.IRoomService;
 
 @Transactional
 @Controller
@@ -41,26 +36,16 @@ public class PromotionController {
 
 	@Autowired
 	ServletContext context;
+	
+	@Autowired
+	IPromotionService promotionService;
 
 	@RequestMapping("/promotion")
 	public String promotionPage(ModelMap model) {
-		Session session = factory.getCurrentSession();
-		String hql = "FROM KhuyenMai";
-		Query query = session.createQuery(hql);
-		List<KhuyenMai> listKM = query.list();
-		model.addAttribute("listKM", listKM);
-
+		model.addAttribute("listKM", promotionService.getList());
 		return "admin/promotion";
 	}
-
-	public static boolean isIdValid(String id) {
-		// Biểu thức chính quy để khớp ID hợp lệ (chỉ chứa chữ cái, số và gạch dưới)
-		String regex = "[a-zA-Z0-9_ ]+";
-		Pattern pattern = Pattern.compile(regex);
-		Matcher matcher = pattern.matcher(id);
-		return matcher.matches();
-	}
-
+	
 	/*-------------------------- INSERT KHUYENMAI --------------------------*/
 
 	@RequestMapping(value = "/insertPromo", method = RequestMethod.GET)
@@ -79,10 +64,7 @@ public class PromotionController {
 			HttpServletRequest request, BindingResult errors) {
 
 		/* Validate input */
-		Session session = factory.getCurrentSession();
-		String hql = "FROM KhuyenMai";
-		Query query = session.createQuery(hql);
-		List<KhuyenMai> listKM = query.list();
+		List<KhuyenMai> listKM = promotionService.getList();
 
 		khuyenMai.setmaKM(khuyenMai.getmaKM().trim());
 		khuyenMai.settenKM(khuyenMai.gettenKM().trim());
@@ -106,9 +88,9 @@ public class PromotionController {
 		if (listKM.stream().anyMatch(existingHP -> existingHP.gettenKM().equals(khuyenMai.gettenKM()))) {
 			errors.rejectValue("tenKM", "khuyenMai", "Name \"" + khuyenMai.gettenKM() + "\" Already Exists.");
 		}
-		if (!isIdValid(khuyenMai.gettenKM())) {
+		if (!promotionService.isNameValid(khuyenMai.gettenKM())) {
 			errors.rejectValue("tenKM", "khuyenMai", "Name \"" + khuyenMai.gettenKM()
-					+ "\" Must Not Include Special Characters. Only Letters, Numbers, And Underscores Are Allowed In Names.\"");
+					+ "\" Must Not Include Special Characters. Only Letters, Numbers, Spaces And Underscores Are Allowed In Names.\"");
 		}
 		/*---------------- check time ----------------*/
 		if (khuyenMai.getngayKT().compareTo(khuyenMai.getngayBD()) < 0
@@ -127,21 +109,14 @@ public class PromotionController {
 			model.addAttribute("message", "*Please Check These Errors.");
 			return "/admin/insertPromo";
 		}
-
-		session = factory.openSession();
-		Transaction t = session.beginTransaction();
-
-		try {
-			session.save(khuyenMai);
-			t.commit();
+		
+		if (promotionService.insert(khuyenMai) == 1) {
 			model.addAttribute("message", "*Insert Successful");
-		} catch (Exception e) {
-			t.rollback();
+		}
+		else {
 			model.addAttribute("message", "*Insert Failed");
 			errors.rejectValue("maKM", "khuyenMai",
-					"ID \"" + khuyenMai.getmaKM() + "\" Already Exists." + e.getLocalizedMessage());
-		} finally {
-			session.close();
+					"Please Check This ID, Maybe ID \"" + khuyenMai.getmaKM() + "\" Already Exists.");
 		}
 
 		return "/admin/insertPromo";
@@ -168,15 +143,12 @@ public class PromotionController {
 	public String editPromo(@ModelAttribute("khuyenMai") KhuyenMai khuyenMai, ModelMap model,
 			HttpServletRequest request, BindingResult errors) {
 		/* Validate input */
-		Session session = factory.getCurrentSession();
-		String hql = "FROM KhuyenMai";
-		Query query = session.createQuery(hql);
-		List<KhuyenMai> listKM = query.list();
+		List<KhuyenMai> listKM = promotionService.getList();
 
-		hql = "FROM KhuyenMai km WHERE km.maKM != :editedID";
-		query = session.createQuery(hql);
-		query.setParameter("editedID", khuyenMai.getmaKM());
-		List<KhuyenMai> otherKMs = query.list();
+//		hql = "FROM KhuyenMai km WHERE km.maKM != :editedID";
+//		query = session.createQuery(hql);
+//		query.setParameter("editedID", khuyenMai.getmaKM());
+		List<KhuyenMai> otherKMs = promotionService.getRemainingRoom(khuyenMai.getmaKM());
 
 		khuyenMai.setmaKM(khuyenMai.getmaKM().trim());
 		khuyenMai.settenKM(khuyenMai.gettenKM().trim());
@@ -192,9 +164,9 @@ public class PromotionController {
 		if (otherKMs.stream().anyMatch(existingKM -> existingKM.gettenKM().equals(khuyenMai.gettenKM()))) {
 			errors.rejectValue("tenKM", "khuyenMai", "Name \"" + khuyenMai.gettenKM() + "\" Already Exists.");
 		}
-		if (!isIdValid(khuyenMai.gettenKM())) {
+		if (!promotionService.isNameValid(khuyenMai.gettenKM())) {
 			errors.rejectValue("tenKM", "khuyenMai", "Name \"" + khuyenMai.gettenKM()
-					+ "\" Must Not Include Special Characters. Only Letters, Numbers, And Underscores Are Allowed In Names.\"");
+					+ "\" Must Not Include Special Characters. Only Letters, Numbers, Spaces And Underscores Are Allowed In Names.\"");
 		}
 		/*---------------- check time ----------------*/
 		if (khuyenMai.getngayKT().compareTo(khuyenMai.getngayBD()) < 0
@@ -213,19 +185,11 @@ public class PromotionController {
 			model.addAttribute("message", "*Please Check These Errors.");
 			return "/admin/editPromo";
 		}
-
-		session = factory.openSession();
-		Transaction t = session.beginTransaction();
-
-		try {
-			session.update(khuyenMai);
-			t.commit();
+		
+		if (promotionService.update(khuyenMai) == 1) {
 			model.addAttribute("message", "*Update Successful");
-		} catch (Exception e) {
-			t.rollback();
+		} else {
 			model.addAttribute("message", "*Update Failed");
-		} finally {
-			session.close();
 		}
 
 		return "/admin/editPromo";
@@ -242,28 +206,34 @@ public class PromotionController {
 			KhuyenMai khuyenMai = (KhuyenMai) session.get(KhuyenMai.class, id);
 			session.delete(khuyenMai);
 			t.commit();
-			model.addAttribute("message", "*Delete Successful");
+			
 		} catch (Exception e) {
 			t.rollback();
 			model.addAttribute("message", "*Delete Failed. There Is Promotion Detail In Promotion");
 		} finally {
 			session.close();
 		}
+		
+		if (promotionService.delete(id) == 1) {
+			model.addAttribute("message", "*Delete Successful");
+		} else {
+			model.addAttribute("message", "*Delete Failed. Maybe There Is Promotion Detail In Promotion");
+		}
 
 		return "redirect:/admin/promotion";
 
 	}
 
+	@Autowired
+	IRoomService roomService;
+	
+	@Autowired
+	IPromotionDetailService promotionDetailService;
+	
 	/*-------------------------------- CT_KHUYENMAI --------------------------------*/
 	@RequestMapping(value = "/promotion-detail", method = RequestMethod.GET)
 	public String pdPage(@RequestParam("id") String maKM, ModelMap model) {
-		Session session = factory.getCurrentSession();
-		String hql = "FROM CT_KhuyenMai WHERE maKM = :id";
-		Query query = session.createQuery(hql);
-		query.setParameter("id", maKM);
-		List<CT_KhuyenMai> listCTKM = query.list();
-
-		model.addAttribute("listCTKM", listCTKM);
+		model.addAttribute("listCTKM", promotionDetailService.getList(maKM));
 		model.addAttribute("maKM", maKM);
 
 		return "admin/promotion-detail";
@@ -278,13 +248,7 @@ public class PromotionController {
 		KhuyenMai khuyenMai = (KhuyenMai) session.get(KhuyenMai.class, idKM);
 		CTKM.setKhuyenMai(khuyenMai);
 
-		String hql = "FROM HangPhong";
-		Query query = session.createQuery(hql);
-		List<HangPhong> listHP = query.list();
-
-		System.out.println(khuyenMai.getmaKM() + " " + khuyenMai.gettenKM());
-
-		model.addAttribute("listHP", listHP);
+		model.addAttribute("listHP", roomService.getList());
 		model.addAttribute("idKM", idKM);
 		model.addAttribute("CTKM", CTKM);
 		return "admin/insertPD";
@@ -292,15 +256,9 @@ public class PromotionController {
 
 	@RequestMapping(value = "/insertPD", method = RequestMethod.POST)
 	public String insertPD(@ModelAttribute("CTKM") CT_KhuyenMai CTKM, ModelMap model, BindingResult errors) {
-		Session session = factory.getCurrentSession();
-		String hql = "FROM CT_KhuyenMai WHERE khuyenMai.maKM = :makm";
-		Query query = session.createQuery(hql);
-		query.setParameter("makm", CTKM.getKhuyenMai().getmaKM());
-		List<CT_KhuyenMai> listCTKM = query.list();
+		List<CT_KhuyenMai> listCTKM = promotionDetailService.getList(CTKM.getKhuyenMai().getmaKM());
 
-		hql = "FROM HangPhong";
-		query = session.createQuery(hql);
-		List<HangPhong> listHP = query.list();
+		List<HangPhong> listHP = roomService.getList();
 
 		if (listCTKM.stream().anyMatch(ctkm -> ctkm.getHangPhong().equals(CTKM.getHangPhong()))) {
 			errors.rejectValue("hangPhong", "CTKM", "This Room Already Exists In This Promotion.");
@@ -312,21 +270,15 @@ public class PromotionController {
 			return "/admin/insertPD";
 		}
 
-		session = factory.openSession();
-		Transaction t = session.beginTransaction();
-		System.out.println(CTKM.getKhuyenMai().getmaKM() + " " + CTKM.getKhuyenMai().gettenKM());
-
-		try {
-			session.save(CTKM);
-			t.commit();
+		
+		if (promotionDetailService.insert(CTKM) == 1) {
 			model.addAttribute("message", "*Insert Successful");
-		} catch (Exception e) {
-			t.rollback();
-			model.addAttribute("message", "*Insert Failed. Maybe This Room Detail Already Exists In This Promotion");
-		} finally {
-			session.close();
 		}
-		session = factory.openSession();
+		else {
+			model.addAttribute("message", "*Insert Failed. Maybe This Room Detail Already Exists In This Promotion");
+		}
+		
+		Session session = factory.openSession();
 		KhuyenMai khuyenMai = (KhuyenMai) session.get(KhuyenMai.class, CTKM.getKhuyenMai().getmaKM());
 		CT_KhuyenMai ct_KhuyenMai = new CT_KhuyenMai();
 		ct_KhuyenMai.setKhuyenMai(khuyenMai);
@@ -358,20 +310,11 @@ public class PromotionController {
 	public String editPD(@ModelAttribute("CTKM") CT_KhuyenMai CTKM, ModelMap model,
 			RedirectAttributes redirectAttributes, BindingResult errors) {
 
-		Session session = factory.openSession();
-		Transaction t = session.beginTransaction();
-
-		try {
-			session.update(CTKM);
-			t.commit();
-//			model.addAttribute("message", "*Update Successful");
+		if (promotionDetailService.update(CTKM) == 1) {
 			redirectAttributes.addFlashAttribute("message", "*Update Successful");
-		} catch (Exception e) {
-			t.rollback();
-//			model.addAttribute("message", "*Update Failed");
+		}
+		else {
 			redirectAttributes.addFlashAttribute("message", "*Update Failed");
-		} finally {
-			session.close();
 		}
 
 //		model.addAttribute("idKM", CTKM.getKhuyenMai().getmaKM());
@@ -385,19 +328,12 @@ public class PromotionController {
 
 	@RequestMapping(value = "/deletePD", method = RequestMethod.GET)
 	public String deletePD(@RequestParam("idCTKM") int idCTKM, @RequestParam("idKM") String idKM, ModelMap model) {
-
-		Session session = factory.openSession();
-		Transaction t = session.beginTransaction();
-		try {
-			CT_KhuyenMai CTKM = (CT_KhuyenMai) session.get(CT_KhuyenMai.class, idCTKM);
-			session.delete(CTKM);
-			t.commit();
+		
+		if (promotionDetailService.delete(idCTKM) == 1) {
 			model.addAttribute("message", "*Delete Successful");
-		} catch (Exception e) {
-			t.rollback();
-			model.addAttribute("message", "*Delete Failed. " + e.getCause());
-		} finally {
-			session.close();
+		}
+		else {
+			model.addAttribute("message", "*Delete Failed");
 		}
 
 		return "redirect:/admin/promotion-detail?id=" + idKM;

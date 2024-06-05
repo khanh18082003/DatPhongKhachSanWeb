@@ -35,11 +35,11 @@ public class UpdateUserController {
 
 		if (kh == null) {
 			kh = new KhachHang();
-			kh.setemail(tk);
+			kh.setEmail(tk);
 			model.addAttribute("user", kh);
 			session.setAttribute("inserted", false);
 		} else {
-			kh.setemail(tk);
+			kh.setEmail(tk);
 			model.addAttribute("user", kh);
 			session.setAttribute("inserted", true);
 		}

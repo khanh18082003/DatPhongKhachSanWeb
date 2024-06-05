@@ -1,9 +1,12 @@
 package com.webspringmvc.entity;
 
-import java.sql.Date;
+
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -13,11 +16,12 @@ import javax.persistence.Table;
 @Table(name = "HOADON")
 public class HoaDon {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "MAHD")
-	private String maHD;
+	private int maHD;
 	
 	@Column(name = "NGAYLAP")
-	private Date ngayLap;
+	private Timestamp ngayLap;
 	
 	@Column(name = "TONGTIEN")
 	private float tongTien;
@@ -29,26 +33,25 @@ public class HoaDon {
 	public HoaDon() {
 	}
 
-	public HoaDon(String maHD, Date ngayLap, float tongTien, PhieuDat maPD) {
-		this.maHD = maHD;
+	public HoaDon(Timestamp ngayLap, float tongTien, PhieuDat maPD) {
 		this.ngayLap = ngayLap;
 		this.tongTien = tongTien;
 		this.maPD = maPD;
 	}
 
-	public String getmaHD() {
+	public int getmaHD() {
 		return maHD;
 	}
 
-	public void setmaHD(String maHD) {
+	public void setmaHD(int maHD) {
 		this.maHD = maHD;
 	}
 
-	public Date getngayLap() {
+	public Timestamp getngayLap() {
 		return ngayLap;
 	}
 
-	public void setngayLap(Date ngayLap) {
+	public void setngayLap(Timestamp ngayLap) {
 		this.ngayLap = ngayLap;
 	}
 

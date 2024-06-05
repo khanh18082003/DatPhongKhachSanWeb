@@ -1603,7 +1603,7 @@ ol {
 	color: #f5b917;
 }
 
-.room-details-item .rd-text .rd-title .rdt-right a {
+.room-details-item .rd-text .rd-title .rdt-right button {
 	display: inline-block;
 	color: #ffffff;
 	font-size: 13px;
@@ -1611,6 +1611,7 @@ ol {
 	font-weight: 700;
 	background: #dfa974;
 	padding: 14px 28px 13px;
+	border: none;
 }
 
 .room-details-item .rd-text h2 {
@@ -1916,6 +1917,21 @@ ol {
 	margin-top: 30px;
 }
 .room-booking form button:hover {
+	background-color: lemonchiffon;
+}
+.room-booking button {
+	display: block;
+	font-size: 14px;
+	text-transform: uppercase;
+	border: 1px solid #dfa974;
+	border-radius: 2px;
+	color: #dfa974;
+	font-weight: 500;
+	background: transparent;
+	width: 100%;
+	height: 46px;
+	margin-top: 30px;
+}.room-booking button:hover {
 	background-color: lemonchiffon;
 }
 /*---------------------
