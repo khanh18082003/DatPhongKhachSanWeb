@@ -18,9 +18,12 @@ public class TaiKhoan {
 	@Column(name = "PASSWORD", nullable = false)
 	private String password;
 
-	@Column(name = "AUTH", nullable = false, unique = true)
+	@Column(name = "AUTH", nullable = false)
 	private String auth;
-
+	
+	@Column(name = "TOKEN")
+	private String token;
+	
 	@Column(name = "RESET_PASSWORD_TOKEN")
 	private String resetPasswordToken;
 
@@ -32,7 +35,7 @@ public class TaiKhoan {
 	@JoinColumn(name = "MANV")
 	private NhanVien nhanVien;
 
-	@OneToMany(mappedBy = "taiKhoan", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "taiKhoan", fetch = FetchType.LAZY)
 	private Collection<PhieuDat> phieuDat;
 
 	public TaiKhoan() {
@@ -46,6 +49,14 @@ public class TaiKhoan {
 		this.nhanVien = nhanVien;
 		this.auth = auth;
 		this.resetPasswordToken = resetPasswordToken;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	public String getUsername() {

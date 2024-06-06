@@ -14,6 +14,9 @@
 <link
 	href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
 	rel="stylesheet" />
+<link rel="icon"
+	href="<c:url value='/template/user/img/Hotel Logo.png'/>"
+	type="image/icon type">
 <link href='<c:url value="/template/admin/css/styles.css"/>'
 	rel="stylesheet" />
 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"

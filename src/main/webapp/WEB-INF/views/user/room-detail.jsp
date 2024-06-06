@@ -18,7 +18,7 @@
 					<div class="breadcrumb-text">
 						<h2>Our Rooms</h2>
 						<div class="bt-option">
-							<a href="<c:url value="/trang-chu"/>">Home</a> <span>Rooms</span>
+							<a href="<c:url value="/home"/>">Home</a> <span>Rooms</span>
 						</div>
 					</div>
 				</div>
@@ -42,43 +42,26 @@
 							<div class="rd-title">
 								<h3>${room.tenHP}</h3>
 								<div class="rdt-right">
-
-									<span style="margin-right: 10px"> <select
-										id="roomSelect" class="inputroom select-option">
-											<c:forEach begin="1" end="${slPhong}" varStatus="status">
-												<c:choose>
-													<c:when test="${status.index == 1}">
-														<option value="${status.index}">${status.count}
-															Room</option>
-													</c:when>
-													<c:otherwise>
-														<option value="${status.index}">${status.count}
-															Rooms</option>
-													</c:otherwise>
-												</c:choose>
-
-											</c:forEach>
-									</select>
-									</span> <a href="#" id="bookingLink">Booking Now</a>
-									<script>
-										document.addEventListener('DOMContentLoaded',function() {
-												var bookingLink = document.getElementById('bookingLink');
-												var roomSelect = document.getElementById('roomSelect');
-												roomSelect.addEventListener('change',function() {
-													var selectedRooms = roomSelect.value;
-													var href = `<c:url value='/book-room?id=${room.idHP}&checkin=${checkin}&checkout=${checkout}&sl='/>`+ selectedRooms;
-													bookingLink.href = href;});
-															// Trigger the change event initially to set the initial URL
-													roomSelect.dispatchEvent(new Event('change'));
-											});
-									</script>
+								    <form action='<c:url value="/book-room"/>' method = "post">
+										<span style="margin-right: 10px"> <select
+											name ="sl" id="roomSelect" class="inputroom select-option">
+												<c:forEach begin="1" end="${slPhong}" varStatus="status">
+														<option value="${status.count}">${status.count} ${status.count == 1 ? 'Room' : 'Rooms'}</option>
+												</c:forEach>
+										</select>
+										</span>
+										<input type="hidden" name="checkin" value="${checkin}" />
+										<input type="hidden" name="checkout" value="${checkout}" />
+										<input type="hidden" name="id" value="${room.idHP}" />
+										<button type ="submit" id="bookingLink">Booking Now</button>
+									</form>
 
 								</div>
 							</div>
 							<br /> <br /> <br />
 							<h2> 
-								<fmt:formatNumber  value="${room.gia}" type="currency"
-									currencySymbol="$" pattern="$#,##0.00" />
+											<fmt:formatNumber value="${room.gia * (100 - discount)/100}"
+												type="currency" currencySymbol="$" pattern="$#,##0.00" />
 								<span>/Pernight</span>
 							</h2>
 							<table>

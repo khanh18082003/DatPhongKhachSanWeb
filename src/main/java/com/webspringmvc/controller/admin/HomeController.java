@@ -28,7 +28,7 @@ public class HomeController {
 	@Autowired
 	IRevenueService revenueService;
 
-	@RequestMapping(value = "/trang-chu", method = RequestMethod.GET)
+	@RequestMapping(value = {"/home", "/"})
 	public String homePage(HttpServletRequest request, ModelMap model) {
 		Calendar getCurrentDate = Calendar.getInstance();
 		int getCurrentYear = getCurrentDate.get(Calendar.YEAR);
@@ -56,8 +56,6 @@ public class HomeController {
 		model.addAttribute("thisMonth", getCurrentMonth);
 		model.addAttribute("thisYear", getCurrentYear);
 
-		return "admin/home";
-	}
 
 	@RequestMapping("/charts")
 	public String charts() {
