@@ -28,7 +28,7 @@ public class HomeController {
 	@Autowired
 	IRevenueService revenueService;
 
-	@RequestMapping(value = {"/home", "/"})
+	@RequestMapping(value = { "/home", "/" })
 	public String homePage(HttpServletRequest request, ModelMap model) {
 		Calendar getCurrentDate = Calendar.getInstance();
 		int getCurrentYear = getCurrentDate.get(Calendar.YEAR);
@@ -52,10 +52,11 @@ public class HomeController {
 		model.addAttribute("revenueDataList", revenueDataJson);
 		model.addAttribute("currentMonthRevenue", currentMonthRevenueJson);
 		model.addAttribute("year", year); // Đảm bảo rằng "year" luôn được thêm vào model, kể cả khi nó là năm hiện tại
-		
+
 		model.addAttribute("thisMonth", getCurrentMonth);
 		model.addAttribute("thisYear", getCurrentYear);
-
+		return "admin/home";
+	}
 
 	@RequestMapping("/charts")
 	public String charts() {
