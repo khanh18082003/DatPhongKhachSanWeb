@@ -60,7 +60,7 @@
 
 								<c:forEach var="list" items="${listHP}" varStatus="status">
 
-									<tr class="room-row">
+									<tr>
 										<td>${status.index + 1}</td>
 										<td>${list.idHP }</td>
 										<td>${list.tenHP }</td>
