@@ -62,17 +62,12 @@
 										<td>${list.tang } </td>
 										<td>${list.trangThaiPhong.tenTTP } </td>
 										
-
-										<%-- <td>${fn:substring(list.moTa, 0, 50 ) }</td> --%>
-
 										<td>
 											<div class="icon-container">
 												<a href="editPhong.html?id=${list.maPhong}"
-													class="btn-action"><i class="fas fa-edit"></i></a><a
-													href="deletePhong.html?id=${list.maPhong}"
-													class="btn-action"><i class="fas fa-trash-alt"></i></a><a
-													href="editRoomDetailPhoto.html?id=${list.maPhong}"
-													class="btn-action"><i class="fa-regular fa-image"></i></a>
+													class="btn-action"><i class="fas fa-edit"></i></a>
+												<a href="deletePhong.html?id=${list.maPhong}"
+													class="btn-action"><i class="fas fa-trash-alt"></i></a>
 											</div>
 										</td>
 									</tr>

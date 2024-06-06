@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -40,10 +41,10 @@ public class RoomController {
 
 	@Autowired
 	IRoomService roomService;
-	
+
 	@Autowired
 	IPhongService phongService;
-	
+
 	@RequestMapping("/hang-phong")
 	public String hangPhongPage(ModelMap model) {
 		model.addAttribute("listHP", roomService.getList());
@@ -64,7 +65,7 @@ public class RoomController {
 	public List<TrangThaiPhong> getTTP() {
 		return phongService.getTTP();
 	}
-	
+
 	@ModelAttribute("listHP") // listLP
 	public List<HangPhong> getHP() {
 		return roomService.getList();
@@ -269,7 +270,8 @@ public class RoomController {
 			model.addAttribute("message", "*Insert Successful");
 		} else {
 			model.addAttribute("message", "*Insert Failed");
-			errors.rejectValue("idHP", "HangPhong", "Please Check This ID, Maybe ID \"" + hangPhong.getIdHP() + "\" Already Exists.");
+			errors.rejectValue("idHP", "HangPhong",
+					"Please Check This ID, Maybe ID \"" + hangPhong.getIdHP() + "\" Already Exists.");
 		}
 		return "/admin/insertHangPhong";
 
@@ -337,12 +339,61 @@ public class RoomController {
 			model.addAttribute("message", "*Insert Successful");
 		} else {
 			model.addAttribute("message", "*Insert Failed");
-			errors.rejectValue("maPhong", "Phong", "Please Check This Room Code, Maybe Room Code \"" + phong.getMaPhong() + "\" Already Exists.");
+			errors.rejectValue("maPhong", "Phong",
+					"Please Check This Room Code, Maybe Room Code \"" + phong.getMaPhong() + "\" Already Exists.");
 		}
 		return "redirect:/admin/phong";
 	}
 
-	/*-------------------------- DELETE HANGPHONG --------------------------*/
+	/*-------------------------- EDIT/UPDATE PHONG --------------------------*/
+	@RequestMapping(value = "/editPhong", method = RequestMethod.GET)
+	public String editPhong(@RequestParam("id") String id, ModelMap model) {
+		Session session = factory.getCurrentSession();
+		Phong phong = (Phong) session.get(Phong.class, id);
+		if (phong == null) {
+			// Xử lý trường hợp không tìm thấy phòng với ID đã cho
+			// Ví dụ: thông báo lỗi, redirect, hoặc hiển thị trang 404
+		} else {
+			model.addAttribute("phong", phong);
+		}
+		return "admin/editPhong";
+	}
+
+	@RequestMapping(value = "/editPhong", method = RequestMethod.POST)
+	public String editPhong(@ModelAttribute("phong") Phong phong, ModelMap model, BindingResult errors) {
+		// Kiểm tra lỗi trong model
+		if (errors.hasErrors()) {
+			model.addAttribute("message", "*Please Check These Errors.");
+			return "admin/editPhong";
+		}
+
+		Session session = factory.openSession();
+		Transaction t = session.beginTransaction();
+
+		try {
+			Session session_query = factory.getCurrentSession();
+			String hql = "update Phong set tenPhong=:tenPhong, tang=:tang, trangThaiPhong=:trangThaiPhong where maPhong=:maPhong";
+			Query query = session_query.createQuery(hql);
+			query.setParameter("maPhong", phong.getMaPhong());
+			query.setParameter("tenPhong", phong.getTenPhong());
+			query.setParameter("tang", phong.getTang());
+			query.setParameter("trangThaiPhong", phong.getTrangThaiPhong());
+
+			query.executeUpdate();
+
+			t.commit();
+			model.addAttribute("message", "*Update successful");
+		} catch (Exception e) {
+			t.rollback();
+			e.printStackTrace();
+			model.addAttribute("message", "*Update failed.");
+		} finally {
+			session.close();
+		}
+		return "redirect:/admin/phong";
+	}
+
+	/*-------------------------- DELETE PHONG --------------------------*/
 
 	@RequestMapping(value = "/deletePhong", method = RequestMethod.GET)
 	public String deletePhong(@RequestParam("id") String id, ModelMap model) {
