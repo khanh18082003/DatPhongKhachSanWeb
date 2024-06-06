@@ -23,7 +23,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.webspringmvc.entity.HangPhong;
 import com.webspringmvc.entity.KieuPhong;
 import com.webspringmvc.entity.LoaiPhong;
+import com.webspringmvc.entity.Phong;
+import com.webspringmvc.entity.TrangThaiPhong;
 import com.webspringmvc.service.IRoomService;
+import com.webspringmvc.service.IPhongService;
+
 @Transactional
 @Controller
 @RequestMapping("/admin")
@@ -36,7 +40,10 @@ public class RoomController {
 
 	@Autowired
 	IRoomService roomService;
-
+	
+	@Autowired
+	IPhongService phongService;
+	
 	@RequestMapping("/hang-phong")
 	public String hangPhongPage(ModelMap model) {
 		model.addAttribute("listHP", roomService.getList());
@@ -51,6 +58,16 @@ public class RoomController {
 	@ModelAttribute("listKP") // listKP
 	public List<KieuPhong> getKP() {
 		return roomService.getKP();
+	}
+
+	@ModelAttribute("listTTP") // listTTP
+	public List<TrangThaiPhong> getTTP() {
+		return phongService.getTTP();
+	}
+	
+	@ModelAttribute("listHP") // listLP
+	public List<HangPhong> getHP() {
+		return roomService.getList();
 	}
 
 	/*-------------------------- EDIT/UPDATE HANGPHONG --------------------------*/
@@ -271,7 +288,69 @@ public class RoomController {
 	}
 
 	@RequestMapping("/phong")
-	public String phongPage() {
+	public String PhongPage(ModelMap model) {
+		model.addAttribute("listPhong", phongService.getList());
 		return "admin/phong";
+	}
+
+	/*-------------------------- INSERT PHONG --------------------------*/
+
+	@RequestMapping(value = "/insertPhong", method = RequestMethod.GET)
+	public String insertPhong(ModelMap model) {
+		model.addAttribute("phong", new Phong());
+		return "admin/insertPhong";
+	}
+
+	@RequestMapping(value = "/insertPhong", method = RequestMethod.POST)
+	public String insertPhong(@ModelAttribute("phong") Phong phong, ModelMap model, BindingResult errors) {
+
+		/* Validate input */
+		List<Phong> listPhong = phongService.getList();
+
+		phong.setMaPhong(phong.getMaPhong().trim());
+		phong.setTenPhong(phong.getTenPhong().trim());
+		phong.setTang(phong.getTang());
+
+		/*---------------- check id ----------------*/
+		if (listPhong.stream().anyMatch(existingPhong -> existingPhong.getMaPhong().equals(phong.getMaPhong()))) {
+			errors.rejectValue("maPhong", "Phong", "Room Code \"" + phong.getMaPhong() + "\" Already Exists.");
+		}
+		if (!phongService.isIdValid(phong.getMaPhong())) {
+			errors.rejectValue("maPhong", "Phong", "Room Code \"" + phong.getMaPhong()
+					+ "\" Must Not Include Special Characters. Only Letters, Numbers, And Underscores Are Allowed In Room Codes.\"");
+		}
+		/*---------------- check name ----------------*/
+		if (listPhong.stream().anyMatch(existingPhong -> existingPhong.getTenPhong().equals(phong.getTenPhong()))) {
+			errors.rejectValue("tenPhong", "Phong", "Room Name \"" + phong.getTenPhong() + "\" Already Exists.");
+		}
+		if (!phongService.isNameValid(phong.getTenPhong())) {
+			errors.rejectValue("tenPhong", "Phong", "Room Name \"" + phong.getTenPhong()
+					+ "\" Must Not Include Special Characters. Only Letters, Numbers, Spaces And Underscores Are Allowed In Room Names.\"");
+		}
+
+		if (errors.hasErrors()) {
+			model.addAttribute("message", "*Please Check These Errors.");
+			return "/admin/insertPhong";
+		}
+
+		if (phongService.insert(phong) == 1) {
+			model.addAttribute("message", "*Insert Successful");
+		} else {
+			model.addAttribute("message", "*Insert Failed");
+			errors.rejectValue("maPhong", "Phong", "Please Check This Room Code, Maybe Room Code \"" + phong.getMaPhong() + "\" Already Exists.");
+		}
+		return "redirect:/admin/phong";
+	}
+
+	/*-------------------------- DELETE HANGPHONG --------------------------*/
+
+	@RequestMapping(value = "/deletePhong", method = RequestMethod.GET)
+	public String deletePhong(@RequestParam("id") String id, ModelMap model) {
+		if (phongService.delete(id) == 1) {
+			model.addAttribute("message", "*Delete Successful");
+		} else {
+			model.addAttribute("message", "*Delete Failed");
+		}
+		return "redirect:/admin/phong";
 	}
 }
