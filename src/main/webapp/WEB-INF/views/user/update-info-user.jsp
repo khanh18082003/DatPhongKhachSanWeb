@@ -25,13 +25,13 @@
 								<div class="row row-space">
 									<div class="col-2">
 										<div class="input-group-desc">
-											<form:input class="input--style-5" path="ho" />
+											<form:input class="input--style-5" path="ten" />
 											<label class="label--desc">first name</label>
 										</div>
 									</div>
 									<div class="col-2">
 										<div class="input-group-desc">
-											<form:input class="input--style-5" path="ten" />
+											<form:input class="input--style-5" path="ho" />
 											<label class="label--desc">last name</label>
 										</div>
 									</div>
@@ -70,11 +70,11 @@
 				</div>
 			</div>
 		</div>
-		<div class="flash-box show">
+		<div class="flash-box">
 			<div class="success-icon">
 				<i class="fa fa-check icon-success"></i>
 			</div>
-			<div class="success-text">Update information of user successfully!</div>
+			<div class="success-text">${success}</div>
 		</div>
 	</div>
 </body>

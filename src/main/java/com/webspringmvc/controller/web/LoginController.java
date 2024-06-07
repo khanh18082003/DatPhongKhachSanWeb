@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.webspringmvc.entity.Quyen;
 import com.webspringmvc.entity.TaiKhoan;
@@ -145,15 +146,17 @@ public class LoginController {
 	@RequestMapping(value = "/forgot-password", method = RequestMethod.POST)
 	public String forgotPassword(ModelMap model, @RequestParam("email") String email, HttpServletRequest request) {
 		String resetPasswordToken = UUID.randomUUID().toString();
-		taiKhoanService.updateResetPasswordToken(resetPasswordToken, email, quyen, model);
-		String resetPasswordUrl = request.getRequestURL().toString().replace(request.getServletPath(), "")
-				+ "/reset-password?token=" + resetPasswordToken;
-		String subject = "Here's the link to reset your password";
-		String body = "<p>Hello</p>" + "<p>You have requested to reset your password</p>"
-				+ "<p>Click the link below to change your password:</p>" + "<p><b><a href=\"" + resetPasswordUrl
-				+ "\">Change my password</a></b></p>"
-				+ "<p>Ignore this email if you remember your password, or you have not made this password</p>";
-		mailer.send("Sona support", email, subject, body);
+		boolean success = taiKhoanService.updateResetPasswordToken(resetPasswordToken, email, quyen, model);
+		if (success) {
+			String resetPasswordUrl = request.getRequestURL().toString().replace(request.getServletPath(), "")
+					+ "/reset-password?token=" + resetPasswordToken;
+			String subject = "Here's the link to reset your password";
+			String body = "<p>Hello</p>" + "<p>You have requested to reset your password</p>"
+					+ "<p>Click the link below to change your password:</p>" + "<p><b><a href=\"" + resetPasswordUrl
+					+ "\">Change my password</a></b></p>"
+					+ "<p>Ignore this email if you remember your password, or you have not made this password</p>";
+			mailer.send("Sona support", email, subject, body);
+		}
 
 		model.addAttribute("message", "Check your mail");
 		model.addAttribute("title", "Forgot-Password");
@@ -161,23 +164,26 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = "/reset-password", method = RequestMethod.GET)
-	public String resetPassword(ModelMap model, @RequestParam("token") String token) {
+	public String resetPassword(ModelMap model, @RequestParam(value = "token", required = true) String token,
+			@RequestParam(value = "userType", required = false) String userType, RedirectAttributes rd) {
 		String title = "Reset-Password";
-		model.addAttribute("title", title);
 		TaiKhoan t = taiKhoanService.get(token, 1);
 		if (t != null) {
 			model.addAttribute("resetPasswordForm", new ResetPasswordForm());
 			model.addAttribute("token", token);
+			model.addAttribute("title", title);
 			return "user/login/reset-password";
 		}
-		model.addAttribute("message", "Invalid Token");
-		model.addAttribute("title", "Not Found");
-		return "NotFound";
+		String error = "Invalid Token";
+		rd.addAttribute("error", error);
+		rd.addFlashAttribute("userType", userType);
+		return "redirect:/notification/500";
 	}
 
 	@RequestMapping(value = "/reset-password", method = RequestMethod.POST)
 	public String resetPassword(HttpServletRequest request, ModelMap model,
-			@Validated @ModelAttribute("resetPasswordForm") ResetPasswordForm resetPasswordForm, BindingResult br) {
+			@Validated @ModelAttribute("resetPasswordForm") ResetPasswordForm resetPasswordForm, BindingResult br,
+			RedirectAttributes rd) {
 		String token = request.getParameter("token");
 		TaiKhoan t = taiKhoanService.get(token, 1);
 
@@ -193,15 +199,15 @@ public class LoginController {
 
 			if (!br.hasErrors()) {
 				taiKhoanService.updateNewPassword(t, resetPasswordForm.getPassword());
-
-				return "redirect:/sign-in";
+				rd.addFlashAttribute("message", "Reset Password");
+				return "redirect:/notification/200";
 			}
 			model.addAttribute("token", token);
 			return "user/login/reset-password";
 		}
-		model.addAttribute("message", "Invalid Token");
-		model.addAttribute("title", "Not Found");
-		return "NotFound";
+		String error = "invalidToken";
+		rd.addAttribute("error", error);
+		return "redirect:/notification/500";
 	}
 
 	@RequestMapping("/logout")

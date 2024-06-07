@@ -1,5 +1,7 @@
 package com.webspringmvc.controller.admin;
 
+import java.util.UUID;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -11,10 +13,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.webspringmvc.entity.TaiKhoan;
 import com.webspringmvc.reCapchaValidation.ReCapchaValidation;
 import com.webspringmvc.service.ITaiKhoanService;
+import com.webspringmvc.service.impl.MailerService;
 
 @Controller(value = "loginAdmin")
 @RequestMapping("/admin")
@@ -24,8 +28,12 @@ public class LoginController {
 	@Autowired
 	ITaiKhoanService taiKhoanService;
 
+	@Autowired
+	MailerService mailer;
+
 	@RequestMapping(value = "/sign-in", method = RequestMethod.GET)
 	public String signInAdmin(ModelMap model) {
+		
 		model.addAttribute("taiKhoan", new TaiKhoan());
 		return "/admin/login/sign-in";
 	}
@@ -48,14 +56,41 @@ public class LoginController {
 		if (checkAccount == 2) {
 			br.rejectValue("password", "taiKhoan", "Password is incorrect.");
 		}
-		
+
 		if (!br.hasErrors() && verifyRecaptcha) {
 			session.setAttribute("admin", taiKhoan.getUsername());
 			return "redirect:/admin/home";
 		}
-		return "/admin/login/sign-in";
+		return "admin/login/sign-in";
+	}
+
+	@RequestMapping(value = "/forgot-password", method = RequestMethod.GET)
+	public String forgotPassword(ModelMap model) {
+		model.addAttribute("message", "Enter your email address and we will send you a link to reset your password.");
+		return "admin/login/forgot-password";
+	}
+
+	@RequestMapping(value = "/forgot-password", method = RequestMethod.POST)
+	public String forgotPassword(ModelMap model, HttpServletRequest request, @RequestParam("email") String email) {
+		String resetPasswordToken = UUID.randomUUID().toString();
+		boolean success = taiKhoanService.updateResetPasswordToken(resetPasswordToken, email, quyen, model);
+		if (success) {
+			String resetPasswordUrl = request.getRequestURL().toString().replace(request.getServletPath(), "")
+					+ "/reset-password?token=" + resetPasswordToken + "&userType=admin";
+			String subject = "Here's the link to reset your password";
+			String body = "<p>Hello</p>" + "<p>You have requested to reset your password</p>"
+					+ "<p>Click the link below to change your password:</p>" + "<p><b><a href=\"" + resetPasswordUrl
+					+ "\">Change my password</a></b></p>"
+					+ "<p>Ignore this email if you remember your password, or you have not made this password</p>";
+			mailer.send("Sona support", email, subject, body);
+			model.addAttribute("message", "We have already send a link to your email for reseting your password");
+		}
+
+		return "admin/login/forgot-password";
 	}
 	
+	
+
 	@RequestMapping("/logout")
 	public String logoutAdmin(HttpSession session) {
 		session.removeAttribute("admin");

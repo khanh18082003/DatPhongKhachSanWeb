@@ -10,7 +10,7 @@ public interface ITaiKhoanService {
 	int update(TaiKhoan t);
 	TaiKhoan getTaiKhoan(String id, String quyen);
 	int checkAccount(String id, String password, String quyen);
-	void updateResetPasswordToken(String token, String email, String quyen, ModelMap model);
+	boolean updateResetPasswordToken(String token, String email, String quyen, ModelMap model);
 	TaiKhoan get(String token, int index);
 	void updateNewPassword(TaiKhoan taiKhoan, String newPassword);
 }
