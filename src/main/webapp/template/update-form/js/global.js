@@ -46,15 +46,20 @@
         });
         
         $('.btn').on('click', function(e) {
-        	$('.flash-box').removeClass('hide');
-        	$('.flash-box').addClass('show');
+        	sessionStorage.setItem('success-update', 'show');
         });
+        
+        var success_update = sessionStorage.getItem('success-update');
+        if (success_update !== null) {
+        	$('.flash-box').addClass(success_update);
+        }
         
         if ($('.flash-box').hasClass('show')) {
             setTimeout(function() {
+            	sessionStorage.removeItem('success-update');
             	$('.flash-box').removeClass('show');
                 $('.flash-box').addClass('hide');
-            }, 2000);
+            }, 5000);
         }
         
     } catch(er) {console.log(er);}

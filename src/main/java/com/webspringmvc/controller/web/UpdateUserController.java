@@ -51,15 +51,24 @@ public class UpdateUserController {
 	public String updateUser(ModelMap model, @Validated @ModelAttribute("user") KhachHang user, BindingResult br, HttpServletRequest request, HttpSession session) {
 		if (!br.hasErrors()) {
 			boolean inserted = (boolean) session.getAttribute("inserted");
-			session.removeAttribute("inserted");
+			String email = (String) session.getAttribute("author");
+			TaiKhoan tk = taiKhoanService.getTaiKhoan(email, role);
+			user.setEmail(tk);
+			user.setHo(user.getHo().trim());
+			user.setTen(user.getTen().trim());
+			user.setSdt(user.getSdt().trim());
+			
 			if (!inserted) {
-				System.out.println(inserted);
-				//user.setemail(email);
 				userService.insert(user);
+				session.setAttribute("inserted", true);
 			}else {
 				userService.update(user);
 			}
-			model.addAttribute("success", "Update infomation of user successfully!");
+			
+			if (user.getHo() != null && user.getTen() != null) {
+				session.setAttribute("name", user.getHo().trim() + " " + user.getTen().trim());
+			}
+			model.addAttribute("success", "Update information of user successfully!");
 		}
 		return "user/update-info-user";
 	}

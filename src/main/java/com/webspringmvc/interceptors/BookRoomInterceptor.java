@@ -1,48 +1,28 @@
 package com.webspringmvc.interceptors;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.webspringmvc.entity.KhachHang;
-import com.webspringmvc.entity.TaiKhoan;
-import com.webspringmvc.service.ITaiKhoanService;
 import com.webspringmvc.service.IUserService;
 
-public class HomeInterceptor extends HandlerInterceptorAdapter {
-	@Autowired
-	ITaiKhoanService taiKhoanService;
+public class BookRoomInterceptor extends HandlerInterceptorAdapter {
 	
 	@Autowired
 	IUserService userService;
-	
+
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		Cookie[] cookies = request.getCookies();
-		if (cookies == null) {
-			return true;
-		}
-		HttpSession session = request.getSession();
-		for (Cookie c : cookies) {
-			if (c.getName().equals("token")) {
-				String token = c.getValue();
-				TaiKhoan t = taiKhoanService.get(token, 2);
-				
-				if (t == null) {
-					response.sendError(500, "Error Token is not valid!");
-					return false; 
-				}
-				KhachHang kh = userService.getUserByEmail(t.getUsername());
-				session.setAttribute("author", t.getUsername());
-				session.setAttribute("name", kh.getHo().trim() + " "+ kh.getTen().trim());
-				break;
-			}
+		String email = (String) request.getSession().getAttribute("author");
+		KhachHang user = userService.getUserByEmail(email);
+		if (user == null || (user.getHo() == null || user.getTen() == null || user.getSdt() == null)) {
+			response.sendRedirect(request.getContextPath() + "/update-user");
+			return false;
 		}
 		return true;
 	}
