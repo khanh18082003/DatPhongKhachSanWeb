@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,15 +23,15 @@
 							<tbody>
 								<tr>
 									<td class="c-o">Address:</td>
-									<td>856 Cordia Extension Apt. 356, Lake, US</td>
+									<td>${address}</td>
 								</tr>
 								<tr>
 									<td class="c-o">Phone:</td>
-									<td>+(84) 378 277 559</td>
+									<td>+(84) ${sdt}</td>
 								</tr>
 								<tr>
 									<td class="c-o">Email:</td>
-									<td>nguyentrungk461@gmail.com</td>
+									<td>${email}</td>
 								</tr>
 								<tr>
 									<td class="c-o">Fax:</td>
@@ -41,17 +42,21 @@
 					</div>
 				</div>
 				<div class="col-lg-7 offset-lg-1">
-					<form action="#" class="contact-form">
+					<form action="<c:url value="/contact-us"/>" class="contact-form" method="POST">
 						<div class="row">
 							<div class="col-lg-6">
-								<input type="text" placeholder="Your Name">
+								<input type="text" placeholder="Your Name" name="nameUser">
+								<p class="error">${errorName}</p>
 							</div>
 							<div class="col-lg-6">
-								<input type="text" placeholder="Your Email">
+								<input type="text" placeholder="Your Email" name="emailUser" value="${emailUser}">
+								<p class="error">${errorEmail}</p>
 							</div>
 							<div class="col-lg-12">
-								<textarea placeholder="Your Message"></textarea>
+								<textarea placeholder="Your Message" name="messageUser"></textarea>
+								<p class="error">${errorMess}</p>
 								<button type="submit">Submit Now</button>
+								<p>${success}</p>
 							</div>
 						</div>
 					</form>

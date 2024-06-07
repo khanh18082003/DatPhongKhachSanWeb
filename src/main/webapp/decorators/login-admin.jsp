@@ -9,7 +9,7 @@
 <base href="${pageContext.servletContext.contextPath}/" />
 <meta charset="UTF-8">
 <link rel="icon"
-	href="<c:url value='/template/user/img/Hotel Logo.png'/>"
+	href="<c:url value='${pathLogo}'/>"
 	type="image/icon type">
 <title><dec:title default="Login - Admin" /></title>
 <link href='<c:url value="/template/admin/css/styles.css"/>'

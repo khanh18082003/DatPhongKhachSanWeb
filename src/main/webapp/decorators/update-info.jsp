@@ -8,7 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="icon"
-	href="<c:url value='/template/user/img/Hotel Logo.png'/>"
+	href="<c:url value='${pathLogo}'/>"
 	type="image/icon type">
 <title><dec:title default="Sona | Update" /></title>
 <!-- Icons font CSS-->
@@ -167,7 +167,7 @@
 				<div class="col-lg-2">
 					<div class="logo">
 						<a href="<c:url value="/home"/>"> <img
-							src="<c:url value="/template/user/img/logo.png"/>" alt="Logo">
+							src="<c:url value="${pathLogoHotel}"/>" alt="Logo">
 						</a>
 					</div>
 				</div>

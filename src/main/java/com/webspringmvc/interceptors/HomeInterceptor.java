@@ -39,8 +39,10 @@ public class HomeInterceptor extends HandlerInterceptorAdapter {
 					return false; 
 				}
 				KhachHang kh = userService.getUserByEmail(t.getUsername());
+				if (kh != null) {
+					session.setAttribute("name", kh.getHo().trim() + " "+ kh.getTen().trim());
+				}
 				session.setAttribute("author", t.getUsername());
-				session.setAttribute("name", kh.getHo().trim() + " "+ kh.getTen().trim());
 				break;
 			}
 		}

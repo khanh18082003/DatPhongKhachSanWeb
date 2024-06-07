@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Sona - ${title}</title>
+<title>${nameWeb} - ${title}</title>
 </head>
 <body>
 	<div id="layoutError">

@@ -9,7 +9,7 @@
 <meta charset="UTF-8">
 <title><dec:title default="Notification" /></title>
 <link rel="icon"
-	href="<c:url value='/template/user/img/Hotel Logo.png'/>"
+	href="<c:url value='${pathLogo}'/>"
 	type="image/icon type">
 <link href='<c:url value="/template/admin/css/styles.css"/>'
 	rel="stylesheet" />
