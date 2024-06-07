@@ -11,7 +11,7 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title><dec:title default="Sona | Home" /></title>
 <base href="${pageContext.servletContext.contextPath}/" />
-<link rel="icon" href="<c:url value='/template/user/img/Hotel Logo.png'/>" type="image/icon type">
+<link rel="icon" href="<c:url value='${pathLogo}'/>" type="image/icon type">
 <!-- Google Font -->
 <link
 	href="https://fonts.googleapis.com/css?family=Lora:400,700&display=swap"

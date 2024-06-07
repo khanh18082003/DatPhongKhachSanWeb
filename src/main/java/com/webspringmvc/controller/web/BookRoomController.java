@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.webspringmvc.dao.ITaiKhoanDao;
@@ -109,7 +110,7 @@ public class BookRoomController {
 	@RequestMapping(value = "/booking-room", method = RequestMethod.POST)
 	public String bookRoom(HttpServletRequest request,
 			@Validated @ModelAttribute("khachHang") KhachHang kh,
-			BindingResult err, ModelMap model) {
+			BindingResult err, ModelMap model, RedirectAttributes rd) {
 		CT_PhieuDat ctpd = (CT_PhieuDat) request.getSession().getAttribute("ctPD");
 		PhieuDat pd = (PhieuDat)request.getSession().getAttribute("pd");
 		TaiKhoan tk = (TaiKhoan)request.getSession().getAttribute("tk");
@@ -155,6 +156,7 @@ public class BookRoomController {
 //		String subject = "Thank! Your booking at Sona has been confirmed.";
 //		String body = "Cam on ban";
 //		mailer.send("Sona Support", kh.getEmail().getUsername(), subject, body);
-		return "user/booksuccess";
+		rd.addFlashAttribute("message", "Booking Room");
+		return "redirect:/notification/200";
 	}
 }

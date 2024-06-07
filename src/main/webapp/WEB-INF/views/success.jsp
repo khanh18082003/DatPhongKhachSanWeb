@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Sona - ${title}</title>
+<title>${nameWeb}- ${title}</title>
 </head>
 <body>
 	<div id="layoutError">
@@ -17,6 +17,9 @@
 							<div class="text-center mt-4">
 								<h1 class="display-1">${message}</h1>
 								<p class="lead">Success</p>
+								<a href="/home"> <i class="fas fa-arrow-left me-1"></i>
+									Return to Dashboard
+								</a>
 							</div>
 						</div>
 					</div>

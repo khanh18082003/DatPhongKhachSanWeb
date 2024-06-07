@@ -7,7 +7,7 @@
 <head>
 <base href="${pageContext.servletContext.contextPath}/">
 <meta charset="UTF-8">
-<title>Sona | Rooms</title>
+<title>${nameWeb} | Rooms</title>
 </head>
 <body>
 	<div class="breadcrumb-section">
