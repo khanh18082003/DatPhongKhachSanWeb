@@ -7,7 +7,7 @@ window.addEventListener('DOMContentLoaded', event => {
 		new simpleDatatables.DataTable(datatablesSimple);
 	}
 
-	$(document).ready(function() {
+	/*$(document).ready(function() {
 		var table = $('#datatablesSimple').DataTable();
 
 		function updateTotal() {
@@ -25,6 +25,6 @@ window.addEventListener('DOMContentLoaded', event => {
 		});
 
 		updateTotal();
-	});
+	});*/
 });
 
