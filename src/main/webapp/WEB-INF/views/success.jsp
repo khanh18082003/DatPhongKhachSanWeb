@@ -17,7 +17,7 @@
 							<div class="text-center mt-4">
 								<h1 class="display-1">${message}</h1>
 								<p class="lead">Success</p>
-								<a href="/home"> <i class="fas fa-arrow-left me-1"></i>
+								<a href="<c:url value="/home"/>"> <i class="fas fa-arrow-left me-1"></i>
 									Return to Dashboard
 								</a>
 							</div>
