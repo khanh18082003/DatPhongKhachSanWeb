@@ -5,7 +5,7 @@
 		<div class="sb-sidenav-menu">
 			<div class="nav">
 <!-- 				<div class="sb-sidenav-menu-heading">Core</div> -->
-				<a class="nav-link" href="trang-chu.html">
+				<a class="nav-link" href="home.html">
 					<div class="sb-nav-link-icon">
 						<i class="fas fa-tachometer-alt"></i>
 					</div> Dashboard

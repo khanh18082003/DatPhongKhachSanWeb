@@ -250,7 +250,7 @@
 		      data: {
 		        labels: revenueData.map(item => item[0]),
 		        datasets: [{
-		          label: "Sessions",
+		          label: "Revenue",
 		          lineTension: 0.3,
 		          backgroundColor: "rgba(2,117,216,0.2)",
 		          borderColor: "rgba(2,117,216,1)",
@@ -293,6 +293,32 @@
 		        }
 		      }
 		    });
+		    
+		    var table = $('#datatablesSimple').DataTable();
+
+		    function updateTotal() {
+		        var total = 0;
+		        // Get all rows that match the search criteria
+		        var rows = table.rows({ search: 'applied' }).data();
+		        // Iterate over each row
+		        for (var i = 0; i < rows.length; i++) {
+		            var data = rows[i];
+		            // Extract the value from the fourth column, remove $ and commas, convert to float
+		            var lineTotal = parseFloat(data[3].replace(/[$,]/g, ''));
+		            total += lineTotal;
+		        }
+		        // Update the total in the HTML element
+		        $('#total').html('$' + total.toFixed(2));
+		    }
+
+		    // Recalculate total on table draw
+		    table.on('draw', function() {
+		        updateTotal();
+		    });
+
+		    // Initial call to update total
+		    updateTotal();
+
 
 			
 		});
