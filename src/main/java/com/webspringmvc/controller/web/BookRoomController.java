@@ -161,6 +161,7 @@ public class BookRoomController {
 //		String subject = "Thank! Your booking at Sona has been confirmed.";
 //		String body = "Cam on ban";
 //		mailer.send("Sona Support", kh.getEmail().getUsername(), subject, body);
-		return "user/booksuccess";
+//		return "user/booksuccess";
+		return "redirect:/notification/200";
 	}
 }
