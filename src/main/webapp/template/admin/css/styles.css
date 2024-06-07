@@ -9206,6 +9206,14 @@ fieldset:disabled .btn {
 	color: #6c757d !important;
 }
 
+.success {
+	color: green;
+}
+
+.error {
+	color: red;
+}
+
 .text-black-50 {
 	--bs-text-opacity: 1;
 	color: rgba(0, 0, 0, 0.5) !important;

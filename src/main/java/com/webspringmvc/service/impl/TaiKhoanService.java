@@ -1,13 +1,14 @@
 package com.webspringmvc.service.impl;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
+import com.webspringmvc.dao.INhanVienDao;
 import com.webspringmvc.dao.ITaiKhoanDao;
+import com.webspringmvc.entity.NhanVien;
 import com.webspringmvc.entity.TaiKhoan;
 import com.webspringmvc.helps.Bcrypt;
 import com.webspringmvc.service.ITaiKhoanService;
@@ -16,13 +17,15 @@ import com.webspringmvc.service.ITaiKhoanService;
 public class TaiKhoanService implements ITaiKhoanService {
 	@Autowired
 	ITaiKhoanDao taiKhoanDao;
-
+	
+	@Autowired
+	INhanVienDao nhanVienDao;
+	
 	@Override
 	public TaiKhoan getTaiKhoan(String id, String quyen) {
 		id = id.trim();
 		return taiKhoanDao.getTaiKhoan(id, quyen);
 	}
-
 
 	@Override
 	public int insert(TaiKhoan t) {
@@ -47,23 +50,36 @@ public class TaiKhoanService implements ITaiKhoanService {
 		}
 		return 0; // username not exist
 	}
-	
+
 	@Override
-	public void updateResetPasswordToken(String token, String email, String quyen, ModelMap model) {
-		TaiKhoan t = taiKhoanDao.getTaiKhoan(email, quyen);
+	public boolean updateResetPasswordToken(String token, String email, String quyen, ModelMap model) {
+		TaiKhoan t  = null;
+		NhanVien nv = null;
+		
+		if (quyen == "KH") {
+			t = taiKhoanDao.getTaiKhoan(email, quyen);
+		}else if (quyen == "NV") {
+			nv = nhanVienDao.getNhanVienByEmail(email);
+			if (nv != null) {
+				t = taiKhoanDao.getTaiKhoanByMaNV(nv.getMaNV());
+			}
+		}
+		
 		if (t != null) {
 			t.setResetPasswordToken(token);
 			taiKhoanDao.update(t);
-		}else {
+			return true;
+		} else {
 			model.addAttribute("error", "Could not find user with this email");
+			return false;
 		}
 	}
-	
+
 	@Override
 	public TaiKhoan get(String token, int index) {
 		return taiKhoanDao.getTaiKhoanByToken(token, index);
 	}
-	
+
 	@Override
 	public void updateNewPassword(TaiKhoan taiKhoan, String newPassword) {
 		String salt = UUID.randomUUID().toString();

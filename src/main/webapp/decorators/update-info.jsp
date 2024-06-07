@@ -7,6 +7,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="icon"
+	href="<c:url value='/template/user/img/Hotel Logo.png'/>"
+	type="image/icon type">
 <title><dec:title default="Sona | Update" /></title>
 <!-- Icons font CSS-->
 <link
@@ -116,7 +119,7 @@
 	
 	.flash-box.show {
 		animation: slideIn 1s forwards;
-		animation-delay: 1s;
+		animation-delay: 0.5s;
 	}
 	
 	.flash-box::after {
@@ -127,7 +130,7 @@
 		height: 3px;
 		width: 0%;
 		background-color: green;
-		transition: width 2s;
+		transition: width 5s;
 	}
 	
 	.flash-box.show::after {
@@ -137,7 +140,6 @@
 	.flash-box.hide {
 		right: 8px;
 		animation: slideOut 1s forwards;
-		animation-delay: 5s;
 	}
 	
 	.icon-success {
