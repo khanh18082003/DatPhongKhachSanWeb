@@ -80,6 +80,8 @@
 										<li class="setting-account-item"><a
 											href='<c:url value="/update-user"/>'>Update Account</a></li>
 										<li class="setting-account-item"><a
+											href='<c:url value="/booking-history"/>'>Booking History</a></li>
+										<li class="setting-account-item"><a
 											href='<c:url value="/logout"/>'>Logout</a></li>
 									</ul>
 								</div>
