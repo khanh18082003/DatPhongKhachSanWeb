@@ -17,8 +17,7 @@
 			<div class="container-fluid px-4">
 				<div class="form-noi">
 
-					<span class="close">&times;</span> 
-					<span class="message">${message}</span>
+					<span class="close">&times;</span> <span class="message">${message}</span>
 					<h2>Photo</h2>
 					<form:form action="editRoomPhoto.html" method="POST"
 						modelAttribute="hangPhong" enctype="multipart/form-data">
@@ -32,11 +31,10 @@
 						<form:input type="hidden" class="room-quantity"
 							path="soLuongNguoi" min="1" value="1" />
 						<form:input type="hidden" class="room-description" path="moTa" />
-						<form:input type="hidden" class="room-price" path="gia" min="0"
-							value="0" />
+						<form:input type="hidden" class="room-price" path="gia" min="0" />
 
 						<div class="form-group">
-							<label for="tieu_de_anh">${hangPhong.idHP }:</label>
+							<label for="tieu_de_anh">ID:</label>
 							<form:input type="text" class="room-id" path="idHP"
 								required="required" readonly="true" />
 							<label for="room-name">Room:</label>

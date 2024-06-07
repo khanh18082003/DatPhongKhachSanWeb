@@ -43,7 +43,7 @@
 				</c:forEach>
 			</select>
 
-			<button class="inputroom" onclick="return showConfirmation()});"
+			<button class="inputroom" onclick="return showConfirmation();"
 				type="submit">Look For Room</button>
 		</form>
 	</div>

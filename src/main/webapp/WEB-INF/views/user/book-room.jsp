@@ -19,8 +19,13 @@
 					<div class="breadcrumb-text">
 						<h2>Our Rooms</h2>
 						<div class="bt-option">
+<<<<<<< HEAD
 
 							<a href="<c:url value="/home"/>">Home</a> <span>Rooms</span>
+=======
+							<a href="<c:url value="/home"/>">Home</a> <span>Book
+								Room</span>
+>>>>>>> f105c8141dede0c0fc62734681f1676464436e1e
 						</div>
 					</div>
 				</div>
