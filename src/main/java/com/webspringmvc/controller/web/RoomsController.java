@@ -48,8 +48,9 @@ public class RoomsController {
 		List<Integer> listSLN = query.list();
 		hql = "From LoaiPhong";
 		query = session.createQuery(hql);
-		List<HangPhong> listHPTempLookFor = new ArrayList<HangPhong>();
 		List<LoaiPhong> listLP = query.list();
+		
+		List<HangPhong> listHPTempLookFor = new ArrayList<HangPhong>();
 		String sLN = request.getParameter("sLN");
 		String lP = request.getParameter("lP");
 		String dateOut = request.getParameter("dateOut");
@@ -76,7 +77,7 @@ public class RoomsController {
 							+ "   OR ( :dateIn >= CTPD.phieuDat.ngayBD AND :dateIn < CTPD.phieuDat.ngayKT) "
 							+ "   OR :dateIn = CTPD.phieuDat.ngayBD " + "   OR :dateOut = CTPD.phieuDat.ngayKT "
 							+ "   OR ( :dateIn < CTPD.phieuDat.ngayBD AND :dateOut > CTPD.phieuDat.ngayKT)) "
-							+ " and CTPD.hangPhong.idHP = :idHP " + "GROUP BY CTPD.hangPhong.idHP";
+							+ " and CTPD.hangPhong.idHP = :idHP and CTPD.phieuDat.trangThai != -1" + "GROUP BY CTPD.hangPhong.idHP";
 					query = session.createQuery(hql);
 					query.setParameter("idHP", hp.getIdHP());
 					query.setParameter("dateOut", dateOutTemp);

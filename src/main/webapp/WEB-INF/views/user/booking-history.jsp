@@ -17,7 +17,7 @@
 					<div class="breadcrumb-text">
 						<h2>Our Rooms</h2>
 						<div class="bt-option">
-							<a href='<c:url value="/trang-chu"/>'>Home</a> <span>Booking History</span>
+							<a href='<c:url value="/home"/>'>Home</a> <span>Booking History</span>
 						</div>
 					</div>
 				</div>
@@ -32,6 +32,8 @@
 					<div class="col-lg-4 col-md-6">
 						<div class="room-item">
 							<div class="ri-text">
+							<form action="<c:url value="/booking-history"/>" method="post">
+							<input type="hidden" name="maPD" value="${room[6]}"/>
 								<h4>${room[3]}</h4>
 								<h3>
 									<fmt:formatNumber value="${room[4]}"
@@ -53,17 +55,39 @@
 											<td><fmt:formatNumber value="${room[0]}"
 										type="currency" currencySymbol="$" pattern="$#,##0.00" /></td>
 										</tr>
-										
 										<tr>
 											<td id="roomAvailable" class="r-o"><b>Status:</b> </td>
-											<td>Da dat</td>
+											<td>${room[5]}</td>
 										</tr>
+										
+										<c:if test="${room[5] == 'Booked'}">
+											<tr>
+												<td colspan="2"><button class="button-link" type="submit" onclick="return cancelBooking()">Cancel</button></td>
+											</tr>
+										</c:if>
+										<c:if test="${room[5] != 'Booked'}">
+											<tr>
+											<td><br/></td>
+											<td><br/></td>
+											</tr>
+										</c:if>
+										
 									</tbody>
 								</table>
+								<script type="text/javascript">
+											function cancelBooking() {
+												if (confirm('Are you sure to cancel this booking?')) {
+                                                    return true;
+                                                }
+												return false;
+											}
+								</script>
+								</form>
 							</div>
 						</div>
 					</div>
 				</c:forEach>
+				
 			</div>
 		</div>
 	</section>
