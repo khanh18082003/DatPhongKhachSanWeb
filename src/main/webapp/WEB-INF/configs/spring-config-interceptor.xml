@@ -16,14 +16,21 @@
 
 	<!-- Cấu hình interceptor -->
 	<mvc:interceptors>
+		<!-- Config interceptor in web user -->
 		<mvc:interceptor>
-			<mvc:mapping path="/about-us" />
+			<mvc:mapping path="/book-room" />
 			<bean class="com.webspringmvc.interceptors.LoginUserInterceptor" />
 		</mvc:interceptor>
 		<mvc:interceptor>
 			<mvc:mapping path="/home"/>
 			<bean class="com.webspringmvc.interceptors.HomeInterceptor"/>
 		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/booking-room"/>
+			<bean class="com.webspringmvc.interceptors.BookRoomInterceptor"/>
+		</mvc:interceptor>
+		
+		<!-- Config interceptor in web admin -->
 		<mvc:interceptor>
 			<mvc:mapping path="/admin/"/>
 			<mvc:mapping path="/admin/home"/>

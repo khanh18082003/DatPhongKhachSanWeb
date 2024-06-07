@@ -30,6 +30,8 @@ public class UserDaoImpl implements IUserDao {
 			return 1;
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			session.close();
 		}
 		return 0;
 	}
@@ -39,11 +41,18 @@ public class UserDaoImpl implements IUserDao {
 		Session session = factory.openSession();
 		Transaction transaction = session.beginTransaction();
 		try {
-			session.update(t);
+			Query q = session.createQuery("UPDATE KhachHang set ho = :ho, ten = :ten, sdt = :sdt WHERE email.username = :email");
+			q.setParameter("email", t.getEmail().getUsername());
+			q.setParameter("ho", t.getHo());
+			q.setParameter("ten", t.getTen());
+			q.setParameter("sdt", t.getSdt());
+			int res = q.executeUpdate();
 			transaction.commit();
-			return 1;
+			return res;
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			session.close();
 		}
 		return 0;
 	}

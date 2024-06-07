@@ -58,7 +58,11 @@ public class TaiKhoanDaoImpl implements ITaiKhoanDao {
 		Query q = session.createQuery("FROM TaiKhoan tk WHERE tk.quyen.maQuyen = :quyen AND username = :username");
 		q.setParameter("quyen", quyen);
 		q.setParameter("username", id);
-		TaiKhoan taiKhoanById = (TaiKhoan) q.uniqueResult();
+		Object obj = q.uniqueResult();
+		TaiKhoan taiKhoanById = null;
+		if (obj != null) {
+			taiKhoanById = (TaiKhoan) obj;
+		}
 		return taiKhoanById;
 	}
 
@@ -78,6 +82,20 @@ public class TaiKhoanDaoImpl implements ITaiKhoanDao {
 		}
 		
 		return t;
+	}
+
+	@Override
+	public TaiKhoan getTaiKhoanByMaNV(String id) {
+		Session session = factory.getCurrentSession();
+		Query q = session.createQuery("FROM TaiKhoan tk WHERE tk.nhanVien.maNV = :maNV");
+		q.setParameter("maNV", id);
+		Object obj = q.uniqueResult();
+		TaiKhoan taiKhoanById = null;
+		if(obj != null) {
+			taiKhoanById = (TaiKhoan) obj;
+		}
+		
+		return taiKhoanById;
 	}
 
 }

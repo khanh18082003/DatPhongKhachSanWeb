@@ -24,14 +24,6 @@
 			<li class="active"><a href='<c:url value="/home"/>'>Home</a></li>
 			<li><a href='<c:url value="/rooms/index" />'>Rooms</a></li>
 			<li><a href='<c:url value="/about-us"/>'>About Us</a></li>
-			<li><a href="./pages.html">Pages</a>
-				<ul class="dropdown">
-					<li><a href="./room-details.html">Room Details</a></li>
-					<li><a href="#">Deluxe Room</a></li>
-					<li><a href="#">Family Room</a></li>
-					<li><a href="#">Premium Room</a></li>
-				</ul></li>
-			<li><a href="./blog.html">News</a></li>
 			<li><a href='<c:url value="/contact-us"/>'>Contact</a></li>
 		</ul>
 	</nav>
@@ -106,7 +98,7 @@
 			<div class="row">
 				<div class="col-lg-2">
 					<div class="logo">
-						<a href='<c:url value="/trang-chu" />'> <img
+						<a href='<c:url value="/home" />'> <img
 							src="<c:url value='/template/user/img/logo.png'/>" alt="">
 						</a>
 					</div>
@@ -118,14 +110,6 @@
 								<li class="active"><a href='<c:url value="/home"/>'>Home</a></li>
 								<li><a href='<c:url value="/rooms/index"/>'>Rooms</a></li>
 								<li><a href='<c:url value="/about-us"/>'>About Us</a></li>
-								<li><a href="./pages.html">Pages</a>
-									<ul class="dropdown">
-										<li><a href="./room-details.html">Room Details</a></li>
-										<li><a href="./blog-details.html">Blog Details</a></li>
-										<li><a href="#">Family Room</a></li>
-										<li><a href="#">Premium Room</a></li>
-									</ul></li>
-								<li><a href="./blog.html">News</a></li>
 								<li><a href='<c:url value="/contact-us"/>'>Contact</a></li>
 							</ul>
 						</nav>
@@ -136,16 +120,3 @@
 		</div>
 	</div>
 </header>
-
-<!-- Search model Begin -->
-<div class="search-model">
-	<div class="h-100 d-flex align-items-center justify-content-center">
-		<div class="search-close-switch">
-			<i class="icon_close"></i>
-		</div>
-		<form class="search-model-form">
-			<input type="text" id="search-input" placeholder="Search here.....">
-		</form>
-	</div>
-</div>
-<!-- Search model end -->

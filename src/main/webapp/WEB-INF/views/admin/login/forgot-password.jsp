@@ -1,13 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
-<base href="${pageContext.servletContext.contextPath}/" />
 <meta charset="UTF-8">
-<title>Login - Admin</title>
+<title>Login - Admin Recover Password</title>
 </head>
 <body>
 	<div id="layoutAuthentication">
@@ -18,34 +16,26 @@
 						<div class="col-lg-5">
 							<div class="card shadow-lg border-0 rounded-lg mt-5">
 								<div class="card-header">
-									<h3 class="text-center font-weight-light my-4">Login</h3>
+									<h3 class="text-center font-weight-light my-4">Password
+										Recovery</h3>
 								</div>
 								<div class="card-body">
-									<form:form
-										action="${pageContext.servletContext.contextPath}/admin/sign-in"
-										method="POST" modelAttribute="taiKhoan">
+									<div class="small mb-3 text-muted">${message}</div>
+									<form action="<c:url value="/admin/forgot-password"/>"
+										method="POST">
 										<div class="form-floating mb-3">
-											<form:input class="form-control" path="username"
-												placeholder="Username" />
-											<form:label path="username">Username</form:label>
-											<form:errors path="username" cssClass="error"></form:errors>
+											<input class="form-control" id="inputEmail" type="email"
+												name="email" placeholder="name@example.com" /> <label
+												for="inputEmail">Email address</label>
 										</div>
-										<div class="form-floating mb-3">
-											<form:password path="password" class="form-control"
-												placeholder="Password" />
-											<form:label path="password">Password</form:label>
-											<form:errors path="password" cssClass="error"></form:errors>
-										</div>
-										<div class="g-recaptcha"
-											data-sitekey="6LetK70pAAAAAKnkS5WngZAgvIjKupwwZNYn7HMs"></div>
-										<span class="error">${reCapchaError}</span>
-										
+										<div class="error">${error}</div>
 										<div
 											class="d-flex align-items-center justify-content-between mt-4 mb-0">
-											<a class="small" href="<c:url value="/admin/forgot-password"/>">Forgot Password?</a>
-											<button class="btn btn-primary">Login</button>
+											<a class="small" href="<c:url value="/admin/sign-in"/>">Return
+												to login</a>
+											<button class="btn btn-primary">Reset Password</button>
 										</div>
-									</form:form>
+									</form>
 								</div>
 							</div>
 						</div>
