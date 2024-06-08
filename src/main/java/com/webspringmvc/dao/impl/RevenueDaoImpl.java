@@ -39,7 +39,9 @@ public class RevenueDaoImpl extends AbstractDaoImpl<HoaDon, String> implements I
 	@Override
 	public List<HoaDon> getList() {
 		Session session = factory.getCurrentSession();
-		String hql = "FROM HoaDon";
+		String hql = "FROM HoaDon hd "
+				+ "JOIN hd.maPD AS pd "
+				+ "WHERE pd.trangThai = 1";
 		Query query = session.createQuery(hql);
 		return query.list();
 	}
