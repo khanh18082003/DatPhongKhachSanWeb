@@ -99,7 +99,7 @@
 							</div>
 							<div style="font-size: 30px">
 								<b>Total: <fmt:formatNumber
-										value="${ctPhieuDat.hangPhong.gia * ctPhieuDat.sLPhong * soNgay * (100 - discount)/100}"
+										value="${ctPhieuDat.hangPhong.gia * ctPhieuDat.sLPhong * soNgay * (100 - discount[ctPhieuDat.hangPhong.idHP])/100}"
 										type="currency" currencySymbol="$" pattern="$#,##0.00" /></b>
 							</div>
 						</div>
