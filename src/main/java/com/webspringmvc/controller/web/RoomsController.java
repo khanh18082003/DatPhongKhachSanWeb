@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 import org.hibernate.Query;
@@ -20,19 +22,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.webspringmvc.entity.BinhLuan;
 import com.webspringmvc.entity.HangPhong;
+import com.webspringmvc.entity.KhachHang;
 import com.webspringmvc.entity.LoaiPhong;
 import com.webspringmvc.page.ChangePage;
-
-import com.webspringmvc.service.IPhongService;
+import com.webspringmvc.service.IBinhLuanService;
+import com.webspringmvc.service.IUserService;
 
 @Transactional
 @Controller
 @RequestMapping("/rooms")
 public class RoomsController {
+
 	@Autowired
-	private IPhongService phongService;
+	IBinhLuanService binhLuanService;
+	
+	@Autowired
+	IUserService userService;
+	
 	@Autowired
 	SessionFactory factory;
 
@@ -49,7 +60,7 @@ public class RoomsController {
 		hql = "From LoaiPhong";
 		query = session.createQuery(hql);
 		List<LoaiPhong> listLP = query.list();
-		
+
 		List<HangPhong> listHPTempLookFor = new ArrayList<HangPhong>();
 		String sLN = request.getParameter("sLN");
 		String lP = request.getParameter("lP");
@@ -77,7 +88,8 @@ public class RoomsController {
 							+ "   OR ( :dateIn >= CTPD.phieuDat.ngayBD AND :dateIn < CTPD.phieuDat.ngayKT) "
 							+ "   OR :dateIn = CTPD.phieuDat.ngayBD " + "   OR :dateOut = CTPD.phieuDat.ngayKT "
 							+ "   OR ( :dateIn < CTPD.phieuDat.ngayBD AND :dateOut > CTPD.phieuDat.ngayKT)) "
-							+ " and CTPD.hangPhong.idHP = :idHP and CTPD.phieuDat.trangThai != -1" + "GROUP BY CTPD.hangPhong.idHP";
+							+ " and CTPD.hangPhong.idHP = :idHP and CTPD.phieuDat.trangThai != -1"
+							+ "GROUP BY CTPD.hangPhong.idHP";
 					query = session.createQuery(hql);
 					query.setParameter("idHP", hp.getIdHP());
 					query.setParameter("dateOut", dateOutTemp);
@@ -88,8 +100,7 @@ public class RoomsController {
 					for (Object[] objects : list) {
 						sl_book += Integer.parseInt(objects[1].toString());
 					}
-					hql = "SELECT p.hangPhong.idHP, COUNT(p.maPhong)"
-							+ "FROM Phong p "
+					hql = "SELECT p.hangPhong.idHP, COUNT(p.maPhong)" + "FROM Phong p "
 							+ "WHERE p.hangPhong.idHP = :idHP AND p.trangThaiPhong.maTTP = 'TT1' "
 							+ "GROUP BY p.hangPhong.idHP ";
 					query = session.createQuery(hql);
@@ -101,14 +112,12 @@ public class RoomsController {
 						numberOfRoom += Integer.parseInt(objects[1].toString());
 					}
 					roomAvai.put(hp.getIdHP(), numberOfRoom - sl_book);
-					
+
 				}
 			}
 			listHPTemp = listHPTempLookFor;
 		}
-		hql = "select c.hangPhong.idHP, c.phanTramGiam "
-				+ "from KhuyenMai km "
-				+ "join km.ctKM c "
+		hql = "select c.hangPhong.idHP, c.phanTramGiam " + "from KhuyenMai km " + "join km.ctKM c "
 				+ "where km.ngayBD <= :dateIn and km.ngayKT >= :dateOut";
 		query = session.createQuery(hql);
 		query.setParameter("dateOut", dateOutTemp);
@@ -123,16 +132,15 @@ public class RoomsController {
 		ChangePage.changePage(listHPTemp, page, model, 9);
 		return "user/rooms";
 	}
+
 	@RequestMapping("/room-detail")
-	public String roomDetail(@RequestParam("id") String idHP,
-			@RequestParam("dateOut") String dateOut,
-			@RequestParam("dateIn") String dateIn,
-			HttpServletRequest request) {
+	public String roomDetail(@RequestParam("id") String idHP, @RequestParam("dateOut") String dateOut,
+			@RequestParam("dateIn") String dateIn, HttpServletRequest request, ModelMap model) {
 		Map<String, Integer> roomAvai = new HashMap<String, Integer>();
 		roomAvai = (Map<String, Integer>) request.getSession().getAttribute("roomAvai");
 		Map<String, Integer> discount = new HashMap<String, Integer>();
 		discount = (Map<String, Integer>) request.getSession().getAttribute("discount");
-		request.getSession().setAttribute("discount", discount.get(idHP)==null? 0: discount.get(idHP));
+		request.getSession().setAttribute("discount", discount.get(idHP) == null ? 0 : discount.get(idHP));
 		String hql = "From HangPhong where idHP = :idHP";
 		Session session = factory.getCurrentSession();
 		Query query = session.createQuery(hql);
@@ -151,28 +159,56 @@ public class RoomsController {
 		query.setParameter("idHP", idHP);
 		query.setParameter("dateOut", dateOutTemp);
 		query.setParameter("dateIn", dateInTemp);
-		
+
 		request.setAttribute("slPhong", roomAvai.get(idHP));
 		SimpleDateFormat originalFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
-        SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH);
-        try {
-        	String ngayBDStr = dateInTemp.toString();
-            java.util.Date date = originalFormat.parse(ngayBDStr);
-            ngayBDStr = targetFormat.format(date);
-            Timestamp ngayBD = new Timestamp(targetFormat.parse(ngayBDStr).getTime());
-            
-            String ngayKTStr = dateOutTemp.toString();
-            date = originalFormat.parse(ngayKTStr);
-            ngayKTStr = targetFormat.format(date);
-            Timestamp ngayKT = new Timestamp(targetFormat.parse(ngayKTStr).getTime());
-            
-            request.setAttribute("dateIn", ngayBD);
-    		request.setAttribute("dateOut", ngayKT);
-        }
-        catch (ParseException  e) {
-        	   e.printStackTrace();
-        }
+		SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH);
+		try {
+			String ngayBDStr = dateInTemp.toString();
+			java.util.Date date = originalFormat.parse(ngayBDStr);
+			ngayBDStr = targetFormat.format(date);
+			Timestamp ngayBD = new Timestamp(targetFormat.parse(ngayBDStr).getTime());
+
+			String ngayKTStr = dateOutTemp.toString();
+			date = originalFormat.parse(ngayKTStr);
+			ngayKTStr = targetFormat.format(date);
+			Timestamp ngayKT = new Timestamp(targetFormat.parse(ngayKTStr).getTime());
+
+			request.setAttribute("dateIn", ngayBD);
+			request.setAttribute("dateOut", ngayKT);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		List<BinhLuan> blList = binhLuanService.getList(idHP);
+
+		model.addAttribute("blList", blList);
+		return "user/room-detail";
+	}
+
+	@RequestMapping(value = "/room-detail/review", method = RequestMethod.POST)
+	public String reviewHangPhong(ModelMap model, @RequestParam("rating") int rating,
+			@RequestParam("comment") String comment, @RequestParam("idHP") String idHP, HttpSession session) {
+		// get current time
+		LocalDateTime localDateTime = LocalDateTime.now();
+		Timestamp createDate = Timestamp.valueOf(localDateTime);
+		// get user commenting
+		String email = (String)session.getAttribute("author");
+		KhachHang user = userService.getUserByEmail(email);
+		// get HangPhong 
+		String hql = "From HangPhong where idHP = :idHP";
+		Session sessionF = factory.getCurrentSession();
+		Query query = sessionF.createQuery(hql);
+		query.setParameter("idHP", idHP);
+		HangPhong hp = (HangPhong) query.uniqueResult();
 		
+		BinhLuan bl = new BinhLuan();
+		bl.setRating(rating);
+		bl.setComment(comment);
+		bl.setCreateDate(createDate);
+		bl.setKh(user);
+		bl.setHangPhong(hp);
+		binhLuanService.insert(bl);
 		return "user/room-detail";
 	}
 }

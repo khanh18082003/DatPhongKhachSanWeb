@@ -1586,6 +1586,21 @@ ol {
 /*-----------------------
   Room Details Section
 -------------------------*/
+.review-container {
+    max-height: 300px; 
+    overflow-y: auto;
+    padding-right: 15px; 
+}
+
+.review-add .rating i {
+	cursor: pointer;
+	color: #ccc;
+}
+
+.review-add .rating i.selected,
+.review-add .rating i:hover {
+    color: gold; 
+}
 
 .room-details-section {
 	padding-top: 0;
@@ -1693,10 +1708,9 @@ ol {
 	margin-right: 30px;
 }
 
-.rd-reviews .review-item .ri-pic img {
-	height: 70px;
-	width: 70px;
-	border-radius: 50%;
+.rd-reviews .review-item .ri-pic .icon-circle-user .fa.fa-user-circle {
+	font-size: 40px;
+	color: #dfa974;
 }
 
 .rd-reviews .review-item .ri-text {
@@ -1729,7 +1743,11 @@ ol {
 }
 
 .rd-reviews .review-item .ri-text .rating i {
-	color: #f5b917;
+	color: #ccc;
+}
+
+.rd-reviews .review-item .ri-text .rating i.selected {
+	color: gold;
 }
 
 .rd-reviews .review-item .ri-text h5 {
@@ -1793,7 +1811,6 @@ ol {
 }
 
 .review-add .ra-form .rating i {
-	color: #f5b917;
 	font-size: 16px;
 }
 
