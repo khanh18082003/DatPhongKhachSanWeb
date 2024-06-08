@@ -48,7 +48,7 @@ public class PhongDaoImpl extends AbstractDaoImpl<Phong, String> implements IPho
 		} catch (Exception e) {
 			t.rollback();
 		} finally {
-			session.close()
+			session.close();
 		}
 		return 0;
 	}

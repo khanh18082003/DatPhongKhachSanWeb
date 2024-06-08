@@ -19,8 +19,11 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.webspringmvc.entity.DetailRoom;
 import com.webspringmvc.entity.HangPhong;
 import com.webspringmvc.entity.LoaiPhong;
 import com.webspringmvc.page.ChangePage;
@@ -118,8 +121,11 @@ public class RoomsController {
 		for (Object[] objects : list) {
 			discount.put(objects[0].toString(), Integer.parseInt(objects[1].toString()));
 		}
-		request.getSession().setAttribute("discount", discount);
-		request.getSession().setAttribute("roomAvai", roomAvai);
+		DetailRoom.avaiRoom = roomAvai;
+		DetailRoom.discount = discount;
+		model.addAttribute("discount", discount);
+		model.addAttribute("roomAvai", roomAvai);
+		System.out.println("roomAvai: " + roomAvai.size());
 		ChangePage.changePage(listHPTemp, page, model, 9);
 		return "user/rooms";
 	}
@@ -127,30 +133,22 @@ public class RoomsController {
 	public String roomDetail(@RequestParam("id") String idHP,
 			@RequestParam("dateOut") String dateOut,
 			@RequestParam("dateIn") String dateIn,
+			ModelMap model,
 			HttpServletRequest request) {
-		Map<String, Integer> roomAvai = new HashMap<String, Integer>();
-		roomAvai = (Map<String, Integer>) request.getSession().getAttribute("roomAvai");
-		Map<String, Integer> discount = new HashMap<String, Integer>();
-		discount = (Map<String, Integer>) request.getSession().getAttribute("discount");
-		request.getSession().setAttribute("discount", discount.get(idHP)==null? 0: discount.get(idHP));
+		Map<String, Integer> roomAvai = DetailRoom.avaiRoom;
+		Map<String, Integer> discount = DetailRoom.discount;
+		
+		model.addAttribute("roomAvai", roomAvai);
+		model.addAttribute("discount", discount);
+		
 		String hql = "From HangPhong where idHP = :idHP";
 		Session session = factory.getCurrentSession();
 		Query query = session.createQuery(hql);
 		query.setParameter("idHP", idHP);
 		HangPhong hp = (HangPhong) query.uniqueResult();
 		request.setAttribute("hp", hp);
-		hql = "SELECT SUM(CTPD.sLPhong) as sl " + "FROM CT_PhieuDat CTPD "
-				+ "WHERE (( :dateOut >= CTPD.phieuDat.ngayBD AND :dateOut < CTPD.phieuDat.ngayKT) "
-				+ "   OR ( :dateIn > CTPD.phieuDat.ngayBD AND :dateIn <= CTPD.phieuDat.ngayKT) "
-				+ "   OR :dateOut = CTPD.phieuDat.ngayBD " + "   OR :dateIn = CTPD.phieuDat.ngayKT "
-				+ "   OR ( :dateOut < CTPD.phieuDat.ngayBD AND :dateIn > CTPD.phieuDat.ngayKT)) "
-				+ " and CTPD.hangPhong.idHP = :idHP ";
 		java.util.Date dateOutTemp = ChangePage.formatDate(dateOut);
 		java.util.Date dateInTemp = ChangePage.formatDate(dateIn);
-		query = session.createQuery(hql);
-		query.setParameter("idHP", idHP);
-		query.setParameter("dateOut", dateOutTemp);
-		query.setParameter("dateIn", dateInTemp);
 		
 		request.setAttribute("slPhong", roomAvai.get(idHP));
 		SimpleDateFormat originalFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
