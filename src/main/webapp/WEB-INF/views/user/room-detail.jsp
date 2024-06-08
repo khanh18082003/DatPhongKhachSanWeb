@@ -63,9 +63,15 @@
 								</div>
 							</div>
 							<br /> <br /> <br />
+<<<<<<< HEAD
 							<h2>
 								<fmt:formatNumber value="${room.gia * (100 - discount)/100}"
 									type="currency" currencySymbol="$" pattern="$#,##0.00" />
+=======
+							<h2> 
+											<fmt:formatNumber value="${room.gia * (100 - discount[room.idHP])/100}"
+												type="currency" currencySymbol="$" pattern="$#,##0.00" />
+>>>>>>> 54de18386e1dc4b2595428497e5be04ed3ae6cc7
 								<span>/Pernight</span>
 							</h2>
 							<table>
