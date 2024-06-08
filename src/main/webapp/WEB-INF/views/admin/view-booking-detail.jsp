@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
-<title>Admin | Booking History</title>
+<title>Admin |Detail Booking History</title>
 <base href="${pageContext.servletContext.contextPath}/">
 </head>
 <body>
@@ -32,42 +32,42 @@
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>Reservation Code</th>
-									<th>Date</th>
-									<th>Checkin</th>
-									<th>Checkout</th>
-									<th>State</th>
+									<th>Code</th>
+									<th>Name Room</th>
+									<th>Quantity</th>
+									<th>Price</th>
 									<th>Action</th>
 								</tr>
 							</thead>
 							<tfoot>
 								<tr>
 									<th>#</th>
-									<th>Reservation Code</th>
-									<th>Date</th>
-									<th>Checkin</th>
-									<th>Checkout</th>
-									<th>State</th>
+									<th>Code</th>
+									<th>Name Room</th>
+									<th>Quantity</th>
+									<th>Price</th>
 									<th>Action</th>
 								</tr>
 							</tfoot>
 							<tbody>
 
-								<c:forEach var="list" items="${listPD}" varStatus="status">
+								<c:forEach var="list" items="${listCTPD}" varStatus="status">
 
 									<tr class="room-row">
 										<td>${status.index + 1}</td>
-										<td>${list.maPD }</td>
-										<td>${list.ngayDat }</td>
-										<td>${list.ngayBD } </td>
-										<td>${list.ngayKT } </td>
-										<td>${list.trangThai==-1?"Canceled":(list.trangThai==0?"Booked":"Success") }</td>
-										<td>
-										<div class="icon-container">
-											<a href="viewBookingDetail.html?id=${list.maPD}"
-											class="btn-action"><i class="fas fa-eye"></i></a>
+										<td>${list.id }</td>
+										<td>${list.hangPhong.tenHP }</td>
+										<td>${list.sLPhong } </td>
+										<td> <fmt:formatNumber value="${list.hangPhong.gia }"
+												type="currency" currencySymbol="$" pattern="$#,##0.00" />
+										 </td>
+										 <td>
+										 <div class="icon-container">
+											<button onclick="window.print()">
+											    <i class="fas fa-print"></i>
+											</button>
 											</div>
-										</td>
+										 </td>
 									</tr>
 								</c:forEach>
 								
