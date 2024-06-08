@@ -85,8 +85,8 @@
 									</tr>
 								</c:forEach>
 							</tbody>
-							<a href="insertHangPhong.html" class="btn-action add-new">Add
-								New</a>
+							<a href="insertHangPhong.html" data-toggle="model"
+								class="btn-action add-new">Add New</a>
 						</table>
 					</div>
 				</div>
