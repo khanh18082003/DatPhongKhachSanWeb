@@ -28,6 +28,7 @@
 						<i class="fas fa-table me-1"></i> Promotion
 					</div>
 					<div class="card-body">
+						<span class="message">${message}</span>
 						<table id="datatablesSimple">
 							<thead>
 								<tr>
@@ -62,10 +63,10 @@
 
 										<td>
 											<div class="icon-container">
-												<a href="editPromo.html?id=${list.maKM}"
-													class="btn-action"><i class="fas fa-edit"></i></a><a
-													href="deletePromo.html?id=${list.maKM}"
-													class="btn-action"><i class="fas fa-trash-alt"></i></a><a
+												<a href="editPromo.html?id=${list.maKM}" class="btn-action"><i
+													class="fas fa-edit"></i></a><a
+													href="deletePromo.html?id=${list.maKM}" class="btn-action"><i
+													class="fas fa-trash-alt"></i></a><a
 													href="promotion-detail.html?id=${list.maKM}"
 													class="btn-action"><i class="fa-solid fa-tags"></i></a>
 											</div>
@@ -73,8 +74,7 @@
 									</tr>
 								</c:forEach>
 							</tbody>
-							<a href="insertPromo.html" class="btn-action add-new">Add
-								New</a>
+							<a href="insertPromo.html" class="btn-action add-new">Add New</a>
 						</table>
 					</div>
 				</div>

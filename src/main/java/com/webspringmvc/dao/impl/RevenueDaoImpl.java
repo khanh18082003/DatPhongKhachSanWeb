@@ -58,7 +58,7 @@ public class RevenueDaoImpl extends AbstractDaoImpl<HoaDon, String> implements I
 	@Override
 	public List<String> getYearList() {
 		Session session = factory.getCurrentSession();
-		String hql = "SELECT DISTINCT YEAR(h.ngayLap)" + "FROM HoaDon h WHERE h.maPD.trangThai = 1";
+		String hql = "SELECT DISTINCT YEAR(h.ngayLap)" + " FROM HoaDon h WHERE h.maPD.trangThai = 1";
 		Query query = session.createQuery(hql);
 		return query.list();
 

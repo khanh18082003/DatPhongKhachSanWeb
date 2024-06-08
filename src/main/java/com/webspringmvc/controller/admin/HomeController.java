@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.google.gson.Gson;
 import com.webspringmvc.entity.HoaDon;
@@ -46,7 +45,7 @@ public class HomeController {
 
 		String revenueDataJson = new Gson().toJson(revenueData);
 		String currentMonthRevenueJson = new Gson().toJson(revenueService.getCurrentMonthRevenue());
-		
+
 		model.addAttribute("revenueList", revenueService.getList());
 		model.addAttribute("yearList", revenueService.getYearList());
 		model.addAttribute("revenueDataList", revenueDataJson);
@@ -58,8 +57,4 @@ public class HomeController {
 		return "admin/home";
 	}
 
-	@RequestMapping("/charts")
-	public String charts() {
-		return "admin/charts";
-	}
 }

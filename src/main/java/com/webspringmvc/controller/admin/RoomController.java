@@ -19,11 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.webspringmvc.entity.HangPhong;
 import com.webspringmvc.entity.KieuPhong;
 import com.webspringmvc.entity.LoaiPhong;
 import com.webspringmvc.service.IRoomService;
+
 @Transactional
 @Controller
 @RequestMapping("/admin")
@@ -60,8 +62,7 @@ public class RoomController {
 		HangPhong hangPhong = (HangPhong) session.get(HangPhong.class, id);
 		;
 		if (hangPhong == null) {
-			// Xử lý trường hợp không tìm thấy hàng phòng với ID đã cho
-			// Ví dụ: thông báo lỗi, redirect, hoặc hiển thị trang 404
+			return "404";
 		} else {
 
 			model.addAttribute("hangPhong", hangPhong);
@@ -73,8 +74,8 @@ public class RoomController {
 	public String editHangPhong(@ModelAttribute("hangPhong") HangPhong hangPhong, ModelMap model,
 			BindingResult errors) {
 		/* Validate input */
-//		
-		List<HangPhong> listHP = roomService.getList();
+
+		// List<HangPhong> listHP = roomService.getList();
 
 //		List<HangPhong> otherHPs = listHP.stream().filter(hp -> hp.getIdHP() != hangPhong.getIdHP())
 //				.collect(Collectors.toList());
@@ -114,8 +115,7 @@ public class RoomController {
 		Session session = factory.getCurrentSession();
 		HangPhong hangPhong = (HangPhong) session.get(HangPhong.class, id);
 		if (hangPhong == null) {
-			// Xử lý trường hợp không tìm thấy hàng phòng với ID đã cho
-			// Ví dụ: thông báo lỗi, redirect, hoặc hiển thị trang 404
+			return "404";
 		} else {
 
 			model.addAttribute("hangPhong", hangPhong);
@@ -139,8 +139,8 @@ public class RoomController {
 			return "/admin/editRoomPhoto";
 		}
 
-		Session session = factory.openSession();
-		Transaction t = session.beginTransaction();
+//		Session session = factory.openSession();
+//		Transaction t = session.beginTransaction();
 
 		/* get the path of new photo */
 		String fileName = context.getRealPath("/template/admin/assets/img/" + photo.getOriginalFilename());
@@ -252,7 +252,8 @@ public class RoomController {
 			model.addAttribute("message", "*Insert Successful");
 		} else {
 			model.addAttribute("message", "*Insert Failed");
-			errors.rejectValue("idHP", "HangPhong", "Please Check This ID, Maybe ID \"" + hangPhong.getIdHP() + "\" Already Exists.");
+			errors.rejectValue("idHP", "HangPhong",
+					"Please Check This ID, Maybe ID \"" + hangPhong.getIdHP() + "\" Already Exists.");
 		}
 		return "/admin/insertHangPhong";
 
@@ -261,11 +262,11 @@ public class RoomController {
 	/*-------------------------- DELETE HANGPHONG --------------------------*/
 
 	@RequestMapping(value = "/deleteHangPhong", method = RequestMethod.GET)
-	public String deleteHangPhong(@RequestParam("id") String id, ModelMap model) {
+	public String deleteHangPhong(@RequestParam("id") String id, RedirectAttributes redirectAttributes) {
 		if (roomService.delete(id) == 1) {
-			model.addAttribute("message", "*Delete Successful");
+			redirectAttributes.addFlashAttribute("message", "*Delete Successful");
 		} else {
-			model.addAttribute("message", "*Delete Failed");
+			redirectAttributes.addFlashAttribute("message", "*Delete Failed. Maybe This Room Is Already Used");
 		}
 		return "redirect:/admin/hang-phong";
 	}

@@ -41,7 +41,7 @@
 
 						<label for="pd-percent">Percent:</label>
 						<form:input type="number" class="pd-percent" path="phanTramGiam"
-							min="0" required="required" />
+							min="0" max="100" required="required" />
 
 						<div class="form-group button-container">
 							<button type="button" class="btn-edit btn-cancel" id="huy">Cancel</button>

@@ -103,10 +103,11 @@
 
 			reader.onload = function() {
 				var output = document.getElementById('photoPreview');
+				// Gán giá trị của thuộc tính src của phần tử img bằng kết quả đọc được (dữ liệu URL của ảnh)
 				output.src = reader.result;
 				output.style.display = 'block';
 			}
-
+			 // Đọc file dưới dạng DataURL (URL đại diện cho dữ liệu của file)
 			reader.readAsDataURL(event.target.files[0]);
 		}
 	</script>
