@@ -289,6 +289,8 @@ public class RoomController {
 		return "redirect:/admin/hang-phong";
 	}
 
+	/*-------------------------- PHONG --------------------------*/
+
 	@RequestMapping("/phong")
 	public String PhongPage(ModelMap model) {
 		model.addAttribute("listPhong", phongService.getList());
