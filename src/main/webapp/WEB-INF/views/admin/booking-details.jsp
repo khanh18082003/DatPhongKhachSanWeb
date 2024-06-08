@@ -15,12 +15,12 @@
     <table border="1">
         <thead>
             <tr>
-                <th>MAPD</th>
-                <th>NgayDat</th>
-                <th>NgayBD</th>
-                <th>NgayKT</th>
-                <th>SLPHONG</th>
-                <th>TENHP</th>
+                <th>Mã phiếu đặt</th>
+                <th>Ngày đặt</th>
+                <th>Ngày bắt đầu</th>
+                <th>Ngày kết thúc</th>
+                <th>Số lượng phòng</th>
+                <th>Tên hạng phòng</th>
             </tr>
         </thead>
         <tbody>
