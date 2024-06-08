@@ -32,5 +32,3 @@ window.addEventListener('DOMContentLoaded', event => {
 
 });
 
-
-

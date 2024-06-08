@@ -1,7 +1,7 @@
 package com.webspringmvc.controller.web;
 
-import java.sql.Date;
 import java.sql.Timestamp;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,7 +11,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
 import org.hibernate.Query;
@@ -20,18 +19,12 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.webspringmvc.entity.HangPhong;
 import com.webspringmvc.entity.LoaiPhong;
-import com.webspringmvc.entity.Phong;
-import com.webspringmvc.entity.TaiKhoan;
 import com.webspringmvc.page.ChangePage;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 import com.webspringmvc.service.IPhongService;
 
 @Transactional
@@ -55,8 +48,9 @@ public class RoomsController {
 		List<Integer> listSLN = query.list();
 		hql = "From LoaiPhong";
 		query = session.createQuery(hql);
-		List<HangPhong> listHPTempLookFor = new ArrayList<HangPhong>();
 		List<LoaiPhong> listLP = query.list();
+		
+		List<HangPhong> listHPTempLookFor = new ArrayList<HangPhong>();
 		String sLN = request.getParameter("sLN");
 		String lP = request.getParameter("lP");
 		String dateOut = request.getParameter("dateOut");
@@ -83,7 +77,7 @@ public class RoomsController {
 							+ "   OR ( :dateIn >= CTPD.phieuDat.ngayBD AND :dateIn < CTPD.phieuDat.ngayKT) "
 							+ "   OR :dateIn = CTPD.phieuDat.ngayBD " + "   OR :dateOut = CTPD.phieuDat.ngayKT "
 							+ "   OR ( :dateIn < CTPD.phieuDat.ngayBD AND :dateOut > CTPD.phieuDat.ngayKT)) "
-							+ " and CTPD.hangPhong.idHP = :idHP " + "GROUP BY CTPD.hangPhong.idHP";
+							+ " and CTPD.hangPhong.idHP = :idHP and CTPD.phieuDat.trangThai != -1" + "GROUP BY CTPD.hangPhong.idHP";
 					query = session.createQuery(hql);
 					query.setParameter("idHP", hp.getIdHP());
 					query.setParameter("dateOut", dateOutTemp);
@@ -123,7 +117,6 @@ public class RoomsController {
 		Map<String, Integer> discount = new HashMap<String, Integer>();
 		for (Object[] objects : list) {
 			discount.put(objects[0].toString(), Integer.parseInt(objects[1].toString()));
-			System.out.println(objects[0].toString() + " " + objects[1].toString());
 		}
 		request.getSession().setAttribute("discount", discount);
 		request.getSession().setAttribute("roomAvai", roomAvai);

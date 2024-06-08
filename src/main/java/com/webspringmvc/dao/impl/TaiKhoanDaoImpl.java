@@ -1,6 +1,5 @@
 package com.webspringmvc.dao.impl;
 
-import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -26,7 +25,6 @@ public class TaiKhoanDaoImpl implements ITaiKhoanDao {
 		try {
 			session.save(t);
 			transaction.commit();
-			System.out.println(t.getUsername());
 			return 1;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -55,25 +53,49 @@ public class TaiKhoanDaoImpl implements ITaiKhoanDao {
 	}
 
 	@Override
-	public TaiKhoan getTaiKhoan(String id) {
+	public TaiKhoan getTaiKhoan(String id, String quyen) {
 		Session session = factory.getCurrentSession();
-		TaiKhoan taiKhoanById = (TaiKhoan) session.get(TaiKhoan.class, id);
+		Query q = session.createQuery("FROM TaiKhoan tk WHERE tk.quyen.maQuyen = :quyen AND username = :username");
+		q.setParameter("quyen", quyen);
+		q.setParameter("username", id);
+		Object obj = q.uniqueResult();
+		TaiKhoan taiKhoanById = null;
+		if (obj != null) {
+			taiKhoanById = (TaiKhoan) obj;
+		}
 		return taiKhoanById;
 	}
 
 	@Override
-	public List<TaiKhoan> getList() {
-		// TODO Auto-generated method stub
-		return null;
+	public TaiKhoan getTaiKhoanByToken(String token, int index) {
+		Session session = factory.getCurrentSession();
+		Query q = null;
+		TaiKhoan t = null;
+		if (index == 1) {
+			q = session.createQuery("FROM TaiKhoan WHERE resetPasswordToken = :token");
+			q.setParameter("token", token);
+			t = (TaiKhoan) q.uniqueResult();
+		}else if (index == 2) {
+			q = session.createQuery("FROM TaiKhoan WHERE token = :token");
+			q.setParameter("token", token);
+			t = (TaiKhoan) q.uniqueResult();
+		}
+		
+		return t;
 	}
 
 	@Override
-	public TaiKhoan getTaiKhoanByToken(String token) {
+	public TaiKhoan getTaiKhoanByMaNV(String id) {
 		Session session = factory.getCurrentSession();
-		Query q = session.createQuery("FROM TaiKhoan WHERE resetPasswordToken = :token");
-		q.setParameter("token", token);
-		TaiKhoan t = (TaiKhoan) q.uniqueResult();
-		return t;
+		Query q = session.createQuery("FROM TaiKhoan tk WHERE tk.nhanVien.maNV = :maNV");
+		q.setParameter("maNV", id);
+		Object obj = q.uniqueResult();
+		TaiKhoan taiKhoanById = null;
+		if(obj != null) {
+			taiKhoanById = (TaiKhoan) obj;
+		}
+		
+		return taiKhoanById;
 	}
 
 }

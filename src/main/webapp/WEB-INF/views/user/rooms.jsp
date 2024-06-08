@@ -7,7 +7,7 @@
 <head>
 <base href="${pageContext.servletContext.contextPath}/">
 <meta charset="UTF-8">
-<title>Sona | Rooms</title>
+<title>${nameWeb} | Rooms</title>
 </head>
 <body>
 	<div class="breadcrumb-section">
@@ -17,7 +17,7 @@
 					<div class="breadcrumb-text">
 						<h2>Our Rooms</h2>
 						<div class="bt-option">
-							<a href='<c:url value="/trang-chu"/>'>Home</a> <span>Rooms</span>
+							<a href='<c:url value="/home"/>'>Home</a> <span>Rooms</span>
 						</div>
 					</div>
 				</div>
@@ -43,7 +43,7 @@
 				</c:forEach>
 			</select>
 
-			<button class="inputroom" onclick="return showConfirmation()});"
+			<button class="inputroom" onclick="return showConfirmation();"
 				type="submit">Look For Room</button>
 		</form>
 	</div>

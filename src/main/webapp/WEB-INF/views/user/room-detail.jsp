@@ -7,7 +7,7 @@
 <head>
 <base href="${pageContext.servletContext.contextPath}/" />
 <meta charset="UTF-8">
-<title>Sona | Room-Detail</title>
+<title>${nameWeb} | Room-Detail</title>
 </head>
 <body>
 	<!-- Breadcrumb Section Begin -->
@@ -18,7 +18,7 @@
 					<div class="breadcrumb-text">
 						<h2>Our Rooms</h2>
 						<div class="bt-option">
-							<a href="<c:url value="/trang-chu"/>">Home</a> <span>Rooms</span>
+							<a href="<c:url value="/home"/>">Home</a> <span>Rooms</span>
 						</div>
 					</div>
 				</div>
@@ -150,12 +150,6 @@
 						<h4>Add Review</h4>
 						<form action="#" class="ra-form">
 							<div class="row">
-								<div class="col-lg-6">
-									<input type="text" placeholder="Name*">
-								</div>
-								<div class="col-lg-6">
-									<input type="text" placeholder="Email*">
-								</div>
 								<div class="col-lg-12">
 									<div>
 										<h5>You Rating:</h5>

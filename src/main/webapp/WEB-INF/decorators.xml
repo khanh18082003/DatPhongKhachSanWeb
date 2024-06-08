@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xml>
 <decorators defaultdir="/decorators">
-	<decorator name="login" page="login.jsp">
+	<decorator name="login-user" page="login-user.jsp">
 		<pattern>/sign-up</pattern>
 		<pattern>/sign-in</pattern>
 		<pattern>/forgot-password</pattern>
 		<pattern>/reset-password</pattern>
 	</decorator>
 	
+	<decorator name="login-admin" page="login-admin.jsp">
+		<pattern>/admin/sign-up</pattern>
+		<pattern>/admin/sign-in</pattern>
+		<pattern>/admin/forgot-password</pattern>
+		<pattern>/admin/reset-password</pattern>
+	</decorator>
+	
+	<decorator name="update-info" page="update-info.jsp">
+		<pattern>/update-user</pattern>
+	</decorator>
+	
+	<decorator name="notification" page="notification.jsp">
+		<pattern>/notification/*</pattern>
+	</decorator>
+	
 	<decorator name="admin" page="admin.jsp">
 		<pattern>/admin/*</pattern>
+		<exclude>/admin/sign-in</exclude>
+		<exclude>/admin/sign-up</exclude>
 	</decorator>
 
 	<decorator name="user" page="user.jsp">

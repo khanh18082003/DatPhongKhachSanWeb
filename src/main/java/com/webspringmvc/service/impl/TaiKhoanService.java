@@ -1,13 +1,14 @@
 package com.webspringmvc.service.impl;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
+import com.webspringmvc.dao.INhanVienDao;
 import com.webspringmvc.dao.ITaiKhoanDao;
+import com.webspringmvc.entity.NhanVien;
 import com.webspringmvc.entity.TaiKhoan;
 import com.webspringmvc.helps.Bcrypt;
 import com.webspringmvc.service.ITaiKhoanService;
@@ -16,17 +17,14 @@ import com.webspringmvc.service.ITaiKhoanService;
 public class TaiKhoanService implements ITaiKhoanService {
 	@Autowired
 	ITaiKhoanDao taiKhoanDao;
-
+	
+	@Autowired
+	INhanVienDao nhanVienDao;
+	
 	@Override
-	public TaiKhoan getTaiKhoan(String id) {
+	public TaiKhoan getTaiKhoan(String id, String quyen) {
 		id = id.trim();
-		return taiKhoanDao.getTaiKhoan(id);
-	}
-
-	@Override
-	public List<TaiKhoan> getList() {
-		// TODO Auto-generated method stub
-		return null;
+		return taiKhoanDao.getTaiKhoan(id, quyen);
 	}
 
 	@Override
@@ -41,37 +39,47 @@ public class TaiKhoanService implements ITaiKhoanService {
 	}
 
 	@Override
-	public boolean checkAccount(String id) {
-		return getTaiKhoan(id) == null;
+	public int checkAccount(String id, String password, String quyen) {
+		TaiKhoan t = getTaiKhoan(id, quyen);
+		if (t != null) {
+			password = Bcrypt.toSHA1(password, t.getAuth());
+			if (password.equals(t.getPassword())) {
+				return 1;
+			}
+			return 2; // password is wrong
+		}
+		return 0; // username not exist
 	}
 
 	@Override
-	public boolean checkPassword(String id, String password) {
-		TaiKhoan t = getTaiKhoan(id);
-		if (t != null) {
-			password = Bcrypt.toSHA1(password, t.getAuth());
-			return password.equals(t.getPassword());
+	public boolean updateResetPasswordToken(String token, String email, String quyen, ModelMap model) {
+		TaiKhoan t  = null;
+		NhanVien nv = null;
+		
+		if (quyen == "KH") {
+			t = taiKhoanDao.getTaiKhoan(email, quyen);
+		}else if (quyen == "NV") {
+			nv = nhanVienDao.getNhanVienByEmail(email);
+			if (nv != null) {
+				t = taiKhoanDao.getTaiKhoanByMaNV(nv.getMaNV());
+			}
 		}
-		return false;
-	}
-	
-	@Override
-	public void updateResetPasswordToken(String token, String email, ModelMap model) {
-		TaiKhoan t = taiKhoanDao.getTaiKhoan(email);
+		
 		if (t != null) {
-			System.out.println(t.getUsername());
 			t.setResetPasswordToken(token);
 			taiKhoanDao.update(t);
-		}else {
+			return true;
+		} else {
 			model.addAttribute("error", "Could not find user with this email");
+			return false;
 		}
 	}
-	
+
 	@Override
-	public TaiKhoan get(String token) {
-		return taiKhoanDao.getTaiKhoanByToken(token);
+	public TaiKhoan get(String token, int index) {
+		return taiKhoanDao.getTaiKhoanByToken(token, index);
 	}
-	
+
 	@Override
 	public void updateNewPassword(TaiKhoan taiKhoan, String newPassword) {
 		String salt = UUID.randomUUID().toString();

@@ -1,11 +1,10 @@
 package com.webspringmvc.dao;
 
-import java.util.List;
 
 import com.webspringmvc.entity.TaiKhoan;
 
 public interface ITaiKhoanDao extends GenericDao<TaiKhoan, String> {
-	TaiKhoan getTaiKhoan(String id);
-	TaiKhoan getTaiKhoanByToken(String token);
-	List<TaiKhoan> getList();
+	TaiKhoan getTaiKhoan(String id, String quyen);
+	TaiKhoan getTaiKhoanByToken(String token, int index);
+	TaiKhoan getTaiKhoanByMaNV(String id);
 }

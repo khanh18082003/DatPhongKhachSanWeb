@@ -19,7 +19,7 @@
 							<div class="col-12">
 								<div class="text-center">
 									<a href="#!"> <img
-										src='<c:url value="/template/user/img/logo.png"/>'
+										src='<c:url value="${pathLogo}"/>'
 										alt="BootstrapBrain Logo">
 									</a>
 								</div>
@@ -47,7 +47,7 @@
 											id="email" required>
 									</div>
 								</div>
-								<p class="error">${error }</p>
+								<p class="error">${error}</p>
 								<div class="col-12">
 									<div class="d-grid">
 										<button class="btn btn-primary btn-lg" type="submit">Reset
