@@ -46,7 +46,7 @@ public class HomeController {
 
 		String revenueDataJson = new Gson().toJson(revenueData);
 		String currentMonthRevenueJson = new Gson().toJson(revenueService.getCurrentMonthRevenue());
-
+		
 		model.addAttribute("revenueList", revenueService.getList());
 		model.addAttribute("yearList", revenueService.getYearList());
 		model.addAttribute("revenueDataList", revenueDataJson);
