@@ -94,7 +94,7 @@
 										</tr>
 										<tr>
 											<td id="roomAvailable" class="r-o">Available Room:</td>
-											<td>${roomAvailable[room.idHP]}</td>
+											<td>${roomAvailable[room.idHP]==null?" ":(roomAvailable[room.idHP]>0?roomAvailable[room.idHP]:0)}</td>
 										</tr>
 									</tbody>
 								</table>
@@ -132,7 +132,7 @@
 									}
 									function dontClick(numberOfRoom){
 										console.log(numberOfRoom);
-									    if (numberOfRoom == 0) {
+									    if (numberOfRoom <= 0) {
 									        alert('This room is not available');
 									        return false;
 									    } else {
