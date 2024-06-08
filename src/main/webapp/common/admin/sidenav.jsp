@@ -36,7 +36,11 @@
 						<i class="fa-solid fa-tag"></i>
 					</div> Promotion
 				</a>
-				
+				<a class="nav-link" href="booking-history.html">
+					<div class="sb-nav-link-icon">
+						<i class="fa-solid fa-history"></i>
+					</div>Booking History
+				</a>
 				
 <!-- 				<div class="sb-sidenav-menu-heading">Interface</div> -->
 				<!-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
