@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Sona | Update-User</title>
+<title>${nameWeb} | Update-User</title>
 </head>
 <body>
 	<div class="page-wrapper bg-gra-03 p-t-45 p-b-50">

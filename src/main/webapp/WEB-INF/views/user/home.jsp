@@ -7,7 +7,7 @@
 <head>
 <base href="${pageContext.servletContext.contextPath}/">
 <meta charset="UTF-8">
-<title>Sona | Home</title>
+<title>${nameWeb} | Home</title>
 </head>
 <body>
 	<section class="hero-section">
@@ -15,7 +15,7 @@
 			<div class="row">
 				<div class="col-lg-6">
 					<div class="hero-text">
-						<h1>Sona A Luxury Hotel</h1>
+						<h1>${nameHotel} A Luxury Hotel</h1>
 						<p>Here are the best hotel booking sites, including
 							recommendations for international travel and for finding
 							low-priced hotel rooms.</p>

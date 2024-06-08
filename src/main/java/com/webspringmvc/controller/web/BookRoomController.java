@@ -1,17 +1,15 @@
 package com.webspringmvc.controller.web;
 
-import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
+
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,17 +28,15 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.google.gson.Gson;
-import com.webspringmvc.dao.ITaiKhoanDao;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.webspringmvc.entity.CT_PhieuDat;
 import com.webspringmvc.entity.HangPhong;
 import com.webspringmvc.entity.HoaDon;
 import com.webspringmvc.entity.KhachHang;
 import com.webspringmvc.entity.PhieuDat;
 import com.webspringmvc.entity.TaiKhoan;
-import com.webspringmvc.service.ITaiKhoanService;
 import com.webspringmvc.service.impl.MailerService;
 
 @Transactional
@@ -107,9 +103,9 @@ public class BookRoomController {
 	
 	@RequestMapping(value = "/booking-room", method = RequestMethod.POST)
 	public String bookRoom(HttpServletRequest request,
-			@Validated @ModelAttribute("khachHang") KhachHang kh,
-			HttpSession sessionUser,
-			BindingResult err, ModelMap model) {
+			@Validated @ModelAttribute("khachHang") KhachHang kh, HttpSession sessionUser,
+			BindingResult err, ModelMap model, RedirectAttributes rd) {
+
 		CT_PhieuDat ctpd = (CT_PhieuDat) request.getSession().getAttribute("ctPD");
 		PhieuDat pd = (PhieuDat)request.getSession().getAttribute("pd");
 		
@@ -161,7 +157,7 @@ public class BookRoomController {
 //		String subject = "Thank! Your booking at Sona has been confirmed.";
 //		String body = "Cam on ban";
 //		mailer.send("Sona Support", kh.getEmail().getUsername(), subject, body);
-//		return "user/booksuccess";
+		rd.addFlashAttribute("message", "Booking Room");
 		return "redirect:/notification/200";
 	}
 }

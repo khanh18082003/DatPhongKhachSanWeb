@@ -33,48 +33,53 @@
 	});
 
 	$(".canvas-close, .offcanvas-menu-overlay").on(
-		'click',
-		function() {
-			$(".offcanvas-menu-wrapper").removeClass(
-				"show-offcanvas-menu-wrapper");
-			$(".offcanvas-menu-overlay").removeClass("active");
-		});
+			'click',
+			function() {
+				$(".offcanvas-menu-wrapper").removeClass(
+						"show-offcanvas-menu-wrapper");
+				$(".offcanvas-menu-overlay").removeClass("active");
+			});
+	
+	$(document).ready(function() {
+	    // Kiểm tra nếu URL hiện tại là trang home
+	    if (window.location.pathname === "/DatPhongKhachSanWeb/home") {
+	        // Xóa sessionStorage
+	        sessionStorage.setItem('activeTab', 0);
+	    }
 
-	// / Khi click vào một thẻ li trong menu
-	$('.menu-item .nav-menu .mainmenu li').click(function() {
-		// Xóa lớp active khỏi tất cả các thẻ li trong menu
-		$('.menu-item .nav-menu .mainmenu li').removeClass('active');
-		// Thêm lớp active vào thẻ li được click
-		$(this).addClass('active');
+	    // Khôi phục trạng thái của các thẻ li từ sessionStorage
+	    var activeTab = sessionStorage.getItem('activeTab');
+	    if (activeTab !== null) {
+	        $('.menu-item .nav-menu .mainmenu li').removeClass('active');
+	        $('.menu-item .nav-menu .mainmenu li').eq(activeTab).addClass('active');
 
-		// Lưu trạng thái của các thẻ li vào sessionStorage
-		$('.menu-item .nav-menu .mainmenu li').each(function() {
-			if ($(this).hasClass('active')) {
-				sessionStorage.setItem('activeTab', $(this).index());
-			}
-		});
+	        if ($('.menu-item .nav-menu .mainmenu li').eq(activeTab).find('a').text().trim() !== 'Home') {
+	            // Thêm hoặc xóa lớp 'header-normal' từ phần header tùy thuộc vào việc có sẵn lớp này hay không
+	            $('.header-section').toggleClass('header-normal');
+	        }
+	    }
+
+	    // Thiết lập sự kiện click cho các mục menu
+	    $('.menu-item .nav-menu .mainmenu li').click(function() {
+	        // Xóa lớp active khỏi tất cả các thẻ li trong menu
+	        $('.menu-item .nav-menu .mainmenu li').removeClass('active');
+	        // Thêm lớp active vào thẻ li được click
+	        $(this).addClass('active');
+
+	        // Lưu trạng thái của các thẻ li vào sessionStorage sau khi xử lý click
+	        sessionStorage.setItem('activeTab', $(this).index());
+	    });
 	});
 
-	// Khôi phục trạng thái của các thẻ li từ sessionStorage
-	var activeTab = sessionStorage.getItem('activeTab');
-	if (activeTab !== null) {
-		$('.menu-item .nav-menu .mainmenu li').removeClass('active');
-		$('.menu-item .nav-menu .mainmenu li').eq(activeTab).addClass('active');
+//	$('.bt-option a').click(function() {
+//		sessionStorage.setItem('activeTab', 0);
+//	})
+//
+//	$('.logo').click(function() {
+//		sessionStorage.setItem('activeTab', 0);
+//	})
 
-		if ($('.menu-item .nav-menu .mainmenu li').eq(activeTab).find('a')
-			.text().trim() !== 'Home') {
-			// Thêm hoặc xóa lớp 'header-normal' từ phần header tùy thuộc vào
-			// việc có sẵn lớp này hay không
-			$('.header-section').toggleClass('header-normal');
-		}
-	}
-	$('.bt-option a').click(function() {
-		sessionStorage.removeItem('activeTab');
-	})
-
-	$('.logo').click(function() {
-		sessionStorage.removeItem('activeTab');
-	})
+	
 
 	// Search model
 	$('.search-switch').on('click', function() {
@@ -91,64 +96,64 @@
 		Navigation
 	--------------------*/
 	$(".mobile-menu").slicknav({
-		prependTo: '#mobile-menu-wrap',
-		allowParentLinks: true
+		prependTo : '#mobile-menu-wrap',
+		allowParentLinks : true
 	});
 
 	/*------------------
 		Hero Slider
 	--------------------*/
 	$(".hero-slider").owlCarousel({
-		loop: true,
-		margin: 0,
-		items: 1,
-		dots: true,
-		animateOut: 'fadeOut',
-		animateIn: 'fadeIn',
-		smartSpeed: 1200,
-		autoHeight: false,
-		autoplay: true,
-		mouseDrag: false
+		loop : true,
+		margin : 0,
+		items : 1,
+		dots : true,
+		animateOut : 'fadeOut',
+		animateIn : 'fadeIn',
+		smartSpeed : 1200,
+		autoHeight : false,
+		autoplay : true,
+		mouseDrag : false
 	});
 
 	/*------------------------
 		Testimonial Slider
 	----------------------- */
 	$(".testimonial-slider").owlCarousel(
-		{
-			items: 1,
-			dots: false,
-			autoplay: true,
-			loop: true,
-			smartSpeed: 1200,
-			nav: true,
-			navText: ["<i class='arrow_left'></i>",
-				"<i class='arrow_right'></i>"]
-		});
+			{
+				items : 1,
+				dots : false,
+				autoplay : true,
+				loop : true,
+				smartSpeed : 1200,
+				nav : true,
+				navText : [ "<i class='arrow_left'></i>",
+						"<i class='arrow_right'></i>" ]
+			});
 
 	/*------------------
 		Magnific Popup
 	--------------------*/
 	$('.video-popup').magnificPopup({
-		type: 'iframe'
+		type : 'iframe'
 	});
 
 	/*------------------
 		Date Picker
 	--------------------*/
-	/*$(".date-input").datepicker({
-		minDate: 1,
-		dateFormat: 'dd MM, yy'
-	}).attr("readonly", "readonly").on("focus", function() {
-		$(this).blur();
-	});*/
+	/*
+	 * $(".date-input").datepicker({ minDate: 1, dateFormat: 'dd MM, yy'
+	 * }).attr("readonly", "readonly").on("focus", function() { $(this).blur();
+	 * });
+	 */
 	$(".date-input").datepicker({
-		minDate: 1,
-		dateFormat: 'dd MM, yy',
-		onSelect: function() {
+		minDate : 1,
+		dateFormat : 'dd MM, yy',
+		onSelect : function() {
 			var dateIn = $("#date-in").datepicker("getDate");
 			var dateOut = $("#date-out").datepicker("getDate");
-			// Kiểm tra nếu ngày ra nhỏ hơn hoặc bằng ngày đến, cập nhật ngày ra thành ngày đến + 1 ngày
+			// Kiểm tra nếu ngày ra nhỏ hơn hoặc bằng ngày đến, cập nhật ngày ra
+			// thành ngày đến + 1 ngày
 			if (dateOut <= dateIn && dateOut != null) {
 				if (this.id === "date-out") {
 					dateOut.setDate(dateIn.getDate() + 1);
