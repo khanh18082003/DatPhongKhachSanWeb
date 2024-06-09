@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.webspringmvc.entity.DetailRoom;
 import com.webspringmvc.entity.HangPhong;
 import com.webspringmvc.entity.LoaiPhong;
 import com.webspringmvc.page.ChangePage;
@@ -34,8 +33,16 @@ import com.webspringmvc.service.IPhongService;
 @Controller
 @RequestMapping("/rooms")
 public class RoomsController {
-	@Autowired
-	private IPhongService phongService;
+	public static Map<String, Integer> avaiRoom;
+	public static Map<String, Integer> discount;
+	
+	public static Map<String, Integer> getAvaiRoom() {
+		return avaiRoom;
+	}
+
+	public static Map<String, Integer> getDiscount() {
+		return discount;
+	}
 	@Autowired
 	SessionFactory factory;
 
@@ -70,42 +77,43 @@ public class RoomsController {
 			request.setAttribute("dateIn", dateIn);
 
 			for (HangPhong hp : listHPTemp) {
-				if (hp.getSoLuongNguoi() == Integer.parseInt(sLN) && hp.getLoaiPhong().gettenLP().equals(lP)) {
-					listHPTempLookFor.add(hp);
-					dateOutTemp = ChangePage.formatDate(dateOut);
-					dateInTemp = ChangePage.formatDate(dateIn);
-					// số lượng phòng đã đặt
-					hql = "SELECT CTPD.hangPhong.idHP, SUM(CTPD.sLPhong) as sl " + "FROM CT_PhieuDat CTPD "
-							+ "WHERE (( :dateOut > CTPD.phieuDat.ngayBD AND :dateOut <= CTPD.phieuDat.ngayKT) "
-							+ "   OR ( :dateIn >= CTPD.phieuDat.ngayBD AND :dateIn < CTPD.phieuDat.ngayKT) "
-							+ "   OR :dateIn = CTPD.phieuDat.ngayBD " + "   OR :dateOut = CTPD.phieuDat.ngayKT "
-							+ "   OR ( :dateIn < CTPD.phieuDat.ngayBD AND :dateOut > CTPD.phieuDat.ngayKT)) "
-							+ " and CTPD.hangPhong.idHP = :idHP and CTPD.phieuDat.trangThai != -1" + "GROUP BY CTPD.hangPhong.idHP";
-					query = session.createQuery(hql);
-					query.setParameter("idHP", hp.getIdHP());
-					query.setParameter("dateOut", dateOutTemp);
-					query.setParameter("dateIn", dateInTemp);
-					List<Object[]> list = query.list();
-					// số lượng phòng đã đặt
-					int sl_book = 0;
-					for (Object[] objects : list) {
-						sl_book += Integer.parseInt(objects[1].toString());
-					}
-					hql = "SELECT p.hangPhong.idHP, COUNT(p.maPhong)"
-							+ "FROM Phong p "
-							+ "WHERE p.hangPhong.idHP = :idHP AND p.trangThaiPhong.maTTP = 'TT1' "
-							+ "GROUP BY p.hangPhong.idHP ";
-					query = session.createQuery(hql);
-					query.setParameter("idHP", hp.getIdHP());
-					list = query.list();
-					// số lượng phòng
-					int numberOfRoom = 0;
-					for (Object[] objects : list) {
-						numberOfRoom += Integer.parseInt(objects[1].toString());
-					}
-					roomAvai.put(hp.getIdHP(), numberOfRoom - sl_book);
-					
+				dateOutTemp = ChangePage.formatDate(dateOut);
+				dateInTemp = ChangePage.formatDate(dateIn);
+				// số lượng phòng đã đặt
+				hql = "SELECT CTPD.hangPhong.idHP, SUM(CTPD.sLPhong) as sl " + "FROM CT_PhieuDat CTPD "
+						+ "WHERE (( :dateOut > CTPD.phieuDat.ngayBD AND :dateOut <= CTPD.phieuDat.ngayKT) "
+						+ "   OR ( :dateIn >= CTPD.phieuDat.ngayBD AND :dateIn < CTPD.phieuDat.ngayKT) "
+						+ "   OR :dateIn = CTPD.phieuDat.ngayBD " + "   OR :dateOut = CTPD.phieuDat.ngayKT "
+						+ "   OR ( :dateIn < CTPD.phieuDat.ngayBD AND :dateOut > CTPD.phieuDat.ngayKT)) "
+						+ " and CTPD.hangPhong.idHP = :idHP and CTPD.phieuDat.trangThai != -1" + "GROUP BY CTPD.hangPhong.idHP";
+				query = session.createQuery(hql);
+				query.setParameter("idHP", hp.getIdHP());
+				query.setParameter("dateOut", dateOutTemp);
+				query.setParameter("dateIn", dateInTemp);
+				List<Object[]> list = query.list();
+				// số lượng phòng đã đặt
+				int sl_book = 0;
+				for (Object[] objects : list) {
+					sl_book += Integer.parseInt(objects[1].toString());
 				}
+				hql = "SELECT p.hangPhong.idHP, COUNT(p.maPhong)"
+						+ "FROM Phong p "
+						+ "WHERE p.hangPhong.idHP = :idHP AND p.trangThaiPhong.maTTP = 'TT1' "
+						+ "GROUP BY p.hangPhong.idHP ";
+				query = session.createQuery(hql);
+				query.setParameter("idHP", hp.getIdHP());
+				list = query.list();
+				// số lượng phòng
+				int numberOfRoom = 0;
+				for (Object[] objects : list) {
+					numberOfRoom += Integer.parseInt(objects[1].toString());
+				}
+				roomAvai.put(hp.getIdHP(), numberOfRoom - sl_book);
+				
+				// kiểm tra số lượng người và loại phòng
+				if (hp.getSoLuongNguoi() == Integer.parseInt(sLN) && hp.getLoaiPhong().gettenLP().equals(lP)) 
+					listHPTempLookFor.add(hp);
+				
 			}
 			listHPTemp = listHPTempLookFor;
 		}
@@ -121,11 +129,10 @@ public class RoomsController {
 		for (Object[] objects : list) {
 			discount.put(objects[0].toString(), Integer.parseInt(objects[1].toString()));
 		}
-		DetailRoom.avaiRoom = roomAvai;
-		DetailRoom.discount = discount;
+		RoomsController.avaiRoom = roomAvai;
+		RoomsController.discount = discount;
 		model.addAttribute("discount", discount);
 		model.addAttribute("roomAvai", roomAvai);
-		System.out.println("roomAvai: " + roomAvai.size());
 		ChangePage.changePage(listHPTemp, page, model, 9);
 		return "user/rooms";
 	}
@@ -135,8 +142,8 @@ public class RoomsController {
 			@RequestParam("dateIn") String dateIn,
 			ModelMap model,
 			HttpServletRequest request) {
-		Map<String, Integer> roomAvai = DetailRoom.avaiRoom;
-		Map<String, Integer> discount = DetailRoom.discount;
+		Map<String, Integer> roomAvai = RoomsController.avaiRoom;
+		Map<String, Integer> discount = RoomsController.discount;
 		
 		model.addAttribute("roomAvai", roomAvai);
 		model.addAttribute("discount", discount);
