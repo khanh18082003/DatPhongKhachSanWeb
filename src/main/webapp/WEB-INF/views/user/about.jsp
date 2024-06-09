@@ -92,7 +92,7 @@
 						<h2>Discover Our Hotel & Services.</h2>
 						<p>It S Hurricane Season But We Are Visiting Hilton Head
 							Island</p>
-						<a href="https://www.youtube.com/watch?v=EzKkl64rRbM"
+						<a href="https://www.youtube.com/watch?v=abPmZCZZrFA"
 							class="play-btn video-popup"><img src='<c:url value="/template/user/img/play.png"/>' alt=""></a>
 					</div>
 				</div>
