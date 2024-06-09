@@ -44,14 +44,17 @@ public class HangPhong {
 	@JoinColumn(name = "MAKP")
 	private KieuPhong kieuPhong;
 	
-	@OneToMany(mappedBy = "hangPhong", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "hangPhong", fetch = FetchType.LAZY)
 	private Collection<Phong> phong;
 	
-	@OneToMany(mappedBy = "hangPhong", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "hangPhong", fetch = FetchType.LAZY)
 	private Collection<CT_KhuyenMai> ctKM;
 	
-	@OneToMany(mappedBy = "hangPhong", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "hangPhong", fetch = FetchType.LAZY)
 	private Collection<CT_PhieuDat> ctPD;
+	
+	@OneToMany(mappedBy = "hangPhong", fetch = FetchType.LAZY)
+	private Collection<BinhLuan> binhLuan;
 	
 	public HangPhong() {
 	}

@@ -20,12 +20,13 @@ import com.webspringmvc.service.IUserService;
 @Controller
 public class UpdateUserController {
 	private String role = "KH";
+	
+	private boolean inserted;
+	@Autowired
+	private IUserService userService;
 
 	@Autowired
-	IUserService userService;
-
-	@Autowired
-	ITaiKhoanService taiKhoanService;
+	private ITaiKhoanService taiKhoanService;
 
 	@RequestMapping(value = "/update-user", method = RequestMethod.GET)
 	public String updateUser(ModelMap model, HttpSession session, HttpServletRequest request) {
@@ -37,11 +38,11 @@ public class UpdateUserController {
 			kh = new KhachHang();
 			kh.setEmail(tk);
 			model.addAttribute("user", kh);
-			session.setAttribute("inserted", false);
+			inserted = false;
 		} else {
 			kh.setEmail(tk);
 			model.addAttribute("user", kh);
-			session.setAttribute("inserted", true);
+			inserted = true;
 		}
 
 		return "user/update-info-user";
@@ -49,8 +50,7 @@ public class UpdateUserController {
 
 	@RequestMapping(value = "/update-user", method = RequestMethod.POST)
 	public String updateUser(ModelMap model, @Validated @ModelAttribute("user") KhachHang user, BindingResult br, HttpServletRequest request, HttpSession session) {
-		if (!br.hasErrors()) {
-			boolean inserted = (boolean) session.getAttribute("inserted");
+		if (!br.hasErrors()) {		
 			String email = (String) session.getAttribute("author");
 			TaiKhoan tk = taiKhoanService.getTaiKhoan(email, role);
 			user.setEmail(tk);
@@ -60,7 +60,7 @@ public class UpdateUserController {
 			
 			if (!inserted) {
 				userService.insert(user);
-				session.setAttribute("inserted", true);
+				inserted = true;
 			}else {
 				userService.update(user);
 			}

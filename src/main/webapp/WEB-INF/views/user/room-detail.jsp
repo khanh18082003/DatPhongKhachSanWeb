@@ -9,6 +9,7 @@
 <meta charset="UTF-8">
 <title>${nameWeb} | Room-Detail</title>
 </head>
+
 <body>
 	<!-- Breadcrumb Section Begin -->
 	<div class="breadcrumb-section">
@@ -42,27 +43,28 @@
 							<div class="rd-title">
 								<h3>${room.tenHP}</h3>
 								<div class="rdt-right">
-								    <form action='<c:url value="/book-room"/>' method = "post">
-										<span style="margin-right: 10px"> <select
-											name ="sl" id="roomSelect" class="inputroom select-option">
+									<form action='<c:url value="/book-room"/>' method="post">
+										<span style="margin-right: 10px"> <select name="sl"
+											id="roomSelect" class="inputroom select-option">
 												<c:forEach begin="1" end="${slPhong}" varStatus="status">
-														<option value="${status.count}">${status.count} ${status.count == 1 ? 'Room' : 'Rooms'}</option>
+													<option value="${status.count}">${status.count}
+														${status.count == 1 ? 'Room' : 'Rooms'}</option>
 												</c:forEach>
 										</select>
-										</span>
-										<input type="hidden" name="checkin" value="${checkin}" />
-										<input type="hidden" name="checkout" value="${checkout}" />
-										<input type="hidden" name="id" value="${room.idHP}" />
-										<button type ="submit" id="bookingLink">Booking Now</button>
+										</span> <input type="hidden" name="checkin" value="${checkin}" /> <input
+											type="hidden" name="checkout" value="${checkout}" /> <input
+											type="hidden" name="id" value="${room.idHP}" />
+										<button type="submit" id="bookingLink">Booking Now</button>
 									</form>
 
 								</div>
 							</div>
 							<br /> <br /> <br />
+
 							<h2> 
 											<fmt:formatNumber value="${room.gia * (100 - discount[room.idHP])/100}"
 												type="currency" currencySymbol="$" pattern="$#,##0.00" />
-								<span>/Pernight</span>
+							<span>/Pernight</span>
 							</h2>
 							<table>
 								<tbody>
@@ -107,59 +109,63 @@
 					</div>
 					<div class="rd-reviews">
 						<h4>Reviews</h4>
-						<div class="review-item">
-							<div class="ri-pic">
-								<img
-									src="<c:url value="/template/user/img/room/avatar/avatar-1.jpg"/>"
-									alt="">
-							</div>
-							<div class="ri-text">
-								<span>27 Aug 2019</span>
-								<div class="rating">
-									<i class="icon_star"></i> <i class="icon_star"></i> <i
-										class="icon_star"></i> <i class="icon_star"></i> <i
-										class="icon_star-half_alt"></i>
+						<div class="review-container">
+							<c:forEach var="bl" items="${blList}">
+								<div class="review-item">
+									<div class="ri-pic">
+										<span class="icon-circle-user"> <i
+											class="fa fa-user-circle"></i>
+										</span>
+									</div>
+									<div class="ri-text">
+										<span><fmt:formatDate pattern="dd-MM-yyy HH:mm:ss"
+												value="${bl.createDate}" /></span>
+										<div class="rating" data-rating="0">
+											<c:forEach var="i" begin="1" end="5">
+												<c:choose>
+													<c:when test="${i <= bl.rating}">
+														<i class="icon_star selected" data-value="${i}"></i>
+													</c:when>
+													<c:otherwise>
+														<i class="icon_star" data-value="${i}"></i>
+													</c:otherwise>
+												</c:choose>
+											</c:forEach>
+										</div>
+										<c:if test="${bl.kh.maKH eq sessionScope.maKH}"><a href="<c:url value="/rooms/room-detail/delete-review/${bl.id}"/>" class="btn btn-primary" style="background-color: #f32d2d; border-color: #f32d2d;">Delete</a></c:if>
+										
+										<h5>${bl.kh.ho} ${bl.kh.ten}</h5>
+										<p>${bl.comment}</p>
+									</div>
 								</div>
-								<h5>Brandon Kelley</h5>
-								<p>Neque porro qui squam est, qui dolorem ipsum quia dolor
-									sit amet, consectetur, adipisci velit, sed quia non numquam
-									eius modi tempora. incidunt ut labore et dolore magnam.</p>
-							</div>
+							</c:forEach>
 						</div>
-						<div class="review-item">
-							<div class="ri-pic">
-								<img
-									src="<c:url value="/template/user/img/room/avatar/avatar-2.jpg"/>"
-									alt="">
-							</div>
-							<div class="ri-text">
-								<span>27 Aug 2019</span>
-								<div class="rating">
-									<i class="icon_star"></i> <i class="icon_star"></i> <i
-										class="icon_star"></i> <i class="icon_star"></i> <i
-										class="icon_star-half_alt"></i>
-								</div>
-								<h5>Brandon Kelley</h5>
-								<p>Neque porro qui squam est, qui dolorem ipsum quia dolor
-									sit amet, consectetur, adipisci velit, sed quia non numquam
-									eius modi tempora. incidunt ut labore et dolore magnam.</p>
-							</div>
-						</div>
+
 					</div>
 					<div class="review-add">
 						<h4>Add Review</h4>
-						<form action="#" class="ra-form">
+						<form action="<c:url value="/rooms/room-detail/add-review"/>"
+							class="ra-form" method="POST">
 							<div class="row">
 								<div class="col-lg-12">
 									<div>
 										<h5>You Rating:</h5>
-										<div class="rating">
-											<i class="icon_star"></i> <i class="icon_star"></i> <i
-												class="icon_star"></i> <i class="icon_star"></i> <i
-												class="icon_star-half_alt"></i>
+										<div class="rating" data-rating="0">
+											<c:forEach var="i" begin="1" end="5">
+												<c:choose>
+													<c:when test="${i <= newBl.rating}">
+														<i class="icon_star selected" data-value="${i}"></i>
+													</c:when>
+													<c:otherwise>
+														<i class="icon_star" data-value="${i}"></i>
+													</c:otherwise>
+												</c:choose>
+
+											</c:forEach>
 										</div>
 									</div>
-									<textarea placeholder="Your Review"></textarea>
+									<input class="input-rating" type="hidden" name="rating">
+									<textarea placeholder="Your Review" name="comment"></textarea>
 									<button type="submit">Submit Now</button>
 								</div>
 							</div>
@@ -170,5 +176,39 @@
 		</div>
 	</section>
 	<!-- Room Details Section End -->
+	<script type="text/javascript">
+		const rating = document.querySelector('.review-add .rating');
+		const input_rating = document.querySelector('.review-add .input-rating');
+        const stars = rating.querySelectorAll('.icon_star');
+        
+        stars.forEach(star => {
+            star.addEventListener('mouseover', function() {
+                highlightStars(stars, this.dataset.value);
+            });
+
+            star.addEventListener('mouseout', function() {
+                resetStars(stars, rating.dataset.rating);
+            });
+
+            star.addEventListener('click', function() {
+                rating.dataset.rating = this.dataset.value;
+                highlightStars(stars, this.dataset.value);
+                input_rating.setAttribute("value", this.dataset.value);
+            });
+        });
+   
+
+    	function highlightStars(stars, value) {
+        	stars.forEach(star => {
+            	star.classList.toggle('selected', star.dataset.value <= value);
+        	});
+    	}
+
+    	function resetStars(stars, value) {
+        	stars.forEach(star => {
+            	star.classList.toggle('selected', star.dataset.value <= value);
+        	});
+    	}
+	</script>
 </body>
 </html>

@@ -1,15 +1,17 @@
 package com.webspringmvc.entity;
 
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -24,25 +26,26 @@ public class KhachHang {
 	@NotBlank(message = "First Name can not be empty.")
 	@Column(name = "HO", nullable = false, length = 50)
 	private String ho;
-	
+
 	@NotBlank(message = "Last Name can not be empty.")
 	@Column(name = "TEN", nullable = false, length = 10)
 	private String ten;
-	
 
-	@Size(min = 10, max = 11, message = "Length of phone must be equal 10 or 11")
 	@NotBlank(message = "Phone Number can not be empty.")
 	@Column(name = "SDT", nullable = false, length = 11)
 	private String sdt;
-	
+
 	@OneToOne
 	@JoinColumn(name = "EMAIL")
 	private TaiKhoan email;
 
+	@OneToMany(mappedBy = "kh", fetch = FetchType.LAZY)
+	private Collection<BinhLuan> binhLuan;
+
 	public KhachHang() {
 	}
 
-	public KhachHang( String ho, String ten, String sdt, TaiKhoan email) {
+	public KhachHang(String ho, String ten, String sdt, TaiKhoan email) {
 		this.ho = ho;
 		this.ten = ten;
 		this.sdt = sdt;
@@ -93,5 +96,4 @@ public class KhachHang {
 		this.email = email;
 	}
 
-	
 }

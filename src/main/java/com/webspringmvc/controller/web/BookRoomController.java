@@ -49,7 +49,7 @@ public class BookRoomController {
 	@RequestMapping("/book-room")
 	public String formBookRoom(HttpServletRequest request, HttpSession sessionUser,
 			ModelMap model) {
-		Map<String, Integer> discount = RoomsController.discount;
+		Map<String, Integer> discount = RoomsController.getDiscount();
 		model.addAttribute("discount", discount);
 		
         SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH);
@@ -106,7 +106,7 @@ public class BookRoomController {
 	public String bookRoom(HttpServletRequest request,
 			@Validated @ModelAttribute("khachHang") KhachHang kh, HttpSession sessionUser,
 			BindingResult err, ModelMap model, RedirectAttributes rd) {
-		Map<String, Integer> discount = RoomsController.discount;
+		Map<String, Integer> discount = RoomsController.getDiscount();
 
 		CT_PhieuDat ctpd = (CT_PhieuDat) request.getSession().getAttribute("ctPD");
 		PhieuDat pd = (PhieuDat)request.getSession().getAttribute("pd");
