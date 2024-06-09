@@ -21,7 +21,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.webspringmvc.entity.BinhLuan;
-import com.webspringmvc.entity.DetailRoom;
+
 import com.webspringmvc.entity.HangPhong;
 import com.webspringmvc.entity.KhachHang;
 import com.webspringmvc.entity.LoaiPhong;
@@ -45,13 +45,48 @@ public class RoomsController {
 	@Autowired
 	private IBinhLuanService binhLuanService;
 
+	private static Map<String, Integer> avaiRoom;
+	private static Map<String, Integer> discount;
+
+	public static Map<String, Integer> getAvaiRoom() {
+		return avaiRoom;
+	}
+
+	public static Map<String, Integer> getDiscount() {
+		return discount;
+	}
+
 	@Autowired
 	private IUserService userService;
 
 	@Autowired
 	private SessionFactory factory;
-	
-	private String idHP, dateOut, dateIn;
+
+	private static String idHP, dateOut, dateIn;
+
+	public static String getIdHP() {
+		return idHP;
+	}
+
+	public static void setIdHP(String idHP) {
+		RoomsController.idHP = idHP;
+	}
+
+	public static String getDateOut() {
+		return dateOut;
+	}
+
+	public static void setDateOut(String dateOut) {
+		RoomsController.dateOut = dateOut;
+	}
+
+	public static String getDateIn() {
+		return dateIn;
+	}
+
+	public static void setDateIn(String dateIn) {
+		RoomsController.dateIn = dateIn;
+	}
 
 	@RequestMapping("/index")
 	public String index(@RequestParam(value = "page", defaultValue = "1") int page, ModelMap model,
@@ -84,42 +119,43 @@ public class RoomsController {
 			request.setAttribute("dateIn", dateIn);
 
 			for (HangPhong hp : listHPTemp) {
-				if (hp.getSoLuongNguoi() == Integer.parseInt(sLN) && hp.getLoaiPhong().gettenLP().equals(lP)) {
-					listHPTempLookFor.add(hp);
-					dateOutTemp = ChangePage.formatDate(dateOut);
-					dateInTemp = ChangePage.formatDate(dateIn);
-					// số lượng phòng đã đặt
-					hql = "SELECT CTPD.hangPhong.idHP, SUM(CTPD.sLPhong) as sl " + "FROM CT_PhieuDat CTPD "
-							+ "WHERE (( :dateOut > CTPD.phieuDat.ngayBD AND :dateOut <= CTPD.phieuDat.ngayKT) "
-							+ "   OR ( :dateIn >= CTPD.phieuDat.ngayBD AND :dateIn < CTPD.phieuDat.ngayKT) "
-							+ "   OR :dateIn = CTPD.phieuDat.ngayBD " + "   OR :dateOut = CTPD.phieuDat.ngayKT "
-							+ "   OR ( :dateIn < CTPD.phieuDat.ngayBD AND :dateOut > CTPD.phieuDat.ngayKT)) "
-							+ " and CTPD.hangPhong.idHP = :idHP and CTPD.phieuDat.trangThai != -1"
-							+ "GROUP BY CTPD.hangPhong.idHP";
-					query = session.createQuery(hql);
-					query.setParameter("idHP", hp.getIdHP());
-					query.setParameter("dateOut", dateOutTemp);
-					query.setParameter("dateIn", dateInTemp);
-					List<Object[]> list = query.list();
-					// số lượng phòng đã đặt
-					int sl_book = 0;
-					for (Object[] objects : list) {
-						sl_book += Integer.parseInt(objects[1].toString());
-					}
-					hql = "SELECT p.hangPhong.idHP, COUNT(p.maPhong)" + "FROM Phong p "
-							+ "WHERE p.hangPhong.idHP = :idHP AND p.trangThaiPhong.maTTP = 'TT1' "
-							+ "GROUP BY p.hangPhong.idHP ";
-					query = session.createQuery(hql);
-					query.setParameter("idHP", hp.getIdHP());
-					list = query.list();
-					// số lượng phòng
-					int numberOfRoom = 0;
-					for (Object[] objects : list) {
-						numberOfRoom += Integer.parseInt(objects[1].toString());
-					}
-					roomAvai.put(hp.getIdHP(), numberOfRoom - sl_book);
-
+				dateOutTemp = ChangePage.formatDate(dateOut);
+				dateInTemp = ChangePage.formatDate(dateIn);
+				// số lượng phòng đã đặt
+				hql = "SELECT CTPD.hangPhong.idHP, SUM(CTPD.sLPhong) as sl " + "FROM CT_PhieuDat CTPD "
+						+ "WHERE (( :dateOut > CTPD.phieuDat.ngayBD AND :dateOut <= CTPD.phieuDat.ngayKT) "
+						+ "   OR ( :dateIn >= CTPD.phieuDat.ngayBD AND :dateIn < CTPD.phieuDat.ngayKT) "
+						+ "   OR :dateIn = CTPD.phieuDat.ngayBD " + "   OR :dateOut = CTPD.phieuDat.ngayKT "
+						+ "   OR ( :dateIn < CTPD.phieuDat.ngayBD AND :dateOut > CTPD.phieuDat.ngayKT)) "
+						+ " and CTPD.hangPhong.idHP = :idHP and CTPD.phieuDat.trangThai != -1"
+						+ "GROUP BY CTPD.hangPhong.idHP";
+				query = session.createQuery(hql);
+				query.setParameter("idHP", hp.getIdHP());
+				query.setParameter("dateOut", dateOutTemp);
+				query.setParameter("dateIn", dateInTemp);
+				List<Object[]> list = query.list();
+				// số lượng phòng đã đặt
+				int sl_book = 0;
+				for (Object[] objects : list) {
+					sl_book += Integer.parseInt(objects[1].toString());
 				}
+				hql = "SELECT p.hangPhong.idHP, COUNT(p.maPhong)" + "FROM Phong p "
+						+ "WHERE p.hangPhong.idHP = :idHP AND p.trangThaiPhong.maTTP = 'TT1' "
+						+ "GROUP BY p.hangPhong.idHP ";
+				query = session.createQuery(hql);
+				query.setParameter("idHP", hp.getIdHP());
+				list = query.list();
+				// số lượng phòng
+				int numberOfRoom = 0;
+				for (Object[] objects : list) {
+					numberOfRoom += Integer.parseInt(objects[1].toString());
+				}
+				roomAvai.put(hp.getIdHP(), numberOfRoom - sl_book);
+
+				// kiểm tra số lượng người và loại phòng
+				if (hp.getSoLuongNguoi() == Integer.parseInt(sLN) && hp.getLoaiPhong().gettenLP().equals(lP))
+					listHPTempLookFor.add(hp);
+
 			}
 			listHPTemp = listHPTempLookFor;
 		}
@@ -133,11 +169,10 @@ public class RoomsController {
 		for (Object[] objects : list) {
 			discount.put(objects[0].toString(), Integer.parseInt(objects[1].toString()));
 		}
-		DetailRoom.avaiRoom = roomAvai;
-		DetailRoom.discount = discount;
+		RoomsController.avaiRoom = roomAvai;
+		RoomsController.discount = discount;
 		model.addAttribute("discount", discount);
 		model.addAttribute("roomAvai", roomAvai);
-		System.out.println("roomAvai: " + roomAvai.size());
 		ChangePage.changePage(listHPTemp, page, model, 9);
 		return "user/rooms";
 	}
@@ -145,16 +180,16 @@ public class RoomsController {
 	@RequestMapping("/room-detail")
 	public String roomDetail(@RequestParam("id") String idHP, @RequestParam("dateOut") String dateOut,
 			@RequestParam("dateIn") String dateIn, ModelMap model, HttpServletRequest request) {
-		Map<String, Integer> roomAvai = DetailRoom.avaiRoom;
-		Map<String, Integer> discount = DetailRoom.discount;
-		
-		this.idHP = idHP;
-		this.dateIn = dateIn;
-		this.dateOut = dateOut;
-		
+		Map<String, Integer> roomAvai = RoomsController.avaiRoom;
+		Map<String, Integer> discount = RoomsController.discount;
+
+		RoomsController.idHP = idHP;
+		RoomsController.dateIn = dateIn;
+		RoomsController.dateOut = dateOut;
+
 		model.addAttribute("roomAvai", roomAvai);
 		model.addAttribute("discount", discount);
-		
+
 		String hql = "From HangPhong where idHP = :idHP";
 		Session session = factory.getCurrentSession();
 		Query query = session.createQuery(hql);
@@ -191,15 +226,14 @@ public class RoomsController {
 			BinhLuan newBl = binhLuanService.getLatestReview(idHP, maKH);
 			model.addAttribute("newBl", newBl);
 		}
-		
+
 		model.addAttribute("blList", blList);
 		return "user/room-detail";
 	}
 
 	@RequestMapping(value = "/room-detail/add-review", method = RequestMethod.POST)
 	public String reviewHangPhong(ModelMap model, @RequestParam("rating") int rating,
-			@RequestParam("comment") String comment, HttpSession session,
-			RedirectAttributes rd) {
+			@RequestParam("comment") String comment, HttpSession session, RedirectAttributes rd) {
 		// get current time
 		LocalDateTime localDateTime = LocalDateTime.now();
 		Timestamp createDate = Timestamp.valueOf(localDateTime);
@@ -225,8 +259,8 @@ public class RoomsController {
 		rd.addAttribute("dateOut", dateOut);
 		return "redirect:/rooms/room-detail";
 	}
-	
-	@RequestMapping("/room-detail/delete-review/{id}") 
+
+	@RequestMapping("/room-detail/delete-review/{id}")
 	public String deleteReview(ModelMap model, @PathVariable(name = "id") int id, RedirectAttributes rd) {
 		binhLuanService.delete(id);
 		rd.addAttribute("id", idHP.trim());
