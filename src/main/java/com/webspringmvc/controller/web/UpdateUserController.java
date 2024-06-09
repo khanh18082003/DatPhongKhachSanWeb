@@ -22,10 +22,10 @@ public class UpdateUserController {
 	private String role = "KH";
 
 	@Autowired
-	IUserService userService;
+	private IUserService userService;
 
 	@Autowired
-	ITaiKhoanService taiKhoanService;
+	private ITaiKhoanService taiKhoanService;
 
 	@RequestMapping(value = "/update-user", method = RequestMethod.GET)
 	public String updateUser(ModelMap model, HttpSession session, HttpServletRequest request) {

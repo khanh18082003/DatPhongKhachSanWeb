@@ -16,10 +16,10 @@ import com.webspringmvc.entity.BinhLuan;
 @Transactional
 @Repository
 public class BinhLuanDaoImpl implements IBinhLuanDao {
-	
+
 	@Autowired
 	SessionFactory factory;
-	
+
 	@Override
 	public int insert(BinhLuan t) {
 		Session session = factory.openSession();
@@ -42,7 +42,17 @@ public class BinhLuanDaoImpl implements IBinhLuanDao {
 
 	@Override
 	public int delete(Integer id) {
-		// TODO Auto-generated method stub
+		Session session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			Query q = session.createQuery("DELETE BinhLuan WHERE id = :id");
+			q.setParameter("id", id);
+			int res = q.executeUpdate();
+			transaction.commit();
+			return res;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return 0;
 	}
 
@@ -55,5 +65,33 @@ public class BinhLuanDaoImpl implements IBinhLuanDao {
 		List<BinhLuan> blList = q.list();
 		return blList;
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<BinhLuan> getBlListOfUser(String idHP, int id) {
+		Session session = factory.getCurrentSession();
+		Query q = session.createQuery("From BinhLuan bl WHERE hangPhong.idHP = :idHP AND kh.maKH = :id");
+		q.setParameter("idHP", idHP);
+		q.setParameter("id", id);
+		List<BinhLuan> blList = q.list();
+		return blList;
+	}
+
+	@Override
+	public BinhLuan getLatestReview(String idHP, int id) {
+		Session session = factory.getCurrentSession();
+		Query q = session.createQuery(
+				"From BinhLuan bl WHERE hangPhong.idHP = :idHP AND kh.maKH = :id ORDER BY createDate DESC");
+		q.setParameter("idHP", idHP);
+		q.setParameter("id", id);
+		q.setMaxResults(1);
+		Object obj = q.uniqueResult();
+		BinhLuan bl = null;
+		if (obj != null) {
+			bl = (BinhLuan) q.uniqueResult();
+		}
+
+		return bl;
+	}
+
 }

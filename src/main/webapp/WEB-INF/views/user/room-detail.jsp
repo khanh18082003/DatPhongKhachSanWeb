@@ -2,9 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ page import="java.time.LocalDateTime"%>
-<%@ page import="java.time.ZoneId"%>
-<%@ page import="java.util.Date"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -63,16 +60,11 @@
 								</div>
 							</div>
 							<br /> <br /> <br />
-<<<<<<< HEAD
-							<h2>
-								<fmt:formatNumber value="${room.gia * (100 - discount)/100}"
-									type="currency" currencySymbol="$" pattern="$#,##0.00" />
-=======
+
 							<h2> 
 											<fmt:formatNumber value="${room.gia * (100 - discount[room.idHP])/100}"
 												type="currency" currencySymbol="$" pattern="$#,##0.00" />
->>>>>>> 54de18386e1dc4b2595428497e5be04ed3ae6cc7
-								<span>/Pernight</span>
+							<span>/Pernight</span>
 							</h2>
 							<table>
 								<tbody>
@@ -138,9 +130,10 @@
 														<i class="icon_star" data-value="${i}"></i>
 													</c:otherwise>
 												</c:choose>
-
 											</c:forEach>
 										</div>
+										<c:if test="${bl.kh.maKH eq sessionScope.maKH}"><a href="<c:url value="/rooms/room-detail/delete-review/${bl.id}"/>" class="btn btn-primary" style="background-color: #f32d2d; border-color: #f32d2d;">Delete</a></c:if>
+										
 										<h5>${bl.kh.ho} ${bl.kh.ten}</h5>
 										<p>${bl.comment}</p>
 									</div>
@@ -151,20 +144,26 @@
 					</div>
 					<div class="review-add">
 						<h4>Add Review</h4>
-						<form action="<c:url value="/room-detail/review"/>"
-							class="ra-form">
+						<form action="<c:url value="/rooms/room-detail/add-review"/>"
+							class="ra-form" method="POST">
 							<div class="row">
 								<div class="col-lg-12">
 									<div>
 										<h5>You Rating:</h5>
 										<div class="rating" data-rating="0">
-											<i class="icon_star" data-value="1"></i> <i class="icon_star"
-												data-value="2"></i> <i class="icon_star" data-value="3"></i>
-											<i class="icon_star" data-value="4"></i> <i class="icon_star"
-												data-value="5"></i>
+											<c:forEach var="i" begin="1" end="5">
+												<c:choose>
+													<c:when test="${i <= newBl.rating}">
+														<i class="icon_star selected" data-value="${i}"></i>
+													</c:when>
+													<c:otherwise>
+														<i class="icon_star" data-value="${i}"></i>
+													</c:otherwise>
+												</c:choose>
+
+											</c:forEach>
 										</div>
 									</div>
-									<input type="hidden" name="idHP" value="${hp.idHP}">
 									<input class="input-rating" type="hidden" name="rating">
 									<textarea placeholder="Your Review" name="comment"></textarea>
 									<button type="submit">Submit Now</button>

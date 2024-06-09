@@ -32,9 +32,18 @@ public class BinhLuanService implements IBinhLuanService {
 	}
 
 	@Override
-	public int delete(BinhLuan bl) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int delete(int id) {
+		return binhLuanDao.delete(id);
+	}
+
+	@Override
+	public List<BinhLuan> getBlListOfUser(String idHP, int id) {
+		return binhLuanDao.getBlListOfUser(idHP, id);
+	}
+
+	@Override
+	public BinhLuan getLatestReview(String idHP, int id) {
+		return binhLuanDao.getLatestReview(idHP, id);
 	}
 	
 }

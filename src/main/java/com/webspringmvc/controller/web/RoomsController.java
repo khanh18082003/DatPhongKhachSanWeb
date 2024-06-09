@@ -22,9 +22,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.webspringmvc.entity.BinhLuan;
 import com.webspringmvc.entity.DetailRoom;
@@ -41,13 +43,15 @@ import com.webspringmvc.service.IUserService;
 public class RoomsController {
 
 	@Autowired
-	IBinhLuanService binhLuanService;
-	
+	private IBinhLuanService binhLuanService;
+
 	@Autowired
-	IUserService userService;
-	
+	private IUserService userService;
+
 	@Autowired
-	SessionFactory factory;
+	private SessionFactory factory;
+	
+	private String idHP, dateOut, dateIn;
 
 	@RequestMapping("/index")
 	public String index(@RequestParam(value = "page", defaultValue = "1") int page, ModelMap model,
@@ -139,13 +143,14 @@ public class RoomsController {
 	}
 
 	@RequestMapping("/room-detail")
-	public String roomDetail(@RequestParam("id") String idHP,
-			@RequestParam("dateOut") String dateOut,
-			@RequestParam("dateIn") String dateIn,
-			ModelMap model,
-			HttpServletRequest request) {
+	public String roomDetail(@RequestParam("id") String idHP, @RequestParam("dateOut") String dateOut,
+			@RequestParam("dateIn") String dateIn, ModelMap model, HttpServletRequest request) {
 		Map<String, Integer> roomAvai = DetailRoom.avaiRoom;
 		Map<String, Integer> discount = DetailRoom.discount;
+		
+		this.idHP = idHP;
+		this.dateIn = dateIn;
+		this.dateOut = dateOut;
 		
 		model.addAttribute("roomAvai", roomAvai);
 		model.addAttribute("discount", discount);
@@ -180,27 +185,34 @@ public class RoomsController {
 		}
 
 		List<BinhLuan> blList = binhLuanService.getList(idHP);
-
+		Object obj = request.getSession().getAttribute("maKH");
+		if (obj != null) {
+			int maKH = (int) obj;
+			BinhLuan newBl = binhLuanService.getLatestReview(idHP, maKH);
+			model.addAttribute("newBl", newBl);
+		}
+		
 		model.addAttribute("blList", blList);
 		return "user/room-detail";
 	}
 
-	@RequestMapping(value = "/room-detail/review", method = RequestMethod.POST)
+	@RequestMapping(value = "/room-detail/add-review", method = RequestMethod.POST)
 	public String reviewHangPhong(ModelMap model, @RequestParam("rating") int rating,
-			@RequestParam("comment") String comment, @RequestParam("idHP") String idHP, HttpSession session) {
+			@RequestParam("comment") String comment, HttpSession session,
+			RedirectAttributes rd) {
 		// get current time
 		LocalDateTime localDateTime = LocalDateTime.now();
 		Timestamp createDate = Timestamp.valueOf(localDateTime);
 		// get user commenting
-		String email = (String)session.getAttribute("author");
+		String email = (String) session.getAttribute("author");
 		KhachHang user = userService.getUserByEmail(email);
-		// get HangPhong 
+		// get HangPhong
 		String hql = "From HangPhong where idHP = :idHP";
 		Session sessionF = factory.getCurrentSession();
 		Query query = sessionF.createQuery(hql);
 		query.setParameter("idHP", idHP);
 		HangPhong hp = (HangPhong) query.uniqueResult();
-		
+
 		BinhLuan bl = new BinhLuan();
 		bl.setRating(rating);
 		bl.setComment(comment);
@@ -208,6 +220,18 @@ public class RoomsController {
 		bl.setKh(user);
 		bl.setHangPhong(hp);
 		binhLuanService.insert(bl);
-		return "user/room-detail";
+		rd.addAttribute("id", idHP.trim());
+		rd.addAttribute("dateIn", dateIn);
+		rd.addAttribute("dateOut", dateOut);
+		return "redirect:/rooms/room-detail";
+	}
+	
+	@RequestMapping("/room-detail/delete-review/{id}") 
+	public String deleteReview(ModelMap model, @PathVariable(name = "id") int id, RedirectAttributes rd) {
+		binhLuanService.delete(id);
+		rd.addAttribute("id", idHP.trim());
+		rd.addAttribute("dateIn", dateIn);
+		rd.addAttribute("dateOut", dateOut);
+		return "redirect:/rooms/room-detail";
 	}
 }

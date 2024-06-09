@@ -16,10 +16,10 @@ import com.webspringmvc.service.IUserService;
 
 public class HomeInterceptor extends HandlerInterceptorAdapter {
 	@Autowired
-	ITaiKhoanService taiKhoanService;
+	private ITaiKhoanService taiKhoanService;
 	
 	@Autowired
-	IUserService userService;
+	private IUserService userService;
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -41,6 +41,7 @@ public class HomeInterceptor extends HandlerInterceptorAdapter {
 				KhachHang kh = userService.getUserByEmail(t.getUsername());
 				if (kh != null) {
 					session.setAttribute("name", kh.getHo().trim() + " "+ kh.getTen().trim());
+					session.setAttribute("maKH", kh.getMaKH());
 				}
 				session.setAttribute("author", t.getUsername());
 				break;
