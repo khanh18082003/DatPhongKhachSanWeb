@@ -26,6 +26,7 @@
 						<i class="fas fa-table me-1"></i> Promotion Detail
 					</div>
 					<div class="card-body">
+						<span class="message">${message}</span>
 						<table id="datatablesSimple">
 							<thead>
 								<tr>

@@ -36,7 +36,7 @@ public class PromotionController {
 
 	@Autowired
 	ServletContext context;
-	
+
 	@Autowired
 	IPromotionService promotionService;
 
@@ -45,12 +45,13 @@ public class PromotionController {
 		model.addAttribute("listKM", promotionService.getList());
 		return "admin/promotion";
 	}
-	
+
 	/*-------------------------- INSERT KHUYENMAI --------------------------*/
 
 	@RequestMapping(value = "/insertPromo", method = RequestMethod.GET)
 	public String insertPromo(ModelMap model) {
 		KhuyenMai khuyenMai = new KhuyenMai();
+		/* Initializing ngaybd ngaykt to avoid error 400 */
 		String str = "2018-09-01 09:01:15";
 		Timestamp timestamp = Timestamp.valueOf(str);
 		khuyenMai.setngayBD(timestamp);
@@ -85,6 +86,13 @@ public class PromotionController {
 					+ "\" Must Not Include Special Characters. Only Letters, Numbers, and underscores are allowed in IDs.\"");
 		}*/
 		/*---------------- check name ----------------*/
+
+		/*
+		 * Định nghĩa đơn giản thì Stream là một wrapper của collection và array. Nó
+		 * wrap một collection sẵn có và các data source khác để hỗ trợ việc thao tác
+		 * trên các collection, datasource đó sử dụng Lambda Expression. Vì thế, bạn chỉ
+		 * cần chỉ định cái bạn muốn làm, còn việc làm như thế nào, Stream sẽ lo cái đó.
+		 */
 		if (listKM.stream().anyMatch(existingHP -> existingHP.gettenKM().equals(khuyenMai.gettenKM()))) {
 			errors.rejectValue("tenKM", "khuyenMai", "Name \"" + khuyenMai.gettenKM() + "\" Already Exists.");
 		}
@@ -109,11 +117,10 @@ public class PromotionController {
 			model.addAttribute("message", "*Please Check These Errors.");
 			return "/admin/insertPromo";
 		}
-		
+
 		if (promotionService.insert(khuyenMai) == 1) {
 			model.addAttribute("message", "*Insert Successful");
-		}
-		else {
+		} else {
 			model.addAttribute("message", "*Insert Failed");
 			errors.rejectValue("maKM", "khuyenMai",
 					"Please Check This ID, Maybe ID \"" + khuyenMai.getmaKM() + "\" Already Exists.");
@@ -130,8 +137,7 @@ public class PromotionController {
 		KhuyenMai khuyenMai = (KhuyenMai) session.get(KhuyenMai.class, id);
 
 		if (khuyenMai == null) {
-			// Xử lý trường hợp không tìm thấy hàng phòng với ID đã cho
-			// Ví dụ: thông báo lỗi, redirect, hoặc hiển thị trang 404
+			return "404";
 		} else {
 
 			model.addAttribute("khuyenMai", khuyenMai);
@@ -145,9 +151,6 @@ public class PromotionController {
 		/* Validate input */
 		List<KhuyenMai> listKM = promotionService.getList();
 
-//		hql = "FROM KhuyenMai km WHERE km.maKM != :editedID";
-//		query = session.createQuery(hql);
-//		query.setParameter("editedID", khuyenMai.getmaKM());
 		List<KhuyenMai> otherKMs = promotionService.getRemainingRoom(khuyenMai.getmaKM());
 
 		khuyenMai.setmaKM(khuyenMai.getmaKM().trim());
@@ -185,7 +188,7 @@ public class PromotionController {
 			model.addAttribute("message", "*Please Check These Errors.");
 			return "/admin/editPromo";
 		}
-		
+
 		if (promotionService.update(khuyenMai) == 1) {
 			model.addAttribute("message", "*Update Successful");
 		} else {
@@ -198,26 +201,13 @@ public class PromotionController {
 	/*-------------------------- DELETE KHUYENMAI --------------------------*/
 
 	@RequestMapping(value = "/deletePromo", method = RequestMethod.GET)
-	public String deletePromo(@RequestParam("id") String id, ModelMap model) {
+	public String deletePromo(@RequestParam("id") String id, RedirectAttributes redirectAttributes) {
 
-		Session session = factory.openSession();
-		Transaction t = session.beginTransaction();
-		try {
-			KhuyenMai khuyenMai = (KhuyenMai) session.get(KhuyenMai.class, id);
-			session.delete(khuyenMai);
-			t.commit();
-			
-		} catch (Exception e) {
-			t.rollback();
-			model.addAttribute("message", "*Delete Failed. There Is Promotion Detail In Promotion");
-		} finally {
-			session.close();
-		}
-		
 		if (promotionService.delete(id) == 1) {
-			model.addAttribute("message", "*Delete Successful");
+			redirectAttributes.addFlashAttribute("message", "*Delete Successful");
 		} else {
-			model.addAttribute("message", "*Delete Failed. Maybe There Is Promotion Detail In Promotion");
+			redirectAttributes.addFlashAttribute("message",
+					"*Delete Failed. Maybe There Is Promotion Detail In Promotion");
 		}
 
 		return "redirect:/admin/promotion";
@@ -226,10 +216,10 @@ public class PromotionController {
 
 	@Autowired
 	IRoomService roomService;
-	
+
 	@Autowired
 	IPromotionDetailService promotionDetailService;
-	
+
 	/*-------------------------------- CT_KHUYENMAI --------------------------------*/
 	@RequestMapping(value = "/promotion-detail", method = RequestMethod.GET)
 	public String pdPage(@RequestParam("id") String maKM, ModelMap model) {
@@ -270,14 +260,12 @@ public class PromotionController {
 			return "/admin/insertPD";
 		}
 
-		
 		if (promotionDetailService.insert(CTKM) == 1) {
 			model.addAttribute("message", "*Insert Successful");
-		}
-		else {
+		} else {
 			model.addAttribute("message", "*Insert Failed. Maybe This Room Detail Already Exists In This Promotion");
 		}
-		
+
 		Session session = factory.openSession();
 		KhuyenMai khuyenMai = (KhuyenMai) session.get(KhuyenMai.class, CTKM.getKhuyenMai().getmaKM());
 		CT_KhuyenMai ct_KhuyenMai = new CT_KhuyenMai();
@@ -296,8 +284,7 @@ public class PromotionController {
 		Session session = factory.getCurrentSession();
 		CT_KhuyenMai CTKM = (CT_KhuyenMai) session.get(CT_KhuyenMai.class, id);
 		if (CTKM == null) {
-			// Xử lý trường hợp không tìm thấy hàng phòng với ID đã cho
-			// Ví dụ: thông báo lỗi, redirect, hoặc hiển thị trang 404
+			return "404";
 		} else {
 
 			model.addAttribute("CTKM", CTKM);
@@ -309,11 +296,20 @@ public class PromotionController {
 	@RequestMapping(value = "/editPD", method = RequestMethod.POST)
 	public String editPD(@ModelAttribute("CTKM") CT_KhuyenMai CTKM, ModelMap model,
 			RedirectAttributes redirectAttributes, BindingResult errors) {
+		/*
+		 * So if you are using addAttribute it just adds the parameter onto your URI.
+		 * After the redirect your confirmWithdrawRequestShowPage will be executed, and
+		 * the error parameter will bind, but as you are not storing it it won't be
+		 * available to the JSP.
+		 * 
+		 * In the case of addFlashAttribute, the attribute is not added to the URI but
+		 * is stored in the session (within the server) and they are available until the
+		 * first read after the redirect.
+		 */
 
 		if (promotionDetailService.update(CTKM) == 1) {
 			redirectAttributes.addFlashAttribute("message", "*Update Successful");
-		}
-		else {
+		} else {
 			redirectAttributes.addFlashAttribute("message", "*Update Failed");
 		}
 
@@ -327,13 +323,13 @@ public class PromotionController {
 	/*-------------------------- DELETE CT_KHUYENMAI --------------------------*/
 
 	@RequestMapping(value = "/deletePD", method = RequestMethod.GET)
-	public String deletePD(@RequestParam("idCTKM") int idCTKM, @RequestParam("idKM") String idKM, ModelMap model) {
-		
+	public String deletePD(@RequestParam("idCTKM") int idCTKM, @RequestParam("idKM") String idKM,
+			RedirectAttributes redirectAttributes) {
+
 		if (promotionDetailService.delete(idCTKM) == 1) {
-			model.addAttribute("message", "*Delete Successful");
-		}
-		else {
-			model.addAttribute("message", "*Delete Failed");
+			redirectAttributes.addFlashAttribute("message", "*Delete Successful");
+		} else {
+			redirectAttributes.addFlashAttribute("message", "*Delete Failed. Maybe This Is Already Used");
 		}
 
 		return "redirect:/admin/promotion-detail?id=" + idKM;

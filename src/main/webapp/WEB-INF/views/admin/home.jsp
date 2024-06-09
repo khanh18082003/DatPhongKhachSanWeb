@@ -319,6 +319,10 @@
 		    // Initial call to update total
 		    updateTotal();
 
+		    /* table.on('draw', function() { ... }); là cú pháp của jQuery để đăng ký một trình xử lý sự kiện.
+		    table là một đối tượng jQuery đại diện cho bảng DataTable.
+		    'draw' là tên của sự kiện mà bạn đang lắng nghe.
+		    function() { ... } là hàm callback sẽ được gọi khi sự kiện 'draw' được kích hoạt. */
 
 			
 		});
