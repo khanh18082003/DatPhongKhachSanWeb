@@ -137,7 +137,7 @@ public class PromotionController {
 		KhuyenMai khuyenMai = (KhuyenMai) session.get(KhuyenMai.class, id);
 
 		if (khuyenMai == null) {
-			return "404";
+			return "redirect:/notification/404";
 		} else {
 
 			model.addAttribute("khuyenMai", khuyenMai);
@@ -284,7 +284,7 @@ public class PromotionController {
 		Session session = factory.getCurrentSession();
 		CT_KhuyenMai CTKM = (CT_KhuyenMai) session.get(CT_KhuyenMai.class, id);
 		if (CTKM == null) {
-			return "404";
+			return "redirect:/notification/404";
 		} else {
 
 			model.addAttribute("CTKM", CTKM);

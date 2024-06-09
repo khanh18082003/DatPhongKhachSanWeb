@@ -36,6 +36,7 @@
 									<th>Room Name</th>
 									<th>Floor</th>
 									<th>State</th>
+									<th>Room Type</th>
 									<th>Action</th>
 
 								</tr>
@@ -47,6 +48,7 @@
 									<th>Room Name</th>
 									<th>Floor</th>
 									<th>State</th>
+									<th>Room Type</th>
 									<th>Action</th>
 									
 								</tr>
@@ -61,7 +63,7 @@
 										<td>${list.tenPhong }</td>
 										<td>${list.tang } </td>
 										<td>${list.trangThaiPhong.tenTTP } </td>
-										
+										<td>${list.hangPhong.tenHP} </td>
 										<td>
 											<div class="icon-container">
 												<a href="editPhong.html?id=${list.maPhong}"

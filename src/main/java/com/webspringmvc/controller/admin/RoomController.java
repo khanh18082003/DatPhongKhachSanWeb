@@ -132,7 +132,7 @@ public class RoomController {
 		Session session = factory.getCurrentSession();
 		HangPhong hangPhong = (HangPhong) session.get(HangPhong.class, id);
 		if (hangPhong == null) {
-			return "404";
+			return "redirect:/notification/404";
 		} else {
 
 			model.addAttribute("hangPhong", hangPhong);
@@ -372,13 +372,16 @@ public class RoomController {
 		Transaction t = session.beginTransaction();
 
 		try {
+			System.out.println("ID: " + phong.getMaPhong() + " Name: " + phong.getTenPhong() + " Tang: " + phong.getTang()
+                    + " TrangThaiPhong: " + phong.getTrangThaiPhong() + " IDHP: " + phong.getHangPhong().getIdHP());
 			Session session_query = factory.getCurrentSession();
-			String hql = "update Phong set tenPhong=:tenPhong, tang=:tang, trangThaiPhong=:trangThaiPhong where maPhong=:maPhong";
+			String hql = "update Phong set tenPhong=:tenPhong, tang=:tang, trangThaiPhong=:trangThaiPhong, idHP=:idHP where maPhong=:maPhong";
 			Query query = session_query.createQuery(hql);
 			query.setParameter("maPhong", phong.getMaPhong());
 			query.setParameter("tenPhong", phong.getTenPhong());
 			query.setParameter("tang", phong.getTang());
 			query.setParameter("trangThaiPhong", phong.getTrangThaiPhong());
+			query.setParameter("idHP", phong.getHangPhong().getIdHP());
 
 			query.executeUpdate();
 

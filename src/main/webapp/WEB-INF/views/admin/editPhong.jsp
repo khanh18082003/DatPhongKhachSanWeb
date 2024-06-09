@@ -37,6 +37,11 @@
                         <form:select class="state" path="trangThaiPhong.maTTP"
                             items="${listTTP}" itemValue="maTTP" itemLabel="tenTTP" />
                         <form:errors path="trangThaiPhong.maTTP" />
+                        
+                        <label for="room-type">Room Type:</label>
+                        <form:select class="room-type" path="hangPhong.idHP"
+                            items="${listHP}" itemValue="idHP" itemLabel="tenHP" />
+                        <form:errors path="hangPhong.idHP" />
 
                         <div class="form-group button-container">
                             <button type="button" class="btn-edit btn-cancel" id="huy">Cancel</button>
