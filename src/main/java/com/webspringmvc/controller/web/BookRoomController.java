@@ -37,6 +37,7 @@ import com.webspringmvc.entity.HoaDon;
 import com.webspringmvc.entity.KhachHang;
 import com.webspringmvc.entity.PhieuDat;
 import com.webspringmvc.entity.TaiKhoan;
+import com.webspringmvc.page.ChangePage;
 import com.webspringmvc.service.impl.MailerService;
 
 @Transactional
@@ -155,10 +156,34 @@ public class BookRoomController {
 			session_insert.close();
 		}
 		// Gửi mail
-		String subject = "Thank! Your booking at Sona has been confirmed.";
-		String body = "Cam on ban";
-		mailer.send("Sona Support", tk.getUsername(), subject, body);
-		rd.addFlashAttribute("message", "Booking Room");
-		return "redirect:/notification/200";
+		SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+        SimpleDateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
+        
+        String checkInDate = "";
+        String checkOutDate = "";
+        try {
+            checkInDate = targetFormat.format(originalFormat.parse(pd.getNgayBD().toString()));
+            checkOutDate = targetFormat.format(originalFormat.parse(pd.getNgayKT().toString()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        String subject = "Thank! Your booking at Sona has been confirmed.";
+        String body = "</p>Dear " + kh.getHo() +" "+kh.getTen() + ",</p>"
+                + "<p>We sincerely thank you for choosing [Hotel/Resort Name]. We are pleased to inform you that your booking has been successfully confirmed with the following details:</p>"
+                + "<p>Customer Name: " + kh.getHo() +" "+kh.getTen() + "</p>"
+                + "<p>Booking Number: " + kh.getSdt()+ "</p>"
+                + "<p>Room :" + ctpd.getHangPhong().getTenHP() + "</p>"
+                + "<p>Check-in Date: "+ checkInDate + "</p>"
+                + "<p>Check-out Date: "+ checkOutDate + "</p>"
+                + "<p>Total Amount: " + tongTien + "</p>"
+                + "<p>We are committed to providing you with an exceptional and memorable stay. If you have any special requests or questions, please feel free to contact us via this email or call our hotline at 0123456789.</p>"
+                + "<p>Once again, thank you, and we look forward to welcoming you to Sona.</p>"
+                + "<p>Best regards,</p>"
+                + "<p>Sona Hotel</p>";
+
+        mailer.send("Sona Support", tk.getUsername(), subject, body);
+        rd.addFlashAttribute("message", "Booking Room");
+        return "redirect:/notification/200";
 	}
 }
