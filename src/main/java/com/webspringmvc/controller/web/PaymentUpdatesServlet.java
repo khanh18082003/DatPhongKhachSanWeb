@@ -10,7 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @WebServlet("/PaymentStatusServlet")
 public class PaymentUpdatesServlet extends HttpServlet {
@@ -32,6 +36,8 @@ public class PaymentUpdatesServlet extends HttpServlet {
                 if (paymentSuccess) {
                 	JSONObject json = new JSONObject();
                     json.put("status", "success");
+                    json.put("maGD", BookRoomController.content);
+                    json.put("amount", BookRoomController.amount);
                     out.print(json.toString());
                     out.flush();
                     System.out.println("Thành công");

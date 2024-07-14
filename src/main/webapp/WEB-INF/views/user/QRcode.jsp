@@ -20,9 +20,30 @@
                 console.log(data);
                 if (data.status === 'success') {
                 	console.log("Payment Successful!");
-                    setTimeout(function() {
-                        window.location.href = '/DatPhongKhachSanWeb/booking-room-success';
-                    }, 3000);
+                	
+                	setTimeout(function() {
+                	    fetch('/DatPhongKhachSanWeb/booking-room-success', {
+                	        method: 'POST',
+                	        headers: {
+                	            'Content-Type': 'application/x-www-form-urlencoded'
+                	        },
+                	        body: new URLSearchParams({
+                	            maGD: data.maGD,
+                	            amount: data.amount
+                	        })
+                	    })
+                	    .then(response => {
+                	        if (response.ok) {
+                	            console.log('Booking room success');
+                	            window.location.href = '/DatPhongKhachSanWeb/notification/200';
+                	        } else {
+                	            console.error('Post request failed', response.status, response.statusText);
+                	        }
+                	    })
+                	    .catch(error => {
+                	        console.error('Error:', error);
+                	    });
+                	}, 3000);
                 }
             })
             .catch(error => console.error('Error:', error));

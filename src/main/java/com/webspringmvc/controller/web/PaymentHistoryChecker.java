@@ -40,7 +40,7 @@ public class PaymentHistoryChecker {
     }
 
     private boolean isPaymentSuccessful(String jsonResponse) {
-        return jsonResponse.contains("testqr13072024");
+        return jsonResponse.contains(BookRoomController.content);
     }
 
     public static void main(String[] args) throws IOException {
