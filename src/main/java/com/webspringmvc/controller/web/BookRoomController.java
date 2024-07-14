@@ -33,7 +33,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.webspringmvc.entity.CT_PhieuDat;
@@ -107,86 +107,81 @@ public class BookRoomController{
 		}
 		return "user/book-room";
 	}
-	
+	public static int amount;
+	public static String content;
 	@RequestMapping(value = "/booking-room")
-	public String generateQRCode(Model model) {
-		String amount = "10000";
-        String checkContent = "testqr13072024";
+	public String generateQRCode(HttpServletRequest request,
+			@Validated @ModelAttribute("khachHang") KhachHang kh, HttpSession sessionUser,
+			BindingResult err, ModelMap model, RedirectAttributes rd) {
+        Map<String, Integer> discount = RoomsController.getDiscount();
+
+		CT_PhieuDat ctpd = (CT_PhieuDat) request.getSession().getAttribute("ctPD");
+		PhieuDat pd = (PhieuDat)request.getSession().getAttribute("pd");
+		
+		String username = sessionUser.getAttribute("author").toString();
+		Session session = factory.getCurrentSession();
+		String hql ="from TaiKhoan where username = :username";
+		Query query = session.createQuery(hql);
+		query.setParameter("username", username);
+		TaiKhoan tk = (TaiKhoan) query.uniqueResult();
+		
+		if(err.hasErrors()) {
+			request.setAttribute("ctPhieuDat", ctpd);
+			request.setAttribute("pd", pd);
+			request.setAttribute("tk", tk);
+			int soNgay = (int)TimeUnit.DAYS.convert(pd.getNgayKT().getTime() - pd.getNgayBD().getTime(), TimeUnit.MILLISECONDS);
+			request.setAttribute("soNgay", soNgay);
+			request.getSession().setAttribute("ctPD", ctpd);
+    		request.getSession().setAttribute("pd", pd);
+	        return "user/book-room";
+		}
+		Session session_insert = factory.openSession();
+		Transaction t = session_insert.beginTransaction();
+		// Kiểm tra xem có tài khoản hay chưa
+		hql = "select kh from KhachHang kh join kh.email tk where tk.username = :username";
+		query = session_insert.createQuery(hql);
+		query.setParameter("username", tk.getUsername());
+		List<KhachHang> khList = query.list();
+		int discountValue = discount.getOrDefault(ctpd.getHangPhong().getIdHP(), 0);
+		float tongTien = ctpd.getHangPhong().getGia() * ctpd.getsLPhong() * (100 - discountValue) / 100;
+        Timestamp myDateObj = new Timestamp(System.currentTimeMillis());
+        
+        amount = 10000;
+		content = "NTT003";
         String accountName = "NGUYEN THANH TAM";
-        String qrImgSrc = "https://img.vietqr.io/image/970422-0396441431-compact2.png?amount=" + amount + "&addInfo=" + checkContent + "&accountName=" + accountName.replace(" ", "%20");
+        String qrImgSrc = "https://img.vietqr.io/image/970422-0396441431-compact2.png?amount=" + amount + "&addInfo=" + content + "&accountName=" + accountName.replace(" ", "%20");
         
         model.addAttribute("qrImgSrc", qrImgSrc);
-        return "user/QRcode";
-    }
-	@RequestMapping(value = "/booking-room-success", method = RequestMethod.GET)
-    public String bookRoom() {
-        // Xử lý logic khi booking room thành công
-        return "redirect:/notification/200";
-    }
-//	public String bookRoom(HttpServletRequest request,
-//			@Validated @ModelAttribute("khachHang") KhachHang kh, HttpSession sessionUser,
-//			BindingResult err, ModelMap model, RedirectAttributes rd) {
-//		Map<String, Integer> discount = RoomsController.getDiscount();
-//
-//		CT_PhieuDat ctpd = (CT_PhieuDat) request.getSession().getAttribute("ctPD");
-//		PhieuDat pd = (PhieuDat)request.getSession().getAttribute("pd");
-//		
-//		String username = sessionUser.getAttribute("author").toString();
-//		Session session = factory.getCurrentSession();
-//		String hql ="from TaiKhoan where username = :username";
-//		Query query = session.createQuery(hql);
-//		query.setParameter("username", username);
-//		TaiKhoan tk = (TaiKhoan) query.uniqueResult();
-//		
-//		if(err.hasErrors()) {
-//			request.setAttribute("ctPhieuDat", ctpd);
-//			request.setAttribute("pd", pd);
-//			request.setAttribute("tk", tk);
-//			int soNgay = (int)TimeUnit.DAYS.convert(pd.getNgayKT().getTime() - pd.getNgayBD().getTime(), TimeUnit.MILLISECONDS);
-//			request.setAttribute("soNgay", soNgay);
-//			request.getSession().setAttribute("ctPD", ctpd);
-//    		request.getSession().setAttribute("pd", pd);
-//	        return "user/book-room";
-//		}
-//		Session session_insert = factory.openSession();
-//		Transaction t = session_insert.beginTransaction();
-//		// Kiểm tra xem có tài khoản hay chưa
-//		hql = "select kh from KhachHang kh join kh.email tk where tk.username = :username";
-//		query = session_insert.createQuery(hql);
-//		query.setParameter("username", tk.getUsername());
-//		List<KhachHang> khList = query.list();
-//		int discountValue = discount.getOrDefault(ctpd.getHangPhong().getIdHP(), 0);
-//		float tongTien = ctpd.getHangPhong().getGia() * ctpd.getsLPhong() * (100 - discountValue) / 100;
-//        Timestamp myDateObj = new Timestamp(System.currentTimeMillis());
-//        HoaDon hd = new HoaDon(myDateObj, tongTien, pd);
-//		try {
-//			if (khList.isEmpty()) {
-//				kh.setEmail(tk);
-//				session_insert.save(kh);
-//			}
-//			session_insert.save(pd);
-//			session_insert.save(ctpd);
-//			session_insert.save(hd);
-//			t.commit();
-//		} catch (Exception e) {
-//			t.rollback();
-//			e.printStackTrace();
-//		} finally {
-//			session_insert.close();
-//		}
-//		// Gửi mail
-//		SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
-//        SimpleDateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
-//        
-//        String checkInDate = "";
-//        String checkOutDate = "";
-//        try {
-//            checkInDate = targetFormat.format(originalFormat.parse(pd.getNgayBD().toString()));
-//            checkOutDate = targetFormat.format(originalFormat.parse(pd.getNgayKT().toString()));
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//
+        
+        HoaDon hd = new HoaDon(myDateObj, tongTien, pd, content);
+		try {
+			if (khList.isEmpty()) {
+				kh.setEmail(tk);
+				session_insert.save(kh);
+			}
+			session_insert.save(pd);
+			session_insert.save(ctpd);
+			session_insert.save(hd);
+			t.commit();
+		} catch (Exception e) {
+			t.rollback();
+			e.printStackTrace();
+		} finally {
+			session_insert.close();
+		}
+		// Gửi mail
+		SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+        SimpleDateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
+        
+        String checkInDate = "";
+        String checkOutDate = "";
+        try {
+            checkInDate = targetFormat.format(originalFormat.parse(pd.getNgayBD().toString()));
+            checkOutDate = targetFormat.format(originalFormat.parse(pd.getNgayKT().toString()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
 //        String subject = "Thank! Your booking at Sona has been confirmed.";
 //        String body = "</p>Dear " + kh.getHo() +" "+kh.getTen() + ",</p>"
 //                + "<p>We sincerely thank you for choosing [Hotel/Resort Name]. We are pleased to inform you that your booking has been successfully confirmed with the following details:</p>"
@@ -203,6 +198,35 @@ public class BookRoomController{
 //
 //        mailer.send("Sona Support", tk.getUsername(), subject, body);
 //        rd.addFlashAttribute("message", "Booking Room");
+        
+        return "user/QRcode";
+    }
+	
+	@RequestMapping(value = "/booking-room-success", method = RequestMethod.POST)
+	public String bookRoom(@RequestParam("maGD") String maGD, @RequestParam("amount") String tongTien) {
+	    try {
+	        // Xử lý logic khi booking room thành công
+	        Session session = factory.getCurrentSession();
+	        String sql = "update HoaDon set trangThai = 1 where maGD = :maGD and tongTien = :tongTien";
+	        Query query = session.createQuery(sql);
+	        query.setParameter("maGD", maGD);
+	        query.setParameter("tongTien",Float.parseFloat(tongTien));
+	        System.out.println(maGD + " " + tongTien);
+	        query.executeUpdate();
+	        System.out.println("Booking room success");
+	        return "redirect:/notification/200";
+	    } catch (Exception e) {
+	        // Log lỗi vào console hoặc logs của ứng dụng
+	        e.printStackTrace();
+	        // Trả về mã lỗi hoặc thông báo lỗi phù hợp
+	        return "redirect:/notification/500";
+	    }
+	}
+
+//	public String bookRoom(HttpServletRequest request,
+//			@Validated @ModelAttribute("khachHang") KhachHang kh, HttpSession sessionUser,
+//			BindingResult err, ModelMap model, RedirectAttributes rd) {
+//		
 //        return "redirect:/notification/200";
 //	}
 }

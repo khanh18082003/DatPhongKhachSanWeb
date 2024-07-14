@@ -26,6 +26,12 @@ public class HoaDon {
 	@Column(name = "TONGTIEN")
 	private float tongTien;
 	
+	@Column(name = "MAGIAODICH")
+	private String maGD;
+	
+	@Column(name = "TRANGTHAI")
+	private boolean trangThai;
+	
 	@OneToOne
 	@JoinColumn(name = "MAPD")
 	private PhieuDat maPD;
@@ -33,10 +39,12 @@ public class HoaDon {
 	public HoaDon() {
 	}
 
-	public HoaDon(Timestamp ngayLap, float tongTien, PhieuDat maPD) {
+	public HoaDon(Timestamp ngayLap, float tongTien, PhieuDat maPD, String maGD) {
 		this.ngayLap = ngayLap;
 		this.tongTien = tongTien;
 		this.maPD = maPD;
+		this.maGD = maGD;
+		this.trangThai = false;
 	}
 
 	public int getmaHD() {
