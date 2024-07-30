@@ -11,6 +11,8 @@ public class Setting {
 	private String diaChi;
 	private String sdt;
 	private String email;
+	private String accountName;
+	private String accountNumber;
 	
 	public Setting() {
 		
@@ -89,5 +91,20 @@ public class Setting {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public String getAccountName() {
+		return accountName;
+	}
+
+	public void setAccountName(String accountName) {
+		this.accountName = accountName;
+	}
+
+	public String getAccountNumber() {
+		return accountNumber;
+	}
+
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
 	}
 }

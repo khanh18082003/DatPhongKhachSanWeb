@@ -62,7 +62,7 @@
 								<h3>
 									<c:choose>
 										<c:when test="${discount[room.idHP] == null}">
-										    <fmt:formatNumber value="${room.gia}" type="currency" currencySymbol="$" pattern="$#,##0.00" />
+										    <fmt:formatNumber value="${room.gia}" type="currency" currencySymbol="đ" pattern="#,##0đ" />
 										</c:when>
 										<c:otherwise>
 											<fmt:formatNumber value="${room.gia * (100 - discount[room.idHP])/100}"

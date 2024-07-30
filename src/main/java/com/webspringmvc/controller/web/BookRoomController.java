@@ -1,6 +1,7 @@
 package com.webspringmvc.controller.web;
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletException;
@@ -41,6 +43,7 @@ import com.webspringmvc.entity.HangPhong;
 import com.webspringmvc.entity.HoaDon;
 import com.webspringmvc.entity.KhachHang;
 import com.webspringmvc.entity.PhieuDat;
+import com.webspringmvc.entity.Setting;
 import com.webspringmvc.entity.TaiKhoan;
 import com.webspringmvc.page.ChangePage;
 import com.webspringmvc.service.impl.MailerService;
@@ -52,6 +55,8 @@ public class BookRoomController{
 	SessionFactory factory;
 	@Autowired
 	MailerService mailer;
+	@Autowired
+	Setting setting;
 	@RequestMapping("/book-room")
 	public String formBookRoom(HttpServletRequest request, HttpSession sessionUser,
 			ModelMap model) {
@@ -107,7 +112,27 @@ public class BookRoomController{
 		}
 		return "user/book-room";
 	}
-	public static int amount;
+	
+	private static final String CHARACTERS = "abcdefghijklmnopqrstuvwxyz0123456789";
+    private static final int STRING_LENGTH = 10;
+    private static final SecureRandom RANDOM = new SecureRandom();
+    public static String generateRandomString() {
+        StringBuilder sb = new StringBuilder(STRING_LENGTH);
+        for (int i = 0; i < STRING_LENGTH; i++) {
+            int randomIndex = RANDOM.nextInt(CHARACTERS.length());
+            sb.append(CHARACTERS.charAt(randomIndex));
+        }
+        return sb.toString();
+    }
+    
+	private boolean checkContent(String uuid) {
+		 Session session = factory.getCurrentSession();
+	     String sql = "select 1 from HoaDon where maGD = :uuid and trangThai = 1";
+	     Query query = session.createQuery(sql);
+	     query.setParameter("uuid", uuid);
+	     return query.uniqueResult()==null?false:true;
+	}
+	public static float amount;
 	public static String content;
 	@RequestMapping(value = "/booking-room")
 	public String generateQRCode(HttpServletRequest request,
@@ -135,6 +160,7 @@ public class BookRoomController{
     		request.getSession().setAttribute("pd", pd);
 	        return "user/book-room";
 		}
+		
 		Session session_insert = factory.openSession();
 		Transaction t = session_insert.beginTransaction();
 		// Kiểm tra xem có tài khoản hay chưa
@@ -146,11 +172,15 @@ public class BookRoomController{
 		float tongTien = ctpd.getHangPhong().getGia() * ctpd.getsLPhong() * (100 - discountValue) / 100;
         Timestamp myDateObj = new Timestamp(System.currentTimeMillis());
         
-        amount = 10000;
-		content = "NTT003";
-        String accountName = "NGUYEN THANH TAM";
-        String qrImgSrc = "https://img.vietqr.io/image/970422-0396441431-compact2.png?amount=" + amount + "&addInfo=" + content + "&accountName=" + accountName.replace(" ", "%20");
+        amount = tongTien;
+		content = generateRandomString();
+		
+        while (checkContent(content)) {
+        	content = generateRandomString();
+        }
+        System.out.println(content);
         
+        String qrImgSrc = "https://img.vietqr.io/image/970422-"+setting.getAccountNumber()+"-compact2.png?amount=" + amount + "&addInfo=" + content + "&accountName=" + setting.getAccountName().replace(" ", "%20");
         model.addAttribute("qrImgSrc", qrImgSrc);
         
         HoaDon hd = new HoaDon(myDateObj, tongTien, pd, content);
@@ -182,22 +212,22 @@ public class BookRoomController{
             e.printStackTrace();
         }
 
-//        String subject = "Thank! Your booking at Sona has been confirmed.";
-//        String body = "</p>Dear " + kh.getHo() +" "+kh.getTen() + ",</p>"
-//                + "<p>We sincerely thank you for choosing [Hotel/Resort Name]. We are pleased to inform you that your booking has been successfully confirmed with the following details:</p>"
-//                + "<p>Customer Name: " + kh.getHo() +" "+kh.getTen() + "</p>"
-//                + "<p>Booking Number: " + kh.getSdt()+ "</p>"
-//                + "<p>Room :" + ctpd.getHangPhong().getTenHP() + "</p>"
-//                + "<p>Check-in Date: "+ checkInDate + "</p>"
-//                + "<p>Check-out Date: "+ checkOutDate + "</p>"
-//                + "<p>Total Amount: " + tongTien + "</p>"
-//                + "<p>We are committed to providing you with an exceptional and memorable stay. If you have any special requests or questions, please feel free to contact us via this email or call our hotline at 0123456789.</p>"
-//                + "<p>Once again, thank you, and we look forward to welcoming you to Sona.</p>"
-//                + "<p>Best regards,</p>"
-//                + "<p>Sona Hotel</p>";
-//
-//        mailer.send("Sona Support", tk.getUsername(), subject, body);
-//        rd.addFlashAttribute("message", "Booking Room");
+        String subject = "Thank! Your booking at Sona has been confirmed.";
+        String body = "</p>Dear " + kh.getHo() +" "+kh.getTen() + ",</p>"
+                + "<p>We sincerely thank you for choosing [Hotel/Resort Name]. We are pleased to inform you that your booking has been successfully confirmed with the following details:</p>"
+                + "<p>Customer Name: " + kh.getHo() +" "+kh.getTen() + "</p>"
+                + "<p>Booking Number: " + kh.getSdt()+ "</p>"
+                + "<p>Room :" + ctpd.getHangPhong().getTenHP() + "</p>"
+                + "<p>Check-in Date: "+ checkInDate + "</p>"
+                + "<p>Check-out Date: "+ checkOutDate + "</p>"
+                + "<p>Total Amount: " + tongTien + "</p>"
+                + "<p>We are committed to providing you with an exceptional and memorable stay. If you have any special requests or questions, please feel free to contact us via this email or call our hotline at 0123456789.</p>"
+                + "<p>Once again, thank you, and we look forward to welcoming you to Sona.</p>"
+                + "<p>Best regards,</p>"
+                + "<p>Sona Hotel</p>";
+
+        mailer.send("Sona Support", tk.getUsername(), subject, body);
+        rd.addFlashAttribute("message", "Booking Room");
         
         return "user/QRcode";
     }
@@ -207,7 +237,7 @@ public class BookRoomController{
 	    try {
 	        // Xử lý logic khi booking room thành công
 	        Session session = factory.getCurrentSession();
-	        String sql = "update HoaDon set trangThai = 1 where maGD = :maGD and tongTien = :tongTien";
+	        String sql = "update HoaDon set trangThai = 1 where maGD = :maGD and tongTien = :tongTien and trangThai = 0";
 	        Query query = session.createQuery(sql);
 	        query.setParameter("maGD", maGD);
 	        query.setParameter("tongTien",Float.parseFloat(tongTien));
@@ -216,17 +246,9 @@ public class BookRoomController{
 	        System.out.println("Booking room success");
 	        return "redirect:/notification/200";
 	    } catch (Exception e) {
-	        // Log lỗi vào console hoặc logs của ứng dụng
 	        e.printStackTrace();
-	        // Trả về mã lỗi hoặc thông báo lỗi phù hợp
 	        return "redirect:/notification/500";
 	    }
 	}
 
-//	public String bookRoom(HttpServletRequest request,
-//			@Validated @ModelAttribute("khachHang") KhachHang kh, HttpSession sessionUser,
-//			BindingResult err, ModelMap model, RedirectAttributes rd) {
-//		
-//        return "redirect:/notification/200";
-//	}
 }
