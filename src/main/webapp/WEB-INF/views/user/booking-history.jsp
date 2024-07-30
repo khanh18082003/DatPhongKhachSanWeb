@@ -37,7 +37,7 @@
 								<h4>${room[3]}</h4>
 								<h3>
 									<fmt:formatNumber value="${room[4]}"
-										type="currency" currencySymbol="$" pattern="$#,##0.00" />
+										type="currency" currencySymbol="đ" pattern="#,##0đ" />
 									<span>/Pernight</span>
 								</h3>
 								<table>
@@ -53,18 +53,18 @@
 										<tr>
 											<td class="r-o"> <b>Toltal:</b> </td>
 											<td><fmt:formatNumber value="${room[0]}"
-										type="currency" currencySymbol="$" pattern="$#,##0.00" /></td>
+										type="currency" currencySymbol="đ" pattern="#,##0đ" /></td>
 										</tr>
 										<tr>
 											<td id="roomAvailable" class="r-o"><b>Status:</b> </td>
 											<td>${room[5]}</td>
 										</tr>
-										
+										<tr>
 										<c:if test="${room[5] == 'Booked'}">
-											<tr>
 												<td colspan="2"><button class="button-link" type="submit" onclick="return cancelBooking()">Cancel</button></td>
-											</tr>
 										</c:if>
+										
+										</tr>
 										<c:if test="${room[5] != 'Booked'}">
 											<tr>
 											<td><br/></td>

@@ -26,5 +26,7 @@
 		<property name="diaChi" value="74, Quang Trung" />
 		<property name="sdt" value="0378277559" />
 		<property name="email" value="nguyentrungk461@gmail.com" />
+		<property name="accountName" value="NGUYEN THANH TAM" />
+		<property name="accountNumber" value="0396441431" />
 	</bean>
 </beans>

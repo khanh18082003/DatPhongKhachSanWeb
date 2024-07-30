@@ -26,6 +26,7 @@ public class HoaDon {
 	@Column(name = "TONGTIEN")
 	private float tongTien;
 	
+	
 	@Column(name = "MAGIAODICH")
 	private String maGD;
 	

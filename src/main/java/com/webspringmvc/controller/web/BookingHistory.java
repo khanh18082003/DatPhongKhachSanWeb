@@ -26,7 +26,7 @@ public class BookingHistory {
 	public String index(HttpSession session) {
 		// in ra danh sách các đơn đặt phòng đã thực hiện
 		String username = (String) session.getAttribute("author");
-		String hql = "select HD.tongTien, PD.ngayBD, PD.ngayKT, CTPD.hangPhong.tenHP,  CTPD.hangPhong.gia, PD.trangThai,PD.maPD  " + "from HoaDon HD "
+		String hql = "select HD.tongTien, PD.ngayBD, PD.ngayKT, CTPD.hangPhong.tenHP,  CTPD.hangPhong.gia, PD.trangThai,PD.maPD " + "from HoaDon HD "
 				+ "join HD.maPD PD " + "join PD.ctPD CTPD "
 				+ "where PD.taiKhoan.username = :username order by PD.ngayBD desc";
 
